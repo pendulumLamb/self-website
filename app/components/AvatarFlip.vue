@@ -20,6 +20,8 @@ const TILE_COUNT = COLS * ROWS
 
 const tileProgress = ref(new Float32Array(TILE_COUNT))
 const isHovering = ref(false)
+const isCanvasReady = ref(false)
+const hasLoadError = ref(false)
 
 let frontImg: HTMLImageElement | null = null
 let backImg: HTMLImageElement | null = null
@@ -31,6 +33,9 @@ let tileW = 0
 let tileH = 0
 
 async function loadImages() {
+  isCanvasReady.value = false
+  hasLoadError.value = false
+
   const load = (src: string): Promise<HTMLImageElement> =>
     new Promise((resolve, reject) => {
       const img = new Image()
@@ -51,7 +56,9 @@ async function loadImages() {
     imagesReady = true
     fitCanvas()
     draw()
+    isCanvasReady.value = true
   } catch (e) {
+    hasLoadError.value = true
     console.error('AvatarFlip: image load failed', e)
   }
 }
@@ -85,7 +92,7 @@ function fitCanvas() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
   canvas.value.width = Math.round(canvasW * dpr)
   canvas.value.height = Math.round(canvasH * dpr)
-  canvas.value.style.cssText = `display:block;width:${canvasW}px;height:${canvasH}px`
+  canvas.value.style.cssText = 'display:block;width:100%;height:100%'
 
   tileW = canvasW / COLS
   tileH = canvasH / ROWS
@@ -252,13 +259,50 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="container" class="avatar-flip-wrap cursor-clickable" @mouseenter="onEnter" @mouseleave="onLeave">
-    <canvas ref="canvas" />
+    <img
+      v-if="!isCanvasReady || hasLoadError"
+      :src="frontSrc"
+      :alt="alt"
+      class="avatar-flip-fallback"
+      @error="hasLoadError = true"
+    >
+    <canvas
+      ref="canvas"
+      class="avatar-flip-canvas"
+      :class="{ 'avatar-flip-canvas--ready': isCanvasReady && !hasLoadError }"
+    />
   </div>
 </template>
 
 <style scoped>
 .avatar-flip-wrap {
+  position: relative;
   width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f8f8f8;
   line-height: 0;
+}
+
+.avatar-flip-canvas,
+.avatar-flip-fallback {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-flip-canvas {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.avatar-flip-canvas--ready {
+  opacity: 1;
+}
+
+.avatar-flip-fallback {
+  object-fit: cover;
 }
 </style>

@@ -813,7 +813,7 @@ onBeforeUnmount(() => {
                 <div class="relative overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white">
                   <AvatarFlip
                     front-src="/avatar.jpg"
-                    back-src="/自拍.jpg"
+                    back-src="/selfie.jpg"
                     alt="吴永龙头像"
                     :cols="10"
                     :rows="12"

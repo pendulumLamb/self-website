@@ -61,10 +61,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, onUnmounted, computed } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import * as d3 from 'd3'
 import { feature } from 'topojson-client'
-import { useWindowSize, useWindowScroll, useElementBounding } from '@vueuse/core'
+import { useWindowSize, useWindowScroll } from '@vueuse/core'
 import countries110m from 'world-atlas/countries-110m.json'
 
 const chart = ref<HTMLElement | null>(null)
@@ -116,6 +116,8 @@ const designStyles = computed(() => [
 let projection: d3.GeoOrthographicProjection
 let path: d3.GeoPath
 let svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
+let globeLayer: d3.Selection<SVGGElement, unknown, null, undefined>
+let globeShell: d3.Selection<SVGCircleElement, unknown, null, undefined>
 let g: d3.Selection<SVGGElement, unknown, null, undefined>
 let markerGroup: d3.Selection<SVGGElement, unknown, null, undefined>
 
@@ -146,8 +148,12 @@ onMounted(async () => {
     .attr("class", "cursor-move")
     .style("overflow", "visible")
 
+  globeLayer = svg.append("g")
+    .attr("class", "globe-shell-layer")
+    .style("will-change", "transform, opacity")
+
   // Globe Outline/Water
-  svg.append("circle")
+  globeShell = globeLayer.append("circle")
     .attr("cx", w / 2)
     .attr("cy", h / 2 + 50)
     .attr("r", projection.scale())
@@ -155,7 +161,7 @@ onMounted(async () => {
     .style("stroke", "rgba(0,0,0,0.05)")
     .style("stroke-width", "1px")
 
-  g = svg.append("g")
+  g = globeLayer.append("g")
 
   try {
     const world = countries110m as any
@@ -207,7 +213,7 @@ onMounted(async () => {
       .style("transition", "fill 0.5s ease")
 
     // Layer 5: Marker Group
-    markerGroup = svg.append("g")
+    markerGroup = globeLayer.append("g")
       .attr("class", "marker-group")
       .style("pointer-events", "none")
       .style("opacity", "0")
@@ -329,6 +335,7 @@ function updateMapState(index: number, progress: number) {
   let targetScale = baseScale
   let targetRotation = [0, 0]
   let markerOpacity = 0
+  let shellExitProgress = 0
   
   if (index === -1) {
     targetScale = baseScale
@@ -345,10 +352,10 @@ function updateMapState(index: number, progress: number) {
     const w = chart.value?.clientWidth || width.value
     const h = chart.value?.clientHeight || height.value
     const defaultY = h / 2 + 50
-    const targetY = defaultY - (h * 1.5 * progress) 
     
-    projection.translate([w / 2, targetY])
+    projection.translate([w / 2, defaultY])
     markerOpacity = 0
+    shellExitProgress = d3.easeCubicInOut(progress)
   } else {
     const target = designStyles.value[index]
     const cityCoords = [-target.coords[0], -target.coords[1]]
@@ -393,13 +400,26 @@ function updateMapState(index: number, progress: number) {
   g.selectAll(".line").attr("d", path)
   g.selectAll(".country").attr("d", path)
   
-  svg.select("circle").attr("r", targetScale)
+  globeShell.attr("r", targetScale)
+  updateGlobeLayerExit(shellExitProgress)
   
   updateMarker(index, markerOpacity)
 }
 
+function updateGlobeLayerExit(progress: number) {
+  if (!globeLayer) return
+
+  const h = chart.value?.clientHeight || height.value || 900
+  const lift = -h * 1.18 * progress
+  const opacity = Math.max(0, 1 - progress * 1.1)
+
+  globeLayer
+    .attr("transform", `translate(0, ${lift})`)
+    .style("opacity", opacity.toString())
+}
+
 function updateMarker(index: number, opacity: number) {
-  if (!markerGroup || index === -1) {
+  if (!markerGroup || index < 0) {
     markerGroup?.style("opacity", "0")
     return
   }
@@ -452,7 +472,8 @@ watch([width, height], () => {
     projection.translate([w / 2, h / 2 + 50]).scale(baseScale)
     
     svg.attr("width", w).attr("height", h)
-    svg.select("circle").attr("cx", w/2).attr("cy", h/2 + 50).attr("r", projection.scale())
+    globeShell.attr("cx", w/2).attr("cy", h/2 + 50).attr("r", projection.scale())
+    updateGlobeLayerExit(currentIndex.value === -2 ? 1 : 0)
     
     projection.clipAngle(180)
     g.selectAll(".back-line").attr("d", path)
