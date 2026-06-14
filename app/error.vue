@@ -8,15 +8,22 @@ defineProps({
   }
 })
 
+const { locale, navLinks } = useSiteI18n()
+const htmlLang = computed(() => locale.value === 'en' ? 'en' : 'zh-CN')
+const errorTitle = computed(() => locale.value === 'en' ? 'Page not found' : '页面未找到')
+const errorDescription = computed(() => locale.value === 'en'
+  ? 'We are sorry but this page could not be found.'
+  : '抱歉，页面不存在。')
+
 useHead({
   htmlAttrs: {
-    lang: 'en'
+    lang: htmlLang
   }
 })
 
 useSeoMeta({
-  title: 'Page not found',
-  description: 'We are sorry but this page could not be found.'
+  title: errorTitle,
+  description: errorDescription
 })
 
 const [{ data: navigation }, { data: files }] = await Promise.all([

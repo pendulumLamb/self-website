@@ -10,16 +10,24 @@ if (!page.value) {
   })
 }
 
-useSeoMeta({
-  title: page.value?.seo.title || page.value?.title,
-  ogTitle: page.value?.seo.title || page.value?.title,
-  description: page.value?.seo.description || page.value?.description,
-  ogDescription: page.value?.seo.description || page.value?.description,
-  ogImage: '/hero/random-1.avif'
-})
-
 const { scrollY, easedScrollY } = useScrollY()
 const { width: windowWidth, height: windowHeight } = useWindowSize()
+const { locale, isEnglish } = useSiteI18n()
+
+const seoTitle = computed(() => locale.value === 'en'
+  ? 'WYLONG Portfolio'
+  : page.value?.seo.title || page.value?.title)
+const seoDescription = computed(() => locale.value === 'en'
+  ? 'Personal portfolio of WYLONG, covering full-stack engineering, IoT, AI systems, visual design, projects, and art collections.'
+  : page.value?.seo.description || page.value?.description)
+
+useSeoMeta({
+  title: seoTitle,
+  ogTitle: seoTitle,
+  description: seoDescription,
+  ogDescription: seoDescription,
+  ogImage: '/hero/random-1.avif'
+})
 
 const viewportHeight = computed(() => {
   return Number.isFinite(windowHeight.value) && windowHeight.value > 0 ? windowHeight.value : 900
@@ -75,6 +83,96 @@ const scrollProgressStyle = computed(() => {
   }
 })
 
+const scrollSlider = ref<HTMLElement | null>(null)
+const isScrollDragging = ref(false)
+
+const scrollProgressPercent = computed(() => Math.round(pageScrollProgress.value * 100))
+
+function getMaxPageScroll() {
+  if (!import.meta.client) return 0
+  return Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
+}
+
+function scrollToProgress(progress: number) {
+  if (!import.meta.client) return
+  const clamped = Math.min(Math.max(progress, 0), 1)
+  window.scrollTo({
+    top: clamped * getMaxPageScroll(),
+    behavior: 'auto'
+  })
+}
+
+function updateScrollFromPointer(event: PointerEvent) {
+  if (!scrollSlider.value) return
+  const rect = scrollSlider.value.getBoundingClientRect()
+  const progress = (event.clientY - rect.top) / rect.height
+  scrollToProgress(progress)
+}
+
+function onScrollSliderPointerDown(event: PointerEvent) {
+  if (event.button !== 0) return
+  event.preventDefault()
+  isScrollDragging.value = true
+  scrollSlider.value?.setPointerCapture(event.pointerId)
+  document.documentElement.classList.add('is-scroll-dragging')
+  updateScrollFromPointer(event)
+}
+
+function onScrollSliderPointerMove(event: PointerEvent) {
+  if (!isScrollDragging.value) return
+  event.preventDefault()
+  updateScrollFromPointer(event)
+}
+
+function stopScrollSliderDrag(event?: PointerEvent) {
+  if (!isScrollDragging.value) return
+  if (event && scrollSlider.value?.hasPointerCapture(event.pointerId)) {
+    scrollSlider.value.releasePointerCapture(event.pointerId)
+  }
+  isScrollDragging.value = false
+  document.documentElement.classList.remove('is-scroll-dragging')
+}
+
+function onScrollSliderKeydown(event: KeyboardEvent) {
+  const maxScroll = getMaxPageScroll()
+  if (maxScroll <= 0) return
+
+  const current = pageScrollProgress.value
+  const smallStep = 48 / maxScroll
+  const largeStep = viewportHeight.value / maxScroll
+
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    scrollToProgress(current + smallStep)
+  } else if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    scrollToProgress(current - smallStep)
+  } else if (event.key === 'PageDown') {
+    event.preventDefault()
+    scrollToProgress(current + largeStep)
+  } else if (event.key === 'PageUp') {
+    event.preventDefault()
+    scrollToProgress(current - largeStep)
+  } else if (event.key === 'Home') {
+    event.preventDefault()
+    scrollToProgress(0)
+  } else if (event.key === 'End') {
+    event.preventDefault()
+    scrollToProgress(1)
+  }
+}
+
+const sectionTitleClass = computed(() => isEnglish.value
+  ? 'text-4xl leading-none font-black tracking-tight text-neutral-950 sm:text-6xl lg:text-7xl'
+  : 'text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl')
+
+const aboutTextClass = computed(() => isEnglish.value
+  ? 'space-y-6 text-xl leading-9 text-neutral-700 sm:text-2xl sm:leading-10'
+  : 'space-y-7 text-2xl leading-11 text-neutral-700')
+
+const previewEntryLabel = computed(() => locale.value === 'en' ? 'Preview' : '预览入口')
+const unavailablePreviewLabel = computed(() => locale.value === 'en' ? 'Preview unavailable' : '暂不可预览')
+const workCountLabel = (count: number) => locale.value === 'en' ? `${count} works` : `${count} 张作品`
 
 const techSection = ref<HTMLElement | null>(null)
 const techSectionTop = ref(0)
@@ -122,7 +220,7 @@ let charScatters: CharScatter[] = []
 
 function initCharData() {
   correctChars = []
-  for (const p of aboutIntroParagraphs) {
+  for (const p of aboutIntroParagraphs.value) {
     for (const ch of Array.from(p)) {
       correctChars.push({ char: ch, index: correctChars.length })
     }
@@ -202,17 +300,22 @@ const activeGalleryImage = ref<string | null>(null)
 const showMobileNotice = ref(false)
 const hasDismissedMobileNotice = ref(false)
 
-const aboutIntroParagraphs = [
-  '2023年毕业于安徽工程大学（安徽芜湖），学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。',
-  '毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，并为电商公司提供资源设计。',
-  '用极简、克制、温暖的设计让科技得以被感知。'
-]
+const aboutIntroParagraphs = computed(() => locale.value === 'en'
+  ? [
+      'I graduated from Anhui Polytechnic University in Wuhu in 2023, majoring in Internet of Things Engineering and also taking courses in visual communication design. I was a member of the IoT Association in the School of Computer Science.',
+      'After graduation I moved into computer-related work, covering automotive testing, IoT development, and full-stack software development, while also providing resource design for e-commerce teams.',
+      'I use minimal, restrained, and warm design to make technology easier to perceive.'
+    ]
+  : [
+      '2023年毕业于安徽工程大学（安徽芜湖），学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。',
+      '毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，并为电商公司提供资源设计。',
+      '用极简、克制、温暖的设计让科技得以被感知。'
+    ])
 
-// Init char data after aboutIntroParagraphs is defined
-initCharData()
+watch(aboutIntroParagraphs, () => initCharData(), { immediate: true })
 
-const techGroups = [{
-  title: '编程语言',
+const techGroups = computed(() => [{
+  title: locale.value === 'en' ? 'Languages' : '编程语言',
   items: [{
     label: 'C',
     icon: 'simple-icons:c',
@@ -235,7 +338,7 @@ const techGroups = [{
     color: '#3178C6'
   }]
 }, {
-  title: '前端',
+  title: locale.value === 'en' ? 'Frontend' : '前端',
   items: [{
     label: 'Vue',
     icon: 'simple-icons:vuedotjs',
@@ -246,7 +349,7 @@ const techGroups = [{
     color: '#00DC82'
   }]
 }, {
-  title: '跨端框架',
+  title: locale.value === 'en' ? 'Cross-platform' : '跨端框架',
   items: [{
     label: 'uni-app',
     logo: '/tech-logos/uni-app.png'
@@ -256,7 +359,7 @@ const techGroups = [{
     color: '#02569B'
   }]
 }, {
-  title: '后端',
+  title: locale.value === 'en' ? 'Backend' : '后端',
   items: [{
     label: 'Fastapi',
     icon: 'simple-icons:fastapi',
@@ -265,11 +368,11 @@ const techGroups = [{
     label: 'Gin',
     logo: '/tech-logos/gin.svg'
   }, {
-    label: 'Nitro（Nuxt.Js提供）',
+    label: locale.value === 'en' ? 'Nitro by Nuxt.js' : 'Nitro（Nuxt.Js提供）',
     logo: '/tech-logos/nitro.svg'
   }]
 }, {
-  title: '基础设施',
+  title: locale.value === 'en' ? 'Infrastructure' : '基础设施',
   items: [{
     label: 'Git',
     icon: 'simple-icons:git',
@@ -300,13 +403,13 @@ const techGroups = [{
     color: '#2496ED'
   }]
 }, {
-  title: '物联网',
+  title: locale.value === 'en' ? 'IoT' : '物联网',
   items: [{
     label: 'esp32',
     icon: 'simple-icons:espressif',
     color: '#E7352C'
   }, {
-    label: '树莓派',
+    label: locale.value === 'en' ? 'Raspberry Pi' : '树莓派',
     icon: 'simple-icons:raspberrypi',
     color: '#A22846'
   }, {
@@ -321,7 +424,7 @@ const techGroups = [{
     label: 'NB-IoT',
     logo: '/tech-logos/nbiot.png'
   }, {
-    label: '阿里云IoT',
+    label: locale.value === 'en' ? 'Alibaba Cloud IoT' : '阿里云IoT',
     icon: 'simple-icons:alibabacloud',
     color: '#FF6A00'
   }]
@@ -338,7 +441,7 @@ const techGroups = [{
     logo: '/tech-logos/langgraph.png'
   }]
 }, {
-  title: '设计',
+  title: locale.value === 'en' ? 'Design' : '设计',
   items: [{
     label: 'MasterGo',
     logo: '/tech-logos/mastergo.ico'
@@ -349,12 +452,28 @@ const techGroups = [{
     label: 'Tapnow',
     logo: '/tech-logos/tapnow.png'
   }, {
-    label: 'NeoDesign（自研平台）',
+    label: locale.value === 'en' ? 'NeoDesign platform' : 'NeoDesign（自研平台）',
     logo: '/tech-logos/neodesign.png'
   }]
-}]
+}])
 
-const workExperiences = [{
+const workExperiences = computed(() => locale.value === 'en' ? [{
+  period: '2022.3-Present',
+  company: 'Wuhu Xiangyi Software Co., Ltd.',
+  role: 'Full-stack Engineer',
+  tasks: ['Joined a roommate-led startup and took part in daily product development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.']
+}, {
+  period: '2023.2-2024.11',
+  company: 'BHTC Automotive Electronics (Wuhu) Co., Ltd.',
+  companyNote: 'Formerly Bosch Automotive Electronics (Wuhu) Co., Ltd.',
+  role: 'Test Engineer',
+  tasks: ['Worked with CAN networks and performed bench and vehicle tests for instrument clusters.', 'Designed test cases and test scripts.', 'Stationed at Chery and Changan vehicle ports for pre-export inspection and flashing.']
+}, {
+  period: '2025.1-2026.6',
+  company: 'Shanghai Yongxing Trading Co., Ltd.',
+  role: 'Visual Designer, AI Architect',
+  tasks: ['Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
+}] : [{
   period: '2022.3-至今',
   company: '芜湖享易软件有限公司',
   role: '全栈工程师',
@@ -370,9 +489,44 @@ const workExperiences = [{
   company: '上海邕兴贸易有限公司',
   role: '美工、AI 架构师',
   tasks: ['使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
-}]
+}])
 
-const projects = [{
+const projects = computed(() => locale.value === 'en' ? [{
+  title: 'NeoDesign',
+  subtitle: 'AI creation platform',
+  logo: '/tech-logos/neodesign.png',
+  description: 'An infinite-canvas workspace for producing AI images, videos, and creative assets.',
+  note: 'Built for my own e-commerce workflow after finding tools like Lovart and Tapnow too expensive for daily use.',
+  tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+  image: '/projects/infinite-canvas.jpg',
+  previewDisabledTip: 'Not open-sourced or released yet.'
+}, {
+  title: 'EasyIoT',
+  subtitle: 'IoT platform for intelligent teaching applications',
+  logo: '/projects/easyiot-logo.png',
+  description: 'An IoT application platform for teaching scenarios, supporting no-code and MCU low-code development.',
+  note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and learning resources for fast IoT prototyping.',
+  tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
+  image: '/projects/easyiot-preview.png',
+  previewUrl: 'https://www.easyiothings.com/'
+}, {
+  title: 'Warmzen',
+  subtitle: 'Cross-border independent store',
+  logo: '/projects/warmzen-logo.png',
+  description: 'A cross-border commerce site built on the open-source Payload CMS commerce stack, including storefront and admin system.',
+  note: 'The storefront focuses on brand presentation, product collections, and an immersive hero experience, while the admin side supports content management, payment flows, and multilingual display.',
+  tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
+  image: '/projects/warmzen-preview.png',
+  previewUrl: 'https://warmzen.vercel.app/'
+}, {
+  title: 'HelloAgents',
+  subtitle: 'Automated deep-research agent',
+  description: 'A multi-agent research system based on HelloAgents that breaks down topics, searches sources, and generates structured reports.',
+  note: 'Enter a research topic and the agents plan subtasks, query multiple search engines, show progress in real time, and output a structured Markdown report.',
+  tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
+  image: '/projects/agent.png',
+  previewDisabledTip: 'This project is not online yet.'
+}] : [{
   title: 'NeoDesign',
   subtitle: 'AI 创作平台',
   logo: '/tech-logos/neodesign.png',
@@ -407,13 +561,45 @@ const projects = [{
   tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
   image: '/projects/agent.png',
   previewDisabledTip: '项目暂不上线，请理解'
-}]
+}])
 
 function workImageList(folder: string, files: string[]) {
   return files.map(file => `/works/collections/${folder}/${file}`)
 }
 
-const artCollections = [{
+const artCollections = computed(() => locale.value === 'en' ? [{
+  slug: 'drawing',
+  title: 'Personal Drawings',
+  cover: '/works/drawing/autumn.jpg',
+  summary: 'Hand-drawn characters, daily sketches, and drawing practice.',
+  images: workImageList('drawing', ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.png', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg'])
+}, {
+  slug: 'ai',
+  title: 'AI Art',
+  cover: '/works/collections/ai/06.png',
+  summary: 'Explorations of image style, scenes, and visual concepts made with AI tools.',
+  images: workImageList('ai', ['01.png', '02.png', '03.png', '04.png', '05.jpg', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png'])
+}, {
+  slug: 'photo',
+  title: 'Photography',
+  cover: '/works/collections/photo/05.jpg',
+  summary: 'Observations from nature, campus, and everyday scenes.',
+  images: workImageList('photo', ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg'])
+}, {
+  slug: 'commerce',
+  title: 'E-commerce Visuals',
+  cover: '/works/collections/commerce/11.png',
+  summary: 'Visual design for product detail pages and brand sales pages.',
+  images: workImageList('commerce', ['01.png', '02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png', '13.png', '14.jpg', '15.jpg', '16.png', '17.png', '18.png', '19.png', '20.png', '21.png', '22.png'])
+}, {
+  slug: 'ai-video',
+  title: 'AI Video',
+  cover: '/works/collections/ai-video-cover.png',
+  summary: 'Click through to my Bilibili profile.',
+  hint: 'Open Bilibili profile',
+  href: 'https://space.bilibili.com/3546668196694295/upload/video',
+  images: []
+}] : [{
   slug: 'drawing',
   title: '个人绘画',
   cover: '/works/drawing/autumn.jpg',
@@ -445,15 +631,18 @@ const artCollections = [{
   hint: '点击跳转Bilibili主页',
   href: 'https://space.bilibili.com/3546668196694295/upload/video',
   images: []
-}]
+}])
 
 // Init art card reveal state after artCollections is defined
-artCardRevealed.value = artCollections.map(() => false)
+watch(artCollections, collections => {
+  artCardRevealed.value = collections.map(() => false)
+  nextTick(() => observeArtCards())
+}, { immediate: true })
 
 const indexedTechGroups = computed(() => {
   let index = 0
 
-  return techGroups.map((group) => {
+  return techGroups.value.map((group) => {
     const groupIndex = index++
     const items = group.items.map(item => ({
       ...item,
@@ -469,13 +658,13 @@ const indexedTechGroups = computed(() => {
 })
 
 const techItemsCount = computed(() => {
-  return techGroups.reduce((total, group) => total + group.items.length + 1, 0)
+  return techGroups.value.reduce((total, group) => total + group.items.length + 1, 0)
 })
 
 const indexedAboutIntroParagraphs = computed(() => {
   let index = 0
 
-  return aboutIntroParagraphs.map(paragraph => ({
+  return aboutIntroParagraphs.value.map(paragraph => ({
     text: paragraph,
     chars: Array.from(paragraph).map(ch => ({
       char: ch,
@@ -485,7 +674,7 @@ const indexedAboutIntroParagraphs = computed(() => {
 })
 
 const aboutIntroCharsCount = computed(() => {
-  return aboutIntroParagraphs.reduce((total, paragraph) => total + Array.from(paragraph).length, 0)
+  return aboutIntroParagraphs.value.reduce((total, paragraph) => total + Array.from(paragraph).length, 0)
 })
 
 const aboutIntroScrollProgress = computed(() => {
@@ -559,7 +748,7 @@ const workStageHeight = computed(() => {
 })
 
 const workScrollLength = computed(() => {
-  return viewportHeight.value * Math.max(workExperiences.length - 1, 1) * 1.05
+  return viewportHeight.value * Math.max(workExperiences.value.length - 1, 1) * 1.05
 })
 
 const workTrackStyle = computed(() => {
@@ -583,7 +772,7 @@ const workScrollProgress = computed(() => {
 })
 
 function getWorkCardStyle(index: number) {
-  const totalCards = workExperiences.length
+  const totalCards = workExperiences.value.length
   // Each card's motion window starts before the previous card has fully
   // settled. Without this overlap there's a dead zone of scrolling where
   // the previous card is locked in but the next one is still off-screen.
@@ -639,15 +828,15 @@ function closeProjectPreviewOnMobileScroll() {
 }
 
 const hoveredProject = computed(() => {
-  return hoveredProjectIndex.value === null ? null : projects[hoveredProjectIndex.value] || null
+  return hoveredProjectIndex.value === null ? null : projects.value[hoveredProjectIndex.value] || null
 })
 
 const activeWorkCollection = computed(() => {
-  return artCollections.find(collection => collection.slug === activeWorkCollectionSlug.value) || null
+  return artCollections.value.find(collection => collection.slug === activeWorkCollectionSlug.value) || null
 })
 
 function openWorkCollection(slug: string) {
-  const collection = artCollections.find(item => item.slug === slug)
+  const collection = artCollections.value.find(item => item.slug === slug)
 
   if (collection?.href) {
     window.open(collection.href, '_blank', 'noopener,noreferrer')
@@ -781,11 +970,30 @@ onBeforeUnmount(() => {
 
 <template>
   <div v-if="page">
-    <div class="pointer-events-none fixed right-5 top-1/2 z-[120] h-32 w-1 -translate-y-1/2 overflow-hidden rounded-full bg-neutral-400/25 backdrop-blur-sm sm:right-6 sm:h-36">
-      <div
-        class="absolute left-0 top-0 w-full rounded-full bg-emerald-500 shadow-[0_0_16px_rgba(16,185,129,0.65)] transition-[height] duration-150 ease-out"
-        :style="scrollProgressStyle"
-      />
+    <div
+      ref="scrollSlider"
+      class="scroll-progress-control cursor-grab-custom fixed right-3 top-1/2 z-[120] h-40 w-8 -translate-y-1/2 touch-none select-none sm:right-5 sm:h-44"
+      :class="{ 'is-dragging': isScrollDragging }"
+      role="slider"
+      tabindex="0"
+      aria-orientation="vertical"
+      :aria-label="locale === 'en' ? 'Page scroll progress' : '页面滚动进度'"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      :aria-valuenow="scrollProgressPercent"
+      @pointerdown="onScrollSliderPointerDown"
+      @pointermove="onScrollSliderPointerMove"
+      @pointerup="stopScrollSliderDrag"
+      @pointercancel="stopScrollSliderDrag"
+      @lostpointercapture="stopScrollSliderDrag"
+      @keydown="onScrollSliderKeydown"
+    >
+      <div class="scroll-progress-rail">
+        <div
+          class="scroll-progress-fill"
+          :style="scrollProgressStyle"
+        />
+      </div>
     </div>
 
     <div class="relative w-full overflow-x-clip">
@@ -803,8 +1011,8 @@ onBeforeUnmount(() => {
         <div class="min-h-screen bg-white px-6 py-20 text-neutral-950 sm:px-10 lg:px-16 lg:py-28">
           <div class="mx-auto max-w-6xl">
             <div class="max-w-4xl">
-              <h2 id="about-intro" class="text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl scroll-mt-20">
-                个人简介
+              <h2 id="about-intro" class="scroll-mt-20" :class="sectionTitleClass">
+                {{ locale === 'en' ? 'About Me' : '个人简介' }}
               </h2>
             </div>
 
@@ -814,7 +1022,7 @@ onBeforeUnmount(() => {
                   <AvatarFlip
                     front-src="/avatar.jpg"
                     back-src="/selfie.jpg"
-                    alt="吴永龙头像"
+                    :alt="locale === 'en' ? 'WYLONG avatar' : '吴永龙头像'"
                     :cols="10"
                     :rows="12"
                   />
@@ -823,12 +1031,12 @@ onBeforeUnmount(() => {
 
               <div class="space-y-8">
                 <p class="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl">
-                  Hi，我是吴永龙
+                  {{ locale === 'en' ? 'Hi, I am WYLONG' : 'Hi，我是吴永龙' }}
                 </p>
                 <div
                   ref="aboutIntro"
                   data-motion="about-intro"
-                  class="space-y-7 text-2xl leading-11 text-neutral-700"
+                  :class="aboutTextClass"
                   @pointermove="onAboutPointerMove"
                   @pointerleave="onAboutPointerLeave"
                 >
@@ -864,8 +1072,8 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="relative mb-14 max-w-4xl">
-              <h2 class="text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl">
-                我的技术栈
+              <h2 :class="sectionTitleClass">
+                {{ locale === 'en' ? 'Tech Stack' : '我的技术栈' }}
               </h2>
             </div>
 
@@ -917,8 +1125,8 @@ onBeforeUnmount(() => {
             class="relative mx-auto mt-24 max-w-7xl pb-24 pt-12 sm:mt-32 lg:pt-20"
           >
             <div class="mb-16 pt-10">
-              <h2 class="text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl">
-                工作履历
+              <h2 :class="sectionTitleClass">
+                {{ locale === 'en' ? 'Career' : '工作履历' }}
               </h2>
             </div>
 
@@ -979,8 +1187,8 @@ onBeforeUnmount(() => {
             class="soft-section-band relative mx-auto mt-0 max-w-7xl pb-28 pt-10 sm:pt-14"
           >
             <div class="mb-10 pt-10">
-              <h2 class="text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl">
-                个人项目
+              <h2 :class="sectionTitleClass">
+                {{ locale === 'en' ? 'Projects' : '个人项目' }}
               </h2>
             </div>
 
@@ -1064,7 +1272,7 @@ onBeforeUnmount(() => {
                             ry="19"
                           />
                         </svg>
-                        <span class="preview-entry-label relative z-10">预览入口</span>
+                        <span class="preview-entry-label relative z-10">{{ previewEntryLabel }}</span>
                       </a>
 
                       <span
@@ -1086,9 +1294,9 @@ onBeforeUnmount(() => {
                             ry="19"
                           />
                         </svg>
-                        <span class="preview-entry-label relative z-10">预览入口</span>
+                        <span class="preview-entry-label relative z-10">{{ previewEntryLabel }}</span>
                         <span class="preview-tooltip pointer-events-none absolute left-1/2 top-full z-20 mt-3 w-max max-w-[18rem] -translate-x-1/2 rounded-full bg-neutral-950 px-4 py-2 text-xs font-semibold whitespace-nowrap text-white opacity-0 shadow-xl transition duration-200">
-                          {{ project.previewDisabledTip || '暂不可预览' }}
+                          {{ project.previewDisabledTip || unavailablePreviewLabel }}
                         </span>
                       </span>
                     </div>
@@ -1102,15 +1310,15 @@ onBeforeUnmount(() => {
             class="relative mx-auto max-w-7xl pb-32 pt-8 sm:pt-12 lg:pb-40"
           >
             <div id="design-styles" class="scroll-mt-16">
-              <h2 class="text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl">
-                设计风格
+              <h2 :class="sectionTitleClass">
+                {{ locale === 'en' ? 'Design Styles' : '设计风格' }}
               </h2>
               <ArtWorldMap class="mt-12 sm:mt-16" />
             </div>
 
             <div id="art-collections" class="scroll-mt-16 mt-14 sm:mt-16">
-              <h2 class="text-5xl leading-none font-black tracking-tight text-neutral-950 sm:text-7xl lg:text-8xl">
-                艺术作品集
+              <h2 :class="sectionTitleClass">
+                {{ locale === 'en' ? 'Art Collections' : '艺术作品集' }}
               </h2>
             </div>
 
@@ -1132,13 +1340,13 @@ onBeforeUnmount(() => {
                 >
                   <img
                     :src="collection.cover"
-                    :alt="`${collection.title}封面`"
+                    :alt="locale === 'en' ? `${collection.title} cover` : `${collection.title}封面`"
                     class="art-collection-image art-collection-image--gray"
                     loading="lazy"
                   >
                   <img
                     :src="collection.cover"
-                    :alt="`${collection.title}封面彩色`"
+                    :alt="locale === 'en' ? `${collection.title} color cover` : `${collection.title}封面彩色`"
                     class="art-collection-image art-collection-image--color"
                     loading="lazy"
                     aria-hidden="true"
@@ -1152,7 +1360,7 @@ onBeforeUnmount(() => {
                     {{ collection.title }}
                   </h3>
                   <p class="mt-3 text-sm font-semibold text-neutral-500">
-                    {{ collection.hint || `${collection.images.length} 张作品` }}
+                    {{ collection.hint || workCountLabel(collection.images.length) }}
                   </p>
                 </div>
               </button>
@@ -1168,7 +1376,7 @@ onBeforeUnmount(() => {
         <img
           v-if="hoveredProject"
           :src="hoveredProject.image"
-          :alt="`${hoveredProject.title} 项目截图`"
+          :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
           class="block w-full object-cover opacity-85"
         >
       </div>
@@ -1181,7 +1389,7 @@ onBeforeUnmount(() => {
           <button
             type="button"
             class="art-gallery-close fixed right-6 top-6 z-30 flex size-13 items-center justify-center rounded-full border border-neutral-300/70 bg-transparent text-xl shadow-xl shadow-black/10 backdrop-blur-xl transition sm:right-8 sm:top-8"
-            aria-label="关闭作品集"
+            :aria-label="locale === 'en' ? 'Close collection' : '关闭作品集'"
             @click="closeWorkCollection"
           >
             <UIcon
@@ -1205,7 +1413,7 @@ onBeforeUnmount(() => {
                 >
                   <img
                     :src="image"
-                    :alt="`${activeWorkCollection.title}作品 ${index + 1}`"
+                    :alt="locale === 'en' ? `${activeWorkCollection.title} work ${index + 1}` : `${activeWorkCollection.title}作品 ${index + 1}`"
                     loading="lazy"
                   >
                 </button>
@@ -1224,7 +1432,7 @@ onBeforeUnmount(() => {
           <button
             type="button"
             class="art-gallery-close fixed right-6 top-6 z-20 flex size-13 items-center justify-center rounded-full border border-neutral-300/70 bg-transparent text-xl shadow-xl shadow-black/20 backdrop-blur-xl transition sm:right-8 sm:top-8"
-            aria-label="关闭图片预览"
+            :aria-label="locale === 'en' ? 'Close image preview' : '关闭图片预览'"
             @click="closeGalleryImage"
           >
             <UIcon
@@ -1234,7 +1442,7 @@ onBeforeUnmount(() => {
           </button>
           <img
             :src="activeGalleryImage"
-            alt="作品大图预览"
+            :alt="locale === 'en' ? 'Large work preview' : '作品大图预览'"
             class="max-h-[90vh] max-w-[92vw] object-contain shadow-2xl shadow-black/30"
           >
         </div>
@@ -1248,14 +1456,14 @@ onBeforeUnmount(() => {
         >
           <div class="mobile-notice-panel w-full max-w-xs rounded-2xl bg-black/90 p-6 text-center shadow-2xl shadow-black/40">
             <p class="text-lg leading-8 font-semibold">
-              推荐电脑端浏览，以体验最佳网页展示效果。
+              {{ locale === 'en' ? 'Desktop viewing is recommended for the best experience.' : '推荐电脑端浏览，以体验最佳网页展示效果。' }}
             </p>
             <button
               type="button"
               class="mt-5 rounded-full border border-white/25 px-5 py-2 text-sm font-semibold text-white/85 transition hover:border-white/50 hover:text-white"
               @click="closeMobileNotice"
             >
-              我知道了
+              {{ locale === 'en' ? 'Got it' : '我知道了' }}
             </button>
           </div>
         </div>
@@ -1265,6 +1473,55 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.scroll-progress-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.scroll-progress-rail {
+  position: relative;
+  width: 4px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(163 163 163 / 0.24);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+  backdrop-filter: blur(8px);
+  transition:
+    width 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.scroll-progress-control:hover .scroll-progress-rail,
+.scroll-progress-control:focus-visible .scroll-progress-rail,
+.scroll-progress-control.is-dragging .scroll-progress-rail {
+  width: 14px;
+  height: calc(100% + 2.5rem);
+  background: rgb(163 163 163 / 0.34);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.58),
+    0 14px 34px rgb(15 23 42 / 0.16);
+}
+
+.scroll-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 999px;
+  background: #10b981;
+  box-shadow: 0 0 16px rgb(16 185 129 / 0.65);
+  transition: height 120ms ease-out;
+}
+
+.scroll-progress-control.is-dragging .scroll-progress-fill {
+  transition: none;
+}
+
 .soft-section-band {
   background: #ffffff;
   box-shadow: 0 0 0 100vmax #ffffff;

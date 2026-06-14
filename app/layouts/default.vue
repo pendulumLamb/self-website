@@ -4,6 +4,7 @@ import { useElementSize } from '@vueuse/core'
 
 const footerRef = ref<HTMLElement | null>(null)
 const { height } = useElementSize(footerRef)
+const { navLinks } = useSiteI18n()
 </script>
 
 <template>

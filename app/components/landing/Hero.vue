@@ -7,6 +7,7 @@ const props = defineProps<{
 }>()
 
 const { height: windowHeight } = useWindowSize()
+const { locale } = useSiteI18n()
 
 const backMountainLimit = computed(() => windowHeight.value < 768 ? 150 : 200)
 const midMountainLimit = computed(() => windowHeight.value < 768 ? 90 : 100)
@@ -28,10 +29,11 @@ const heroParallaxStyle = computed(() => {
   }
 })
 
-const { displayText, cursorVisible } = useTypewriter([
-  '欢迎来到我的网站',
-  '请继续浏览'
-], {
+const heroPhrases = computed(() => locale.value === 'en'
+  ? ['Welcome to my website', 'Keep exploring']
+  : ['欢迎来到我的网站', '请继续浏览'])
+
+const { displayText, cursorVisible } = useTypewriter(heroPhrases, {
   typeSpeed: 100,
   deleteSpeed: 55,
   pauseDuration: 1500,

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
+const { locale, navLinks } = useSiteI18n()
 
 const color = computed(() => colorMode.value === 'dark' ? '#020618' : 'white')
+const htmlLang = computed(() => locale.value === 'en' ? 'en' : 'zh-CN')
+const titleTemplate = computed(() => locale.value === 'en' ? '%s - Personal Portfolio and Tech Blog' : '%s - 个人简历与技术博客')
 
 useHead({
   meta: [
@@ -13,12 +16,12 @@ useHead({
     { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: 'zh-CN'
+    lang: htmlLang
   }
 })
 
 useSeoMeta({
-  titleTemplate: '%s - 个人简历与技术博客',
+  titleTemplate,
   twitterCard: 'summary_large_image'
 })
 

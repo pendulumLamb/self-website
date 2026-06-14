@@ -6,7 +6,9 @@
       
       <!-- Optional: Global Title when no specific section is active or as a persistent header -->
       <div class="absolute top-24 left-1/2 -translate-x-1/2 text-center z-10 pointer-events-none mix-blend-multiply opacity-50">
-        <h2 class="text-xl md:text-2xl tracking-[0.3em] font-light text-gray-500">全球设计艺术 驱动科技进化</h2>
+        <h2 class="text-xl md:text-2xl tracking-[0.3em] font-light text-gray-500">
+          {{ isEnglish ? 'Global Design, Art, and Technology' : '全球设计艺术 驱动科技进化' }}
+        </h2>
       </div>
     </div>
 
@@ -36,14 +38,21 @@
                 }"
               >
                 <div class="flex items-baseline gap-4 md:justify-end mb-2">
-                  <h3 class="text-6xl md:text-7xl font-bold text-neutral-400">{{ item.country }}</h3>
+                  <h3
+                    class="font-bold text-neutral-400"
+                    :class="isEnglish ? 'text-5xl md:text-6xl' : 'text-6xl md:text-7xl'"
+                  >{{ item.country }}</h3>
                 </div>
-                <h4 class="text-3xl md:text-4xl font-light text-neutral-600">{{ item.style }}</h4>
+                <h4
+                  class="font-light text-neutral-600"
+                  :class="isEnglish ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'"
+                >{{ item.style }}</h4>
               </div>
 
              <!-- Description -->
              <p
-               class="text-neutral-800 leading-loose text-2xl md:text-3xl transition-all duration-700 ease-out delay-100"
+               class="text-neutral-800 leading-loose transition-all duration-700 ease-out delay-100"
+               :class="isEnglish ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'"
                :style="{ 
                  opacity: getElementOpacity(index, 1),
                  transform: `translateY(${getElementTranslateY(index, 1)}px)`
@@ -71,43 +80,54 @@ const chart = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
 const { width, height } = useWindowSize()
 const { y } = useWindowScroll()
+const { locale, isEnglish } = useSiteI18n()
 
 // State tracking for each section's progress
 const sectionProgress = ref<number[]>([])
 
 const designStyles = computed(() => [
   {
-    country: '中国',
-    style: '东方意象',
-    description: '从青花、器物、留白和自然秩序中提取视觉语言，让作品保留东方气质，也能服务现代电商和数字界面。',
+    country: locale.value === 'en' ? 'China' : '中国',
+    style: locale.value === 'en' ? 'Eastern Imagery' : '东方意象',
+    description: locale.value === 'en'
+      ? 'I draw from porcelain, objects, negative space, and natural order to keep an Eastern sensibility while serving modern commerce and digital interfaces.'
+      : '从青花、器物、留白和自然秩序中提取视觉语言，让作品保留东方气质，也能服务现代电商和数字界面。',
     coords: [104.19, 35.86],
     tags: []
   },
   {
-    country: '日本',
-    style: '清简秩序',
-    description: '关注克制的版面、细节密度和微妙层次，用安静的视觉节奏组织内容，让信息更容易被感知。',
+    country: locale.value === 'en' ? 'Japan' : '日本',
+    style: locale.value === 'en' ? 'Quiet Order' : '清简秩序',
+    description: locale.value === 'en'
+      ? 'Restrained layouts, measured detail, and subtle hierarchy create a quiet rhythm that makes information easier to read.'
+      : '关注克制的版面、细节密度和微妙层次，用安静的视觉节奏组织内容，让信息更容易被感知。',
     coords: [138.25, 36.20],
     tags: []
   },
   {
-    country: '法国',
-    style: '艺术叙事',
-    description: '借鉴时尚、摄影和艺术海报中的叙事方式，强化画面的情绪、质感和商业表达。',
+    country: locale.value === 'en' ? 'France' : '法国',
+    style: locale.value === 'en' ? 'Artful Narrative' : '艺术叙事',
+    description: locale.value === 'en'
+      ? 'Fashion, photography, and art posters inform the way I build mood, texture, and commercial expression.'
+      : '借鉴时尚、摄影和艺术海报中的叙事方式，强化画面的情绪、质感和商业表达。',
     coords: [2.21, 46.22],
     tags: []
   },
   {
-    country: '德国',
-    style: '理性系统',
-    description: '用网格、结构和可复用规则控制复杂度，把视觉风格沉淀为稳定的系统能力。',
+    country: locale.value === 'en' ? 'Germany' : '德国',
+    style: locale.value === 'en' ? 'Rational Systems' : '理性系统',
+    description: locale.value === 'en'
+      ? 'Grids, structure, and reusable rules keep complexity under control and turn visual style into a stable system.'
+      : '用网格、结构和可复用规则控制复杂度，把视觉风格沉淀为稳定的系统能力。',
     coords: [10.45, 51.16],
     tags: []
   },
   {
-    country: '美国',
-    style: '产品体验',
-    description: '强调产品目标、用户路径和技术落地，把创意转化成可交互、可迭代、可验证的数字作品。',
+    country: locale.value === 'en' ? 'United States' : '美国',
+    style: locale.value === 'en' ? 'Product Experience' : '产品体验',
+    description: locale.value === 'en'
+      ? 'Product goals, user flows, and technical delivery turn ideas into interactive, iterative, and testable digital work.'
+      : '强调产品目标、用户路径和技术落地，把创意转化成可交互、可迭代、可验证的数字作品。',
     coords: [-95.71, 37.09],
     tags: []
   }

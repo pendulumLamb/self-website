@@ -55,6 +55,17 @@ button:hover,
   cursor: url("/cursor-pointer.svg") 16 16, pointer;
 }
 
+.cursor-grab-custom,
+.cursor-grab-custom:hover {
+  cursor: url("/cursor-grab.svg") 18 18, grab;
+}
+
+.cursor-grab-custom:active,
+.is-scroll-dragging,
+.is-scroll-dragging * {
+  cursor: url("/cursor-grab.svg") 18 18, grabbing !important;
+}
+
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   width: 0;
