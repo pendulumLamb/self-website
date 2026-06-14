@@ -1,1 +1,0 @@
-export { default } from "D:/1PROGRAM/PROJ/portfolio/node_modules/.pnpm/@nuxt+image@2.0.0_db0@0.3.4_cc92d7757b8a72dc39ed0e4ad5091632/node_modules/@nuxt/image/dist/runtime/components/NuxtImg.vue"

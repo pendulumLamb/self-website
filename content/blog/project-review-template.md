@@ -2,13 +2,13 @@
 title: "项目复盘模板：把经历写成作品"
 description: "给个人项目和工作项目准备的一套复盘结构，方便写进作品集和博客。"
 date: 2026-06-07
-image: https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop
+image: /projects/agent.png
 minRead: 4
 author:
   name: 你的名字
   description: 前端 / 全栈开发者
   avatar:
-    src: https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=1480&auto=format&fit=crop
+    src: /avatar.jpg
     alt: 你的名字
 ---
 

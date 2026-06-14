@@ -2,13 +2,13 @@
 title: "用 Nuxt 初始化个人简历与技术博客"
 description: "记录这个站点的技术选型、内容结构和后续可扩展方向。"
 date: 2026-06-09
-image: https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1472&auto=format&fit=crop
+image: /projects/warmzen-preview.png
 minRead: 5
 author:
   name: 你的名字
   description: 前端 / 全栈开发者
   avatar:
-    src: https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=1480&auto=format&fit=crop
+    src: /avatar.jpg
     alt: 你的名字
 ---
 

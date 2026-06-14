@@ -1,6 +1,6 @@
 title: 内容驱动的博客系统
 description: 使用 Nuxt Content 管理 Markdown 文章，支持文章列表、详情页、搜索索引、阅读时间、作者信息和文章封面图。
-image: https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1473&auto=format&fit=crop
+image: /projects/agent.png
 url: "/blog"
 tags: ["Markdown", "Nuxt Content", "SEO", "Blog"]
 date: "2026-06-02"

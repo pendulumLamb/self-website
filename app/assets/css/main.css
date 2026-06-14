@@ -1,5 +1,12 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "@fontsource/montserrat/latin-100.css";
+@import "@fontsource/montserrat/latin-200.css";
+@import "@fontsource/montserrat/latin-300.css";
+@import "@fontsource/montserrat/latin-400.css";
+@import "@fontsource/montserrat/latin-500.css";
+@import "@fontsource/montserrat/latin-600.css";
+@import "@fontsource/montserrat/latin-700.css";
 
 @source "../../../content/**/*";
 

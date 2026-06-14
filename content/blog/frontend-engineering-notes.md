@@ -2,13 +2,13 @@
 title: "前端工程化笔记：从可运行到可维护"
 description: "整理个人项目中常见的工程化检查点，包括依赖、规范、构建、部署和复盘。"
 date: 2026-06-08
-image: https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1469&auto=format&fit=crop
+image: /projects/easyiot-preview.png
 minRead: 6
 author:
   name: 你的名字
   description: 前端 / 全栈开发者
   avatar:
-    src: https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=1480&auto=format&fit=crop
+    src: /avatar.jpg
     alt: 你的名字
 ---
 

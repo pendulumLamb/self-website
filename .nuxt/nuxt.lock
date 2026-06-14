@@ -1,9 +1,0 @@
-{
-  "pid": 416,
-  "startedAt": 1781460171933,
-  "command": "dev",
-  "cwd": "D:/1PROGRAM/PROJ/portfolio",
-  "port": 8888,
-  "hostname": "::1",
-  "url": "http://[::1]:8888"
-}

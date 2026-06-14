@@ -14,16 +14,6 @@ export default defineNuxtConfig({
     enabled: true
   },
 
-  app: {
-    head: {
-      link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap' }
-      ]
-    }
-  },
-
   css: ['~/assets/css/main.css'],
 
   content: {
@@ -38,6 +28,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
 
   nitro: {
+    preset: 'vercel',
     prerender: {
       routes: [
         '/'

@@ -65,6 +65,7 @@ import { onMounted, ref, watch, onUnmounted, computed } from 'vue'
 import * as d3 from 'd3'
 import { feature } from 'topojson-client'
 import { useWindowSize, useWindowScroll, useElementBounding } from '@vueuse/core'
+import countries110m from 'world-atlas/countries-110m.json'
 
 const chart = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
@@ -157,7 +158,7 @@ onMounted(async () => {
   g = svg.append("g")
 
   try {
-    const world = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json') as any
+    const world = countries110m as any
     const countries = (feature(world, world.objects.countries) as any).features
 
     const graticule = d3.geoGraticule()
