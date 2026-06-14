@@ -1,0 +1,63 @@
+<script setup lang="ts">
+const colorMode = useColorMode()
+
+const color = computed(() => colorMode.value === 'dark' ? '#020618' : 'white')
+
+useHead({
+  meta: [
+    { charset: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    { key: 'theme-color', name: 'theme-color', content: color }
+  ],
+  link: [
+    { rel: 'icon', href: '/favicon.ico' }
+  ],
+  htmlAttrs: {
+    lang: 'zh-CN'
+  }
+})
+
+useSeoMeta({
+  titleTemplate: '%s - 个人简历与技术博客',
+  twitterCard: 'summary_large_image'
+})
+
+const [{ data: navigation }, { data: files }] = await Promise.all([
+  useAsyncData('navigation', () => {
+    return Promise.all([
+      queryCollectionNavigation('blog')
+    ])
+  }, {
+    transform: data => data.flat()
+  }),
+  useLazyAsyncData('search', () => {
+    return Promise.all([
+      queryCollectionSearchSections('blog')
+    ])
+  }, {
+    server: false,
+    transform: data => data.flat()
+  })
+])
+</script>
+
+<template>
+  <UApp>
+    <NuxtLayout>
+      <UMain class="relative">
+        <NuxtPage />
+      </UMain>
+    </NuxtLayout>
+
+    <ClientOnly>
+      <LazyUContentSearch
+        :files="files"
+        :navigation="navigation"
+        shortcut="meta_k"
+        :links="navLinks"
+        :fuse="{ resultLimit: 42 }"
+      />
+      <LoadingScreen />
+    </ClientOnly>
+  </UApp>
+</template>

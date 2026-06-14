@@ -1,0 +1,6 @@
+title: 在线简历页面
+description: 将个人介绍、技能栈、工作方式和联系方式整理成独立页面，便于招聘、合作和长期维护。
+image: https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1470&auto=format&fit=crop
+url: "/about"
+tags: ["Resume", "Profile", "Nuxt UI"]
+date: "2026-06-03"

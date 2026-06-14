@@ -1,0 +1,66 @@
+$ nuxt dev "--host" "127.0.0.1"
+
+[43m[30m WARN [39m[49m Could not fetch from [36mhttps://fonts.google.com/metadata/fonts[39m. Will retry in [36m1000ms[39m. [36m3[39m retries left.
+
+
+[43m[30m WARN [39m[49m Could not fetch from [36mhttps://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true[39m. Will retry in [36m1000ms[39m. [36m3[39m retries left.
+
+
+[43m[30m WARN [39m[49m Could not fetch from [36mhttps://fonts.google.com/metadata/fonts[39m. Will retry in [36m1000ms[39m. [36m2[39m retries left.
+
+
+[43m[30m WARN [39m[49m Could not fetch from [36mhttps://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true[39m. Will retry in [36m1000ms[39m. [36m2[39m retries left.
+
+
+[43m[30m WARN [39m[49m Could not fetch from [36mhttps://fonts.google.com/metadata/fonts[39m. Will retry in [36m1000ms[39m. [36m1[39m retries left.
+
+
+[43m[30m WARN [39m[49m Could not fetch from [36mhttps://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true[39m. Will retry in [36m1000ms[39m. [36m1[39m retries left.
+
+
+[41m[30m ERROR [39m[49m Could not initialize provider [36mgoogle[39m. [36munifont[39m will not be able to process fonts provided by this provider. [GET] "https://fonts.google.com/metadata/fonts": <no response> fetch failed
+
+    [90mat [39mprocessTicksAndRejections ([36mnode:internal/process/task_queues:104:5[39m)
+    [90mat [39mrunNextTicks ([36mnode:internal/process/task_queues:69:3[39m)
+    [90mat [39mprocess.processImmediate ([36mnode:internal/timers:472:9[39m)
+    [90mat [39masync $fetch2 ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/ofetch@1.5.1/node_modules/ofetch/dist/shared/ofetch.CWycOUEr.mjs:332:15[39m)
+    [90mat [39masync Object.getItem ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:813:17[39m)
+    [90mat [39masync /D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:488:22
+    [90mat [39masync /D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:863:32
+    [90mat [39masync Promise.all ([36mindex 1[39m)
+    [90mat [39masync createUnifont ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:860:2[39m)
+    [90mat [39masync createResolver ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/fontless@0.2.1_db0@0.3.4_io_a7ae46e76ad4fe12b975018b981ccf5f/node_modules/fontless/dist/index.mjs:295:18[39m)
+
+  [cause]: fetch failed
+
+    
+
+    [cause]: Connect Timeout Error (attempted address: fonts.google.com:443, timeout: 10000ms)
+
+        [90mat [39monConnectTimeout ([36mnode:internal/deps/undici/undici:1936:23[39m)
+        [90mat [39mImmediate._onImmediate ([36mnode:internal/deps/undici/undici:1902:35[39m)
+        [90mat [39mprocess.processImmediate ([36mnode:internal/timers:504:21[39m)
+
+
+[41m[30m ERROR [39m[49m Could not initialize provider [36mgoogleicons[39m. [36munifont[39m will not be able to process fonts provided by this provider. [GET] "https://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true": <no response> fetch failed
+
+    [90mat [39mprocess.processTicksAndRejections ([36mnode:internal/process/task_queues:104:5[39m)
+    [90mat [39masync $fetch2 ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/ofetch@1.5.1/node_modules/ofetch/dist/shared/ofetch.CWycOUEr.mjs:332:15[39m)
+    [90mat [39masync /D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:572:16
+    [90mat [39masync Object.getItem ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:813:17[39m)
+    [90mat [39masync /D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:571:22
+    [90mat [39masync /D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:863:32
+    [90mat [39masync Promise.all ([36mindex 2[39m)
+    [90mat [39masync createUnifont ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/unifont@0.7.4/node_modules/unifont/dist/index.mjs:860:2[39m)
+    [90mat [39masync createResolver ([36m/D:/1PROGRAM/PROJ/selfblog/node_modules/.pnpm/fontless@0.2.1_db0@0.3.4_io_a7ae46e76ad4fe12b975018b981ccf5f/node_modules/fontless/dist/index.mjs:295:18[39m)
+
+  [cause]: fetch failed
+
+    
+
+    [cause]: Connect Timeout Error (attempted address: fonts.google.com:443, timeout: 10000ms)
+
+        [90mat [39monConnectTimeout ([36mnode:internal/deps/undici/undici:1936:23[39m)
+        [90mat [39mImmediate._onImmediate ([36mnode:internal/deps/undici/undici:1902:35[39m)
+        [90mat [39mprocess.processImmediate ([36mnode:internal/timers:504:21[39m)
+

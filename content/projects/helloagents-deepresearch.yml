@@ -1,0 +1,31 @@
+---
+title: HelloAgents DeepResearch
+description: 基于 HelloAgents 框架的自动化深度研究智能体，多 Agent 协作完成研究课题的规划、搜索、总结与报告生成。
+image: /projects/agent.png
+date: 2025-06-01
+tags:
+  - Vue 3
+  - TypeScript
+  - FastAPI
+  - Python
+  - LangGraph
+  - OpenAI
+---
+
+## 概述
+
+复现并改进 Datawhale Hello-Agents 教程第十四章的深度研究智能体，采用前后端分离架构，通过多个专业 Agent 协作，自动将研究课题拆解为子任务，调用搜索引擎收集资料，最终生成结构化研究报告。
+
+## 核心能力
+
+- **TODO 规划器**：将研究课题自动拆解为 3-5 个子任务
+- **搜索工具链**：支持 Tavily、DuckDuckGo 等多搜索引擎
+- **流式进度推送**：基于 SSE 实时展示任务状态与进度
+- **结构化报告**：整合所有摘要，输出 Markdown 格式研究报告
+
+## 技术架构
+
+- **前端**：Vue 3 + TypeScript + Vite，全屏模态对话框，Markdown 渲染
+- **后端**：FastAPI + Python，SSE 流式接口
+- **智能体**：HelloAgents 框架，TODO-Driven 范式
+- **LLM**：支持 OpenAI、DeepSeek、Qwen 等多种模型

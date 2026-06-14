@@ -1,0 +1,28 @@
+title: 个人简历
+description: 这里是你的个人介绍、技能栈、工作经历和项目方向。把占位内容替换为真实信息后即可作为在线简历使用。
+content: |
+  你好，我是 **你的名字**，一名前端 / 全栈开发者。我的工作重点是把复杂需求拆解成清晰的产品体验和稳定的工程实现，关注代码质量、交付效率和长期可维护性。
+
+  ## 技术栈
+
+  - 前端：Vue、Nuxt、TypeScript、Tailwind CSS / Nuxt UI
+  - 工程化：Vite、ESLint、pnpm、自动化脚本、CI/CD
+  - 服务端：Node.js、REST API、数据库基础、部署与监控
+  - 方法：需求拆解、组件设计、性能优化、项目复盘
+
+  ## 工作方式
+
+  我习惯先明确问题边界和验收标准，再推进设计、开发、测试和上线。面对不确定需求时，会优先交付可验证的最小版本，并在真实反馈中持续迭代。
+
+  ## 近期关注
+
+  最近主要关注 Nuxt 生态、内容型站点、AI 辅助开发、前端工程质量和个人知识管理。我会把相关实践记录在 [博客](/blog) 中。
+
+  ## 联系方式
+
+  欢迎通过 [邮件](mailto:hello@example.com) 或 GitHub 联系我。上线前请把 `hello@example.com`、`your-name` 和头像链接替换为你的真实信息。
+images:
+  - src: https://images.unsplash.com/photo-1744877478622-a78c7a3336f6?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+    alt: 工作区照片
+  - src: https://images.unsplash.com/photo-1744429523595-2c06b8611242?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+    alt: 生活与学习照片

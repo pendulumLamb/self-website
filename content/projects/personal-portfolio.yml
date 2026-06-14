@@ -1,0 +1,6 @@
+title: 个人简历与技术博客
+description: 基于 Nuxt UI Portfolio 模板搭建的个人站点，用于展示简历、项目作品和技术文章。重点关注内容结构、SEO、响应式体验和后续可维护性。
+image: https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1472&auto=format&fit=crop
+url: "/"
+tags: ["Nuxt", "Nuxt UI", "Content", "Portfolio"]
+date: "2026-06-01"
