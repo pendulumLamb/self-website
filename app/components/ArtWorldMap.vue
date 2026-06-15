@@ -24,7 +24,7 @@
          v-for="(item, index) in designStyles" 
          :key="index" 
          class="h-[300vh] relative"
-         :data-index="index"
+         :data-globe-index="index"
        >
          <!-- Sticky Text Container -->
          <div class="sticky top-0 h-screen w-full flex items-center justify-center md:justify-end p-6 md:pr-8 md:pl-24 md:translate-x-10 pointer-events-none">
@@ -137,12 +137,15 @@ let projection: d3.GeoOrthographicProjection
 let path: d3.GeoPath
 let svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
 let globeLayer: d3.Selection<SVGGElement, unknown, null, undefined>
+let globeSpinLayer: d3.Selection<SVGGElement, unknown, null, undefined>
 let globeShell: d3.Selection<SVGCircleElement, unknown, null, undefined>
 let g: d3.Selection<SVGGElement, unknown, null, undefined>
 let markerGroup: d3.Selection<SVGGElement, unknown, null, undefined>
 
 let baseScale = 1
 let maxZoomScale = 1
+let currentShellExitProgress = 0
+let currentShellExitRotation = 0
 
 onMounted(async () => {
   if (!chart.value) return
@@ -172,8 +175,12 @@ onMounted(async () => {
     .attr("class", "globe-shell-layer")
     .style("will-change", "transform, opacity")
 
+  globeSpinLayer = globeLayer.append("g")
+    .attr("class", "globe-spin-layer")
+    .style("will-change", "transform")
+
   // Globe Outline/Water
-  globeShell = globeLayer.append("circle")
+  globeShell = globeSpinLayer.append("circle")
     .attr("cx", w / 2)
     .attr("cy", h / 2 + 50)
     .attr("r", projection.scale())
@@ -181,7 +188,7 @@ onMounted(async () => {
     .style("stroke", "rgba(0,0,0,0.05)")
     .style("stroke-width", "1px")
 
-  g = globeLayer.append("g")
+  g = globeSpinLayer.append("g")
 
   try {
     const world = countries110m as any
@@ -233,7 +240,7 @@ onMounted(async () => {
       .style("transition", "fill 0.5s ease")
 
     // Layer 5: Marker Group
-    markerGroup = globeLayer.append("g")
+    markerGroup = globeSpinLayer.append("g")
       .attr("class", "marker-group")
       .style("pointer-events", "none")
       .style("opacity", "0")
@@ -305,7 +312,7 @@ const currentIndex = ref(-1)
 watch(y, () => {
   if (!container.value || !projection) return
 
-  const sections = document.querySelectorAll('[data-index]')
+  const sections = container.value.querySelectorAll('[data-globe-index]')
   let activeIndex = -1
   let activeProgress = 0
   
@@ -356,6 +363,7 @@ function updateMapState(index: number, progress: number) {
   let targetRotation = [0, 0]
   let markerOpacity = 0
   let shellExitProgress = 0
+  let shellExitRotation = 0
   
   if (index === -1) {
     targetScale = baseScale
@@ -367,7 +375,9 @@ function updateMapState(index: number, progress: number) {
   } else if (index === -2) {
     targetScale = baseScale
     const lastCity = designStyles.value[designStyles.value.length - 1]
-    targetRotation = [-lastCity.coords[0], -lastCity.coords[1]]
+    const exitSpin = progress * 420
+    const exitTilt = Math.sin(progress * Math.PI) * 8
+    targetRotation = [-lastCity.coords[0] - exitSpin, -lastCity.coords[1] + exitTilt, -progress * 18]
     
     const w = chart.value?.clientWidth || width.value
     const h = chart.value?.clientHeight || height.value
@@ -376,6 +386,7 @@ function updateMapState(index: number, progress: number) {
     projection.translate([w / 2, defaultY])
     markerOpacity = 0
     shellExitProgress = d3.easeCubicInOut(progress)
+    shellExitRotation = d3.easeCubicInOut(progress) * -120
   } else {
     const target = designStyles.value[index]
     const cityCoords = [-target.coords[0], -target.coords[1]]
@@ -421,21 +432,28 @@ function updateMapState(index: number, progress: number) {
   g.selectAll(".country").attr("d", path)
   
   globeShell.attr("r", targetScale)
-  updateGlobeLayerExit(shellExitProgress)
+  updateGlobeLayerExit(shellExitProgress, shellExitRotation)
   
   updateMarker(index, markerOpacity)
 }
 
-function updateGlobeLayerExit(progress: number) {
-  if (!globeLayer) return
+function updateGlobeLayerExit(progress: number, rotation = 0) {
+  if (!globeLayer || !globeSpinLayer) return
 
+  currentShellExitProgress = progress
+  currentShellExitRotation = rotation
+  const w = chart.value?.clientWidth || width.value || 1440
   const h = chart.value?.clientHeight || height.value || 900
+  const cx = w / 2
+  const cy = h / 2 + 50
   const lift = -h * 1.18 * progress
   const opacity = Math.max(0, 1 - progress * 1.1)
 
   globeLayer
     .attr("transform", `translate(0, ${lift})`)
     .style("opacity", opacity.toString())
+
+  globeSpinLayer.attr("transform", `rotate(${rotation}, ${cx}, ${cy})`)
 }
 
 function updateMarker(index: number, opacity: number) {
@@ -493,7 +511,7 @@ watch([width, height], () => {
     
     svg.attr("width", w).attr("height", h)
     globeShell.attr("cx", w/2).attr("cy", h/2 + 50).attr("r", projection.scale())
-    updateGlobeLayerExit(currentIndex.value === -2 ? 1 : 0)
+    updateGlobeLayerExit(currentShellExitProgress, currentShellExitRotation)
     
     projection.clipAngle(180)
     g.selectAll(".back-line").attr("d", path)

@@ -66,6 +66,10 @@ button:hover,
   cursor: url("/cursor-grab.svg") 18 18, grabbing !important;
 }
 
+.is-scroll-dragging {
+  scroll-behavior: auto !important;
+}
+
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   width: 0;

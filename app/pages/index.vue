@@ -78,13 +78,21 @@ const pageScrollProgress = computed(() => {
 })
 
 const scrollProgressStyle = computed(() => {
+  const progress = dragScrollProgress.value ?? pageScrollProgress.value
+
   return {
-    height: `${pageScrollProgress.value * 100}%`
+    height: `${progress * 100}%`
   }
 })
 
 const scrollSlider = ref<HTMLElement | null>(null)
 const isScrollDragging = ref(false)
+const dragScrollProgress = ref<number | null>(null)
+
+let scrollDragFrame = 0
+let pendingScrollProgress = 0
+let previousScrollBehavior = ''
+let previousUserSelect = ''
 
 const scrollProgressPercent = computed(() => Math.round(pageScrollProgress.value * 100))
 
@@ -93,12 +101,25 @@ function getMaxPageScroll() {
   return Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
 }
 
-function scrollToProgress(progress: number) {
+function applyScrollProgress(progress: number) {
   if (!import.meta.client) return
   const clamped = Math.min(Math.max(progress, 0), 1)
-  window.scrollTo({
-    top: clamped * getMaxPageScroll(),
-    behavior: 'auto'
+  const top = clamped * getMaxPageScroll()
+
+  window.scrollTo(0, top)
+  document.documentElement.scrollTop = top
+  document.body.scrollTop = top
+}
+
+function scrollToProgress(progress: number) {
+  pendingScrollProgress = Math.min(Math.max(progress, 0), 1)
+  dragScrollProgress.value = pendingScrollProgress
+
+  if (scrollDragFrame) return
+
+  scrollDragFrame = window.requestAnimationFrame(() => {
+    scrollDragFrame = 0
+    applyScrollProgress(pendingScrollProgress)
   })
 }
 
@@ -114,6 +135,10 @@ function onScrollSliderPointerDown(event: PointerEvent) {
   event.preventDefault()
   isScrollDragging.value = true
   scrollSlider.value?.setPointerCapture(event.pointerId)
+  previousScrollBehavior = document.documentElement.style.scrollBehavior
+  previousUserSelect = document.body.style.userSelect
+  document.documentElement.style.scrollBehavior = 'auto'
+  document.body.style.userSelect = 'none'
   document.documentElement.classList.add('is-scroll-dragging')
   updateScrollFromPointer(event)
 }
@@ -129,7 +154,15 @@ function stopScrollSliderDrag(event?: PointerEvent) {
   if (event && scrollSlider.value?.hasPointerCapture(event.pointerId)) {
     scrollSlider.value.releasePointerCapture(event.pointerId)
   }
+  if (scrollDragFrame) {
+    window.cancelAnimationFrame(scrollDragFrame)
+    scrollDragFrame = 0
+    applyScrollProgress(pendingScrollProgress)
+  }
   isScrollDragging.value = false
+  dragScrollProgress.value = null
+  document.documentElement.style.scrollBehavior = previousScrollBehavior
+  document.body.style.userSelect = previousUserSelect
   document.documentElement.classList.remove('is-scroll-dragging')
 }
 

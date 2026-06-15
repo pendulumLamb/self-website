@@ -14,6 +14,12 @@ const isHome = computed(() => {
 let lastY = 0
 let committedY = 0
 
+function handleLocaleToggle() {
+  toggleLocale()
+  hidden.value = false
+  committedY = import.meta.client ? window.scrollY : 0
+}
+
 function onScroll() {
   const y = window.scrollY
   if (y < 10) {
@@ -88,14 +94,15 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
         <button
           type="button"
-          class="language-toggle cursor-clickable ml-1 inline-flex items-center rounded-full border border-white/20 bg-white/8 p-0.5 text-[0.68rem] font-bold tracking-[0.12em] text-white/70 shadow-lg shadow-black/10 backdrop-blur transition hover:border-white/35 hover:text-white"
+          class="language-toggle cursor-clickable ml-1 inline-flex items-center gap-1 text-xs font-bold tracking-[0.12em] text-white/55 transition hover:text-white sm:text-sm"
           :aria-label="locale === 'en' ? 'Switch to Chinese' : '切换到英文'"
-          @click="toggleLocale"
+          @click="handleLocaleToggle"
         >
           <span
             class="language-toggle-item"
             :class="{ 'language-toggle-item--active': locale === 'zh' }"
           >中</span>
+          <span class="language-toggle-separator">/</span>
           <span
             class="language-toggle-item"
             :class="{ 'language-toggle-item--active': locale === 'en' }"
@@ -125,19 +132,14 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 }
 
 .language-toggle-item {
-  display: inline-flex;
-  min-width: 2rem;
-  height: 1.6rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  transition:
-    color 180ms ease,
-    background-color 180ms ease;
+  transition: color 180ms ease;
 }
 
 .language-toggle-item--active {
-  background: rgb(255 255 255 / 0.92);
-  color: #111827;
+  color: #10b981;
+}
+
+.language-toggle-separator {
+  color: rgb(255 255 255 / 0.32);
 }
 </style>
