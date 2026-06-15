@@ -496,6 +496,18 @@ const techGroups = computed(() => [{
   }, {
     label: 'LangGragh',
     logo: '/tech-logos/langgraph.png'
+  }, {
+    label: 'Codex',
+    logo: '/tech-logos/codex-color.png'
+  }, {
+    label: 'Claude Code',
+    logo: '/tech-logos/claudecode-color.png'
+  }, {
+    label: 'Open Code',
+    logo: '/tech-logos/opencode.png'
+  }, {
+    label: 'OpenClaw',
+    logo: '/tech-logos/openclaw-color.png'
   }]
 }, {
   title: locale.value === 'en' ? 'Design' : '设计',
