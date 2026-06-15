@@ -409,6 +409,10 @@ const techGroups = computed(() => [{
     label: 'Gin',
     logo: '/tech-logos/gin.svg'
   }, {
+    label: 'Node.Js',
+    icon: 'simple-icons:nodedotjs',
+    color: '#5FA04E'
+  }, {
     label: locale.value === 'en' ? 'Nitro by Nuxt.js' : 'Nitro（Nuxt.Js提供）',
     logo: '/tech-logos/nitro.svg'
   }]
@@ -438,6 +442,18 @@ const techGroups = computed(() => [{
     label: 'Vercel',
     icon: 'simple-icons:vercel',
     color: '#111111'
+  }, {
+    label: 'Cloudflare',
+    icon: 'simple-icons:cloudflare',
+    color: '#F38020'
+  }, {
+    label: locale.value === 'en' ? 'WeChat Mini Program' : '微信小程序',
+    icon: 'simple-icons:wechat',
+    color: '#07C160'
+  }, {
+    label: 'Linux',
+    icon: 'simple-icons:linux',
+    color: '#FCC624'
   }, {
     label: 'Docker',
     icon: 'simple-icons:docker',
