@@ -376,9 +376,6 @@ onBeforeUnmount(() => {
         <a href="https://space.bilibili.com/3546668196694295/upload/video" target="_blank" rel="noreferrer" class="footer-social-button" aria-label="Bilibili">
           <UIcon name="i-simple-icons-bilibili" class="size-5" />
         </a>
-        <a href="https://github.com/pendulumLamb" target="_blank" rel="noreferrer" class="footer-social-button" aria-label="GitHub">
-          <UIcon name="i-simple-icons-github" class="size-5" />
-        </a>
       </div>
     </div>
 
