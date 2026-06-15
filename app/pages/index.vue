@@ -380,6 +380,14 @@ const techGroups = computed(() => [{
     label: 'Nuxt.Js',
     icon: 'simple-icons:nuxt',
     color: '#00DC82'
+  }, {
+    label: 'React',
+    icon: 'simple-icons:react',
+    color: '#61DAFB'
+  }, {
+    label: 'Next.Js',
+    icon: 'simple-icons:nextdotjs',
+    color: '#000000'
   }]
 }, {
   title: locale.value === 'en' ? 'Cross-platform' : '跨端框架',
