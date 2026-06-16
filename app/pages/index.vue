@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import {
+  getAboutIntroParagraphs,
+  getArtCollections,
+  getProjects,
+  getTechGroups,
+  getWorkCountLabel,
+  getWorkExperiences
+} from '~/data/portfolio'
+import ProjectSection from '~/components/home/ProjectSection.vue'
+
 const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })
@@ -205,7 +215,7 @@ const aboutTextClass = computed(() => isEnglish.value
 
 const previewEntryLabel = computed(() => locale.value === 'en' ? 'Preview' : '预览入口')
 const unavailablePreviewLabel = computed(() => locale.value === 'en' ? 'Preview unavailable' : '暂不可预览')
-const workCountLabel = (count: number) => locale.value === 'en' ? `${count} works` : `${count} 张作品`
+const workCountLabel = (count: number) => getWorkCountLabel(isEnglish.value, count)
 
 const techSection = ref<HTMLElement | null>(null)
 const techSectionTop = ref(0)
@@ -226,10 +236,11 @@ function observeArtCards() {
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          const idx = Number(entry.target.dataset.index)
+          const target = entry.target as HTMLElement
+          const idx = Number(target.dataset.index)
           if (!isNaN(idx)) {
             artCardRevealed.value[idx] = true
-            observer.unobserve(entry.target)
+            observer.unobserve(target)
           }
         }
       }
@@ -300,7 +311,7 @@ function getCharRevealProgress(index: number): number {
   return Math.min(Math.max((aboutIntroScrollProgress.value - itemStart) / revealRange, 0), 1)
 }
 
-function getCombinedCharStyle(index: number): Record<string, string> {
+function getCombinedCharStyle(index: number): Record<string, string | number> {
   const t = getCharRevealProgress(index)
   // easeOutBack: characters snap into place
   const c1 = 1.70158; const c3 = c1 + 1
@@ -326,405 +337,19 @@ function getCombinedCharStyle(index: number): Record<string, string> {
 const workTrack = ref<HTMLElement | null>(null)
 const workTrackTop = ref(0)
 const hasWorkTrackMetrics = ref(false)
-const hoveredProjectIndex = ref<number | null>(null)
-const projectPreviewPosition = ref({ x: 0, y: 0 })
 const activeWorkCollectionSlug = ref<string | null>(null)
 const activeGalleryImage = ref<string | null>(null)
 const showMobileNotice = ref(false)
 const hasDismissedMobileNotice = ref(false)
 
-const aboutIntroParagraphs = computed(() => locale.value === 'en'
-  ? [
-      'I graduated from Anhui Polytechnic University in 2023, majoring in Internet of Things Engineering while also taking courses in visual communication design. I was a member of the IoT Association in the School of Computer Science.',
-      'A startup attempt during college did not work out. After graduation I entered the tech industry and worked across automotive testing, IoT development, and full-stack software development, building both software and hardware capabilities while also providing creative resources for e-commerce teams.',
-      'I stay committed to product design, using minimal, restrained, and warm design to make technology easier to perceive.'
-    ]
-  : [
-      '2023年毕业于安徽工程大学，学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。',
-      '大学期间创业未果，毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，软硬兼修。并为电商公司提供资源设计。',
-      '执着于产品设计，用极简、克制、温暖的设计让科技得以被感知。'
-    ])
+const aboutIntroParagraphs = computed(() => getAboutIntroParagraphs(isEnglish.value))
 
 watch(aboutIntroParagraphs, () => initCharData(), { immediate: true })
 
-const techGroups = computed(() => [{
-  title: locale.value === 'en' ? 'Languages' : '编程语言',
-  items: [{
-    label: 'C',
-    icon: 'simple-icons:c',
-    color: '#A8B9CC'
-  }, {
-    label: 'Python',
-    icon: 'simple-icons:python',
-    color: '#3776AB'
-  }, {
-    label: 'Go',
-    icon: 'simple-icons:go',
-    color: '#00ADD8'
-  }, {
-    label: 'Js',
-    icon: 'simple-icons:javascript',
-    color: '#F7DF1E'
-  }, {
-    label: 'Ts',
-    icon: 'simple-icons:typescript',
-    color: '#3178C6'
-  }]
-}, {
-  title: locale.value === 'en' ? 'Frontend' : '前端',
-  items: [{
-    label: 'Vue',
-    icon: 'simple-icons:vuedotjs',
-    color: '#4FC08D'
-  }, {
-    label: 'Nuxt.Js',
-    icon: 'simple-icons:nuxt',
-    color: '#00DC82'
-  }, {
-    label: 'React',
-    icon: 'simple-icons:react',
-    color: '#61DAFB'
-  }, {
-    label: 'Next.Js',
-    icon: 'simple-icons:nextdotjs',
-    color: '#000000'
-  }]
-}, {
-  title: locale.value === 'en' ? 'Cross-platform' : '跨端框架',
-  items: [{
-    label: 'uni-app',
-    logo: '/tech-logos/uni-app.png'
-  }, {
-    label: 'Flutter',
-    icon: 'simple-icons:flutter',
-    color: '#02569B'
-  }]
-}, {
-  title: locale.value === 'en' ? 'Backend' : '后端',
-  items: [{
-    label: 'Fastapi',
-    icon: 'simple-icons:fastapi',
-    color: '#009688'
-  }, {
-    label: 'Gin',
-    logo: '/tech-logos/gin.svg'
-  }, {
-    label: 'Node.Js',
-    icon: 'simple-icons:nodedotjs',
-    color: '#5FA04E'
-  }, {
-    label: locale.value === 'en' ? 'Nitro by Nuxt.js' : 'Nitro（Nuxt.Js提供）',
-    logo: '/tech-logos/nitro.svg'
-  }]
-}, {
-  title: locale.value === 'en' ? 'Infrastructure' : '基础设施',
-  items: [{
-    label: 'Git',
-    icon: 'simple-icons:git',
-    color: '#F05032'
-  }, {
-    label: 'MySQL',
-    icon: 'simple-icons:mysql',
-    color: '#4479A1'
-  }, {
-    label: 'PostgreSQL',
-    icon: 'simple-icons:postgresql',
-    color: '#4169E1'
-  }, {
-    label: 'Redis',
-    icon: 'simple-icons:redis',
-    color: '#FF4438'
-  }, {
-    label: 'Supabase',
-    icon: 'simple-icons:supabase',
-    color: '#3FCF8E'
-  }, {
-    label: 'Vercel',
-    icon: 'simple-icons:vercel',
-    color: '#111111'
-  }, {
-    label: 'Cloudflare',
-    icon: 'simple-icons:cloudflare',
-    color: '#F38020'
-  }, {
-    label: locale.value === 'en' ? 'WeChat Mini Program' : '微信小程序',
-    icon: 'simple-icons:wechat',
-    color: '#07C160'
-  }, {
-    label: 'Linux',
-    icon: 'simple-icons:linux',
-    color: '#FCC624'
-  }, {
-    label: 'Docker',
-    icon: 'simple-icons:docker',
-    color: '#2496ED'
-  }]
-}, {
-  title: locale.value === 'en' ? 'IoT' : '物联网',
-  items: [{
-    label: 'Arduino',
-    icon: 'simple-icons:arduino',
-    color: '#00979D'
-  }, {
-    label: 'esp32',
-    icon: 'simple-icons:espressif',
-    color: '#E7352C'
-  }, {
-    label: locale.value === 'en' ? 'Raspberry Pi' : '树莓派',
-    icon: 'simple-icons:raspberrypi',
-    color: '#A22846'
-  }, {
-    label: 'STM32',
-    icon: 'simple-icons:stmicroelectronics',
-    color: '#03234B'
-  }, {
-    label: 'MQTT',
-    icon: 'simple-icons:mqtt',
-    color: '#660066'
-  }, {
-    label: 'WIFI/BT/ZIGBEE',
-    icon: 'lucide:radio-tower',
-    color: '#111111'
-  }, {
-    label: 'NB-IoT',
-    logo: '/tech-logos/nbiot.png'
-  }, {
-    label: locale.value === 'en' ? 'Alibaba Cloud IoT' : '阿里云IoT',
-    icon: 'simple-icons:alibabacloud',
-    color: '#FF6A00'
-  }]
-}, {
-  title: 'AI Agent',
-  items: [{
-    label: 'coze',
-    logo: '/tech-logos/coze.png'
-  }, {
-    label: 'dify',
-    logo: '/tech-logos/dify.svg'
-  }, {
-    label: 'LangGragh',
-    logo: '/tech-logos/langgraph.png'
-  }, {
-    label: 'Codex',
-    logo: '/tech-logos/codex-color.png'
-  }, {
-    label: 'Claude Code',
-    logo: '/tech-logos/claudecode-color.png'
-  }, {
-    label: 'Open Code',
-    logo: '/tech-logos/opencode.png'
-  }, {
-    label: 'OpenClaw',
-    logo: '/tech-logos/openclaw-color.png'
-  }]
-}, {
-  title: locale.value === 'en' ? 'Design' : '设计',
-  items: [{
-    label: 'MasterGo',
-    logo: '/tech-logos/mastergo.ico'
-  }, {
-    label: 'Lovart',
-    logo: '/tech-logos/lovart.png'
-  }, {
-    label: 'Tapnow',
-    logo: '/tech-logos/tapnow.png'
-  }, {
-    label: locale.value === 'en' ? 'NeoDesign platform' : 'NeoDesign（自研平台）',
-    logo: '/tech-logos/neodesign.png'
-  }]
-}])
-
-const workExperiences = computed(() => locale.value === 'en' ? [{
-  period: '2022.3-Present',
-  company: 'Wuhu Xiangyi Software Co., Ltd.',
-  role: 'Full-stack Engineer',
-  tasks: ['Joined a roommate-led startup and took part in daily product development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
-}, {
-  period: '2023.2-2024.11',
-  company: 'Bitech Automotive Electronics (Wuhu) Co., Ltd.',
-  companyNote: 'Formerly Bosch Automotive Electronics (Wuhu) Co., Ltd. After Bosch divested, Bitech took over operations. The company mainly serves automakers including Chery, Changan, GAC, and Tesla, producing instrument clusters, screens, domain controllers, and related components.',
-  role: 'Test Engineer',
-  tasks: ['Worked with CAN networks and performed bench and vehicle tests for instrument clusters.', 'Designed test cases and test scripts.', 'Stationed at Chery and Changan vehicle ports for pre-export inspection and flashing.', 'Built a practical understanding of automotive consumer electronics.']
-}, {
-  period: '2025.1-2026.6',
-  company: 'Shanghai Yongxing Trading Co., Ltd.',
-  role: 'Visual Designer, Operations, Full-stack AI Systems Developer',
-  tasks: ['Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
-}] : [{
-  period: '2022.3-至今',
-  company: '芜湖享易软件有限公司',
-  role: '全栈工程师',
-  tasks: ['室友的创业公司，我被拉进去参与日常开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
-}, {
-  period: '2023.2-2024.11',
-  company: '伯泰克（Bitech）汽车电子（芜湖）有限公司',
-  companyNote: '前博世（Bosch）汽车电子（芜湖）有限公司，博世撤资后由伯泰克接手运营，公司主要对接奇瑞、长安、广汽、特斯拉等车企，生产仪表、屏幕、域控制器等部件',
-  role: '测试工程师',
-  tasks: ['了解 CAN 网络，进行汽车仪表的台架测试、实车测试。', '设计测试用例与测试脚本。', '奇瑞/长安汽车港口驻场，负责出口前检测与刷机。', '对汽车消费电子有一定理解']
-}, {
-  period: '2025.1-2026.6',
-  company: '上海邕兴贸易有限公司',
-  role: '美工、运营、AI系统全栈开发',
-  tasks: ['使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
-}])
-
-const projects = computed(() => locale.value === 'en' ? [{
-  title: 'Infinite-Canvas',
-  subtitle: 'Open-source infinite canvas project',
-  description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
-  note: 'The repository has 1.3k stars and explores canvas editing, asset orchestration, and workflow-style creative tooling.',
-  tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow'],
-  image: '/projects/infinite-canvas-open-source.png',
-  previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
-}, {
-  title: 'EasyIoT',
-  subtitle: 'Intelligent IoT cloud platform',
-  logo: '/projects/easyiot-logo.png',
-  description: 'A lightweight IoT application cloud platform that supports no-code and MCU low-code development, as well as self-built IoT systems.',
-  note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and supporting facilities to help users quickly build and learn IoT applications. It covers Web, H5-mobile, and App clients, with rich teaching resources and project cases.',
-  tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
-  image: '/projects/easyiot-preview.png',
-  previewUrl: 'https://www.easyiothings.com/'
-}, {
-  title: 'Warmzen',
-  subtitle: 'Cross-border independent store',
-  logo: '/projects/warmzen-logo.png',
-  description: 'A cross-border commerce site built on the open-source Payload CMS commerce stack, including storefront and admin system.',
-  note: 'The storefront focuses on brand presentation, product collections, and an immersive hero experience, while the admin side supports content management, payment flows, and multilingual display.',
-  tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
-  image: '/projects/warmzen-preview.png',
-  previewUrl: 'https://warmzen.vercel.app/'
-}, {
-  title: 'Uni Agents',
-  subtitle: 'Automated deep-research agent',
-  description: 'A multi-agent research system based on Uni Agents that breaks down topics, searches sources, and generates structured reports.',
-  note: 'Enter a research topic and the agents plan subtasks, query multiple search engines, show progress in real time, and output a structured Markdown report.',
-  tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
-  image: '/projects/agent.png',
-  previewDisabledTip: 'Runs locally and is not online yet.'
-}, {
-  title: 'NeoDesign',
-  subtitle: 'AI creation platform',
-  logo: '/tech-logos/neodesign.png',
-  description: 'A workspace for producing AI images, videos, and creative assets, built to provide a seamless one-stop AI creation experience.',
-  note: 'Built for my own e-commerce workflow after finding tools like Lovart and Tapnow too expensive for daily use.',
-  tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
-  image: '/projects/infinite-canvas.jpg',
-  previewDisabledTip: 'In development. Not open-sourced or released yet.'
-}] : [{
-  title: 'Infinite-Canvas',
-  subtitle: '开源无限画布项目',
-  description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
-  note: '项目 GitHub 仓库已获得 1.3k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。',
-  tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.3k stars'],
-  image: '/projects/infinite-canvas-open-source.png',
-  previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
-}, {
-  title: '易联智能',
-  subtitle: '智能化物联网云平台',
-  logo: '/projects/easyiot-logo.png',
-  description: '轻量级物联网应用云平台，支持零代码与 MCU 低代码开发。支持自建物联网系统',
-  note: '由安徽工程大学物联网开放创新实验室开发，配套开发板等设施，帮助用户快速搭建和学习物联网应用。覆盖Web、H5-mobile、App等多端，提供丰富的教学资源和项目案例。',
-  tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
-  image: '/projects/easyiot-preview.png',
-  previewUrl: 'https://www.easyiothings.com/'
-}, {
-  title: 'Warmzen',
-  subtitle: '跨境独立站',
-  logo: '/projects/warmzen-logo.png',
-  description: '基于 Payload CMS 开源商城系统开发的跨境独立站，包含前台商城与后台管理系统。',
-  note: '前台聚焦品牌展示、商品集合和沉浸式首屏体验，后台支持商品内容管理、支付链路和多语言展示等能力。',
-  tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
-  image: '/projects/warmzen-preview.png',
-  previewUrl: 'https://warmzen.vercel.app/'
-}, {
-  title: 'Uni Agents',
-  subtitle: '自动化深度研究智能体',
-  description: '基于 Uni Agents 框架的多 Agent 协作深度研究系统，自动拆解课题、搜索资料并生成结构化报告。',
-  note: '输入一个研究课题，智能体自动规划子任务、调用多个搜索引擎收集资料，实时展示进度，最终输出一份结构化的 Markdown 研究报告。',
-  tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
-  image: '/projects/agent.png',
-  previewDisabledTip: '本地运行，暂不上线，请理解'
-}, {
-  title: 'NeoDesign',
-  subtitle: 'AI 创作平台',
-  logo: '/tech-logos/neodesign.png',
-  description: '面向 AI 图片、视频与创意资产生产的工作空间，为用户打造无缝丝滑一站式AI创作体验。',
-  note: '因不满Lovart、Tapnow的昂贵收费，开发一款更好用、更便宜的自己用，以完成日常电商工作。',
-  tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
-  image: '/projects/infinite-canvas.jpg',
-  previewDisabledTip: '开发中，暂不开源/发布，请理解。'
-}])
-
-function workImageList(folder: string, files: string[]) {
-  return files.map(file => `/works/collections/${folder}/${file}`)
-}
-
-const artCollections = computed(() => locale.value === 'en' ? [{
-  slug: 'drawing',
-  title: 'Personal Drawings',
-  cover: '/works/drawing/autumn.jpg',
-  summary: 'Hand-drawn characters, daily sketches, and drawing practice.',
-  images: workImageList('drawing', ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.png', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg'])
-}, {
-  slug: 'ai',
-  title: 'AI Art',
-  cover: '/works/collections/ai/06.png',
-  summary: 'Explorations of image style, scenes, and visual concepts made with AI tools.',
-  images: workImageList('ai', ['01.png', '02.png', '03.png', '04.png', '05.jpg', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png'])
-}, {
-  slug: 'photo',
-  title: 'Photography',
-  cover: '/works/collections/photo/05.jpg',
-  summary: 'Observations from nature, campus, and everyday scenes.',
-  images: workImageList('photo', ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg'])
-}, {
-  slug: 'commerce',
-  title: 'E-commerce Visuals',
-  cover: '/works/collections/commerce/11.png',
-  summary: 'Visual design for product detail pages and brand sales pages.',
-  images: workImageList('commerce', ['01.png', '02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png', '13.png', '14.jpg', '15.jpg', '16.png', '17.png', '18.png', '19.png', '20.png', '21.png', '22.png'])
-}, {
-  slug: 'ai-video',
-  title: 'AI Video',
-  cover: '/works/collections/ai-video-cover.png',
-  summary: 'Click through to my Bilibili profile.',
-  hint: 'Open Bilibili profile',
-  href: 'https://space.bilibili.com/3546668196694295/upload/video',
-  images: []
-}] : [{
-  slug: 'drawing',
-  title: '个人绘画',
-  cover: '/works/drawing/autumn.jpg',
-  summary: '手绘人物、日常小画和阶段性绘画练习。',
-  images: workImageList('drawing', ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.png', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg'])
-}, {
-  slug: 'ai',
-  title: 'AI 艺术',
-  cover: '/works/collections/ai/06.png',
-  summary: '使用 AI 工具完成的图像风格、场景和视觉概念探索。',
-  images: workImageList('ai', ['01.png', '02.png', '03.png', '04.png', '05.jpg', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png'])
-}, {
-  slug: 'photo',
-  title: '摄影作品',
-  cover: '/works/collections/photo/05.jpg',
-  summary: '自然、校园和生活场景中的观察记录。',
-  images: workImageList('photo', ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg'])
-}, {
-  slug: 'commerce',
-  title: '电商图',
-  cover: '/works/collections/commerce/11.png',
-  summary: '面向电商产品详情页和品牌销售页面的视觉设计。',
-  images: workImageList('commerce', ['01.png', '02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png', '13.png', '14.jpg', '15.jpg', '16.png', '17.png', '18.png', '19.png', '20.png', '21.png', '22.png'])
-}, {
-  slug: 'ai-video',
-  title: 'AI视频',
-  cover: '/works/collections/ai-video-cover.png',
-  summary: '点击跳转Bilibili主页。',
-  hint: '点击跳转Bilibili主页',
-  href: 'https://space.bilibili.com/3546668196694295/upload/video',
-  images: []
-}])
+const techGroups = computed(() => getTechGroups(isEnglish.value))
+const workExperiences = computed(() => getWorkExperiences(isEnglish.value))
+const projects = computed(() => getProjects(isEnglish.value))
+const artCollections = computed(() => getArtCollections(isEnglish.value))
 
 // Init art card reveal state after artCollections is defined
 watch(artCollections, collections => {
@@ -885,14 +510,6 @@ function getWorkCardStyle(index: number) {
   }
 }
 
-function handleProjectPointerMove(event: MouseEvent | PointerEvent, index: number) {
-  hoveredProjectIndex.value = index
-  projectPreviewPosition.value = {
-    x: event.clientX,
-    y: event.clientY
-  }
-}
-
 function handleArtCardMove(event: PointerEvent) {
   const el = event.currentTarget as HTMLElement
   const rect = el.getBoundingClientRect()
@@ -905,24 +522,6 @@ function handleArtCardLeave(event: PointerEvent) {
   const el = event.currentTarget as HTMLElement
   el.style.setProperty('--chroma-on', '0')
 }
-
-function handleProjectPointerLeave(event?: MouseEvent | PointerEvent) {
-  if (event && 'pointerType' in event && event.pointerType !== 'mouse') {
-    return
-  }
-
-  hoveredProjectIndex.value = null
-}
-
-function closeProjectPreviewOnMobileScroll() {
-  if (window.innerWidth < 768) {
-    hoveredProjectIndex.value = null
-  }
-}
-
-const hoveredProject = computed(() => {
-  return hoveredProjectIndex.value === null ? null : projects.value[hoveredProjectIndex.value] || null
-})
 
 const activeWorkCollection = computed(() => {
   return artCollections.value.find(collection => collection.slug === activeWorkCollectionSlug.value) || null
@@ -983,42 +582,6 @@ watch(viewportWidth, (width) => {
   showMobileNotice.value = width < 768
 }, { immediate: true })
 
-const projectPreviewStyle = computed(() => {
-  const isMobilePreview = viewportWidth.value < 768
-  const margin = 16
-
-  if (isMobilePreview) {
-    const previewWidth = Math.max(Math.min(viewportWidth.value - margin * 2, 544), 180)
-    const previewHeight = previewWidth * 0.5625
-    const centeredX = (viewportWidth.value - previewWidth) / 2
-    const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
-    const aboveClickY = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight - 6, margin), maxY)
-
-    return {
-      opacity: hoveredProjectIndex.value === null ? 0 : 1,
-      width: `${previewWidth}px`,
-      transform: `translate3d(${centeredX}px, ${aboveClickY}px, 0) scale(${hoveredProjectIndex.value === null ? 0.96 : 1})`
-    }
-  }
-
-  const cornerGap = 2
-  const previewWidth = Math.max(Math.min(544, viewportWidth.value - margin * 2), 260)
-  const previewHeight = previewWidth * 0.5625
-  const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
-  const rightX = projectPreviewPosition.value.x + cornerGap
-  const leftX = projectPreviewPosition.value.x - previewWidth - cornerGap
-  const x = rightX + previewWidth + margin > viewportWidth.value
-    ? Math.max(leftX, margin)
-    : Math.max(rightX, margin)
-  const y = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight - cornerGap, margin), maxY)
-
-  return {
-    opacity: hoveredProjectIndex.value === null ? 0 : 1,
-    width: `${previewWidth}px`,
-    transform: `translate3d(${x}px, ${y}px, 0) scale(${hoveredProjectIndex.value === null ? 0.96 : 1})`
-  }
-})
-
 function updateScrollSectionMetrics() {
   if (aboutIntro.value) {
     aboutIntroTop.value = aboutIntro.value.getBoundingClientRect().top + window.scrollY
@@ -1041,9 +604,6 @@ onMounted(() => {
   updateScrollSectionMetrics()
   showMobileNotice.value = !hasDismissedMobileNotice.value && window.innerWidth < 768
   window.addEventListener('resize', updateScrollSectionMetrics)
-  window.addEventListener('scroll', closeProjectPreviewOnMobileScroll, { passive: true })
-  window.addEventListener('wheel', closeProjectPreviewOnMobileScroll, { passive: true })
-  window.addEventListener('touchmove', closeProjectPreviewOnMobileScroll, { passive: true })
   window.addEventListener('keydown', handleWorkCollectionKeydown)
   requestAnimationFrame(updateScrollSectionMetrics)
 
@@ -1053,9 +613,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScrollSectionMetrics)
-  window.removeEventListener('scroll', closeProjectPreviewOnMobileScroll)
-  window.removeEventListener('wheel', closeProjectPreviewOnMobileScroll)
-  window.removeEventListener('touchmove', closeProjectPreviewOnMobileScroll)
   window.removeEventListener('keydown', handleWorkCollectionKeydown)
   document.body.style.overflow = ''
 })
@@ -1275,129 +832,13 @@ onBeforeUnmount(() => {
             </div>
           </section>
 
-          <section
-            id="projects"
-            class="soft-section-band relative mx-auto mt-0 max-w-7xl pb-28 pt-10 sm:pt-14"
-          >
-            <div class="mb-10 pt-10">
-              <h2 :class="sectionTitleClass">
-                {{ locale === 'en' ? 'Projects' : '项目经验' }}
-              </h2>
-            </div>
-
-            <div class="relative">
-              <article
-                v-for="(project, index) in projects"
-                :key="project.title"
-                class="project-item group relative grid py-10 sm:grid-cols-[72px_1fr] sm:gap-8 lg:py-12"
-                :class="{ 'is-project-active': hoveredProjectIndex === index }"
-                @mousemove="handleProjectPointerMove($event, index)"
-                @mouseenter="handleProjectPointerMove($event, index)"
-                @mouseleave="handleProjectPointerLeave"
-                @pointermove="handleProjectPointerMove($event, index)"
-                @pointerenter="handleProjectPointerMove($event, index)"
-                @pointerdown="handleProjectPointerMove($event, index)"
-                @pointerleave="handleProjectPointerLeave"
-                @click="handleProjectPointerMove($event, index)"
-              >
-                <p class="font-mono text-lg tracking-wide text-neutral-500">
-                  {{ String(index + 1).padStart(2, '0') }}.
-                </p>
-
-                <div>
-                  <h3
-                    class="project-title-fill inline-block pb-3 text-5xl leading-[1.12] font-black tracking-tight sm:text-7xl lg:text-8xl"
-                    :style="{ '--project-hover-color': '#10b981' }"
-                  >
-                    {{ project.title }}
-                  </h3>
-                  <p class="mt-4 flex items-center gap-3 text-lg font-semibold tracking-tight text-neutral-700 sm:text-xl">
-                    <img
-                      v-if="project.logo"
-                      :src="project.logo"
-                      :alt="`${project.title} logo`"
-                      class="size-8 shrink-0 object-contain"
-                    >
-                    {{ project.subtitle }}
-                  </p>
-                  <div class="project-detail-panel">
-                    <p class="project-copy mt-3 max-w-2xl text-base leading-7 text-neutral-600 sm:text-lg">
-                      {{ project.description }}
-                    </p>
-                    <p class="project-copy mt-2 max-w-3xl text-base leading-7 text-neutral-500 sm:text-lg">
-                      {{ project.note }}
-                    </p>
-
-                    <div class="project-tags mt-5 flex flex-wrap items-center gap-3 text-sm font-semibold text-neutral-500 sm:text-base">
-                      <template
-                        v-for="(tag, tagIndex) in project.tags"
-                        :key="tag"
-                      >
-                        <span>{{ tag }}</span>
-                        <span
-                          v-if="tagIndex < project.tags.length - 1"
-                          class="size-1.5 rounded-full bg-neutral-300"
-                        />
-                      </template>
-                    </div>
-
-                    <div class="preview-entry-shell mt-7 flex justify-end">
-                      <a
-                        v-if="project.previewUrl"
-                        :href="project.previewUrl"
-                        target="_blank"
-                        rel="noreferrer"
-                        class="preview-entry relative inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold text-neutral-500 select-none sm:text-base"
-                        @click.stop
-                      >
-                        <svg
-                          class="preview-entry-stroke"
-                          viewBox="0 0 100 40"
-                          preserveAspectRatio="none"
-                          aria-hidden="true"
-                        >
-                          <rect
-                            x="1"
-                            y="1"
-                            width="98"
-                            height="38"
-                            rx="19"
-                            ry="19"
-                          />
-                        </svg>
-                        <span class="preview-entry-label relative z-10">{{ previewEntryLabel }}</span>
-                      </a>
-
-                      <span
-                        v-else
-                        class="preview-entry relative inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold text-neutral-400 select-none sm:text-base"
-                      >
-                        <svg
-                          class="preview-entry-stroke"
-                          viewBox="0 0 100 40"
-                          preserveAspectRatio="none"
-                          aria-hidden="true"
-                        >
-                          <rect
-                            x="1"
-                            y="1"
-                            width="98"
-                            height="38"
-                            rx="19"
-                            ry="19"
-                          />
-                        </svg>
-                        <span class="preview-entry-label relative z-10">{{ previewEntryLabel }}</span>
-                        <span class="preview-tooltip pointer-events-none absolute left-1/2 top-full z-20 mt-3 w-max max-w-[18rem] -translate-x-1/2 rounded-full bg-neutral-950 px-4 py-2 text-xs font-semibold whitespace-nowrap text-white opacity-0 shadow-xl transition duration-200">
-                          {{ project.previewDisabledTip || unavailablePreviewLabel }}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </section>
+          <ProjectSection
+            :projects="projects"
+            :locale="locale"
+            :section-title-class="sectionTitleClass"
+            :preview-entry-label="previewEntryLabel"
+            :unavailable-preview-label="unavailablePreviewLabel"
+          />
 
           <section
             class="relative mx-auto max-w-7xl pb-32 pt-8 sm:pt-12 lg:pb-40"
@@ -1461,18 +902,6 @@ onBeforeUnmount(() => {
           </section>
         </div>
       </section>
-
-      <div
-        class="pointer-events-none fixed left-0 top-0 z-[130] w-[34rem] max-w-[calc(100vw-2rem)] origin-top-left overflow-hidden rounded-sm border border-white/30 bg-neutral-950/20 shadow-2xl shadow-black/20 transition-opacity duration-150 ease-out"
-        :style="projectPreviewStyle"
-      >
-        <img
-          v-if="hoveredProject"
-          :src="hoveredProject.image"
-          :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
-          class="block w-full object-cover opacity-85"
-        >
-      </div>
 
       <Teleport to="body">
         <div
@@ -1628,207 +1057,6 @@ onBeforeUnmount(() => {
 
 .tech-item:hover .tech-item-icon {
   transform: scale(1.18) rotate(-4deg);
-}
-
-.project-title-fill {
-  --project-base-color: #0a0a0a;
-  background-image: linear-gradient(
-    90deg,
-    var(--project-hover-color) 0%,
-    var(--project-hover-color) 50%,
-    var(--project-base-color) 50%,
-    var(--project-base-color) 100%
-  );
-  background-position: 100% 0;
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: var(--project-base-color);
-  -webkit-text-fill-color: transparent;
-  transition: background-position 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-item {
-  border-top: 1px solid rgb(229 229 229);
-}
-
-.project-item::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  pointer-events: none;
-}
-
-.project-item::after {
-  background: #10b981;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-item:last-child {
-  border-bottom: 1px solid rgb(229 229 229);
-}
-
-.project-item:hover::after,
-.project-item.is-project-active::after {
-  transform: scaleX(1);
-}
-
-.project-detail-panel {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transform: translate3d(0, -0.5rem, 0);
-  transition:
-    max-height 680ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 360ms ease,
-    transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-item:hover .project-title-fill,
-.project-item.is-project-active .project-title-fill {
-  background-position: 0 0;
-}
-
-.project-item:hover .project-detail-panel,
-.project-item.is-project-active .project-detail-panel {
-  max-height: 24rem;
-  opacity: 1;
-  overflow: visible;
-  transform: translate3d(0, 0, 0);
-}
-
-.project-copy,
-.project-tags,
-.preview-entry-shell {
-  opacity: 0;
-  transform: translate3d(0, 0.85rem, 0);
-  transition:
-    opacity 420ms ease,
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-item:hover .project-copy,
-.project-item:hover .project-tags,
-.project-item:hover .preview-entry-shell,
-.project-item.is-project-active .project-copy,
-.project-item.is-project-active .project-tags,
-.project-item.is-project-active .preview-entry-shell {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-.project-item:hover .project-copy:nth-of-type(1),
-.project-item.is-project-active .project-copy:nth-of-type(1) {
-  transition-delay: 90ms;
-}
-
-.project-item:hover .project-copy:nth-of-type(2),
-.project-item.is-project-active .project-copy:nth-of-type(2) {
-  transition-delay: 170ms;
-}
-
-.project-item:hover .project-tags,
-.project-item.is-project-active .project-tags {
-  transition-delay: 250ms;
-}
-
-.project-item:hover .preview-entry-shell,
-.project-item.is-project-active .preview-entry-shell {
-  transition-delay: 330ms;
-}
-
-.preview-entry {
-  background: #ffffff;
-  border: 1px solid rgb(212 212 212);
-  transition:
-    border-color 240ms ease,
-    color 240ms ease;
-}
-
-.preview-entry:hover {
-  border-color: transparent;
-}
-
-.preview-entry-label {
-  --preview-label-base: #737373;
-  background-image: linear-gradient(
-    90deg,
-    #10b981 0%,
-    #10b981 50%,
-    var(--preview-label-base) 50%,
-    var(--preview-label-base) 100%
-  );
-  background-position: 100% 0;
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: var(--preview-label-base);
-  -webkit-text-fill-color: transparent;
-  transition: background-position 360ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.preview-entry:hover .preview-entry-label {
-  background-position: 0 0;
-}
-
-.preview-entry-stroke {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 200ms ease;
-}
-
-.preview-entry-stroke rect {
-  fill: none;
-  stroke: #10b981;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 46 236;
-  stroke-dashoffset: 0;
-  transition:
-    stroke-dasharray 560ms cubic-bezier(0.22, 1, 0.36, 1),
-    stroke-dashoffset 560ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-item:hover .preview-entry-stroke,
-.project-item.is-project-active .preview-entry-stroke {
-  opacity: 1;
-}
-
-.preview-entry:hover .preview-entry-stroke {
-  opacity: 1;
-}
-
-.project-item:hover .preview-entry-stroke rect,
-.project-item.is-project-active .preview-entry-stroke rect {
-  animation: preview-stroke 1.45s linear infinite;
-}
-
-.project-item:hover .preview-entry:hover .preview-entry-stroke rect,
-.project-item.is-project-active .preview-entry:hover .preview-entry-stroke rect {
-  animation: none;
-  stroke-dasharray: 282 0;
-  stroke-dashoffset: 0;
-}
-
-.preview-entry:hover .preview-tooltip {
-  opacity: 1;
-  transform: translate(-50%, 0.25rem);
-}
-
-@keyframes preview-stroke {
-  to {
-    stroke-dashoffset: -282;
-  }
 }
 
 .art-collection-grid {
