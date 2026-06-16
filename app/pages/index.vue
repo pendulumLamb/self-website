@@ -574,7 +574,7 @@ const projects = computed(() => locale.value === 'en' ? [{
   subtitle: 'Open-source infinite canvas project',
   description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
   note: 'The repository has 1.3k stars and explores canvas editing, asset orchestration, and workflow-style creative tooling.',
-  tags: ['Open Source', 'Infinite Canvas', 'React', 'TypeScript', 'AI Workflow'],
+  tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow'],
   image: '/projects/infinite-canvas-open-source.png',
   previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
 }, {
@@ -617,7 +617,7 @@ const projects = computed(() => locale.value === 'en' ? [{
   subtitle: '开源无限画布项目',
   description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
   note: '项目 GitHub 仓库已获得 1.3k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。',
-  tags: ['开源项目', '无限画布', 'AI 创作', '工作流', 'GitHub 1.3k stars'],
+  tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.3k stars'],
   image: '/projects/infinite-canvas-open-source.png',
   previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
 }, {
