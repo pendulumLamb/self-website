@@ -1001,16 +1001,17 @@ const projectPreviewStyle = computed(() => {
     }
   }
 
-  const cornerGap = 4
+  const horizontalGap = 6
+  const verticalAnchor = 0.72
   const previewWidth = Math.max(Math.min(544, viewportWidth.value - margin * 2), 260)
   const previewHeight = previewWidth * 0.5625
   const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
-  const rightX = projectPreviewPosition.value.x + cornerGap
-  const leftX = projectPreviewPosition.value.x - previewWidth - cornerGap
+  const rightX = projectPreviewPosition.value.x + horizontalGap
+  const leftX = projectPreviewPosition.value.x - previewWidth - horizontalGap
   const x = rightX + previewWidth + margin > viewportWidth.value
     ? Math.max(leftX, margin)
     : Math.max(rightX, margin)
-  const y = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight - cornerGap, margin), maxY)
+  const y = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight * verticalAnchor, margin), maxY)
 
   return {
     opacity: hoveredProjectIndex.value === null ? 0 : 1,
@@ -1228,7 +1229,7 @@ onBeforeUnmount(() => {
               class="relative"
               :style="workTrackStyle"
             >
-              <div class="sticky top-[72px] h-[calc(100vh-72px)] min-h-[760px] overflow-hidden border-y border-neutral-200 bg-white">
+              <div class="sticky top-[56px] h-[calc(100vh-56px)] min-h-[760px] overflow-hidden border-y border-neutral-200 bg-white">
                 <article
                   v-for="(experience, index) in workExperiences"
                   :key="`${experience.period}-${experience.company}`"
