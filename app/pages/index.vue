@@ -1001,7 +1001,7 @@ const projectPreviewStyle = computed(() => {
     }
   }
 
-  const cornerGap = 4
+  const cornerGap = 2
   const previewWidth = Math.max(Math.min(544, viewportWidth.value - margin * 2), 260)
   const previewHeight = previewWidth * 0.5625
   const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
