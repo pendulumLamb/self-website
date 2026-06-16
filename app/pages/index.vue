@@ -335,14 +335,14 @@ const hasDismissedMobileNotice = ref(false)
 
 const aboutIntroParagraphs = computed(() => locale.value === 'en'
   ? [
-      'I graduated from Anhui Polytechnic University in Wuhu in 2023, majoring in Internet of Things Engineering and also taking courses in visual communication design. I was a member of the IoT Association in the School of Computer Science.',
-      'After graduation I moved into computer-related work, covering automotive testing, IoT development, and full-stack software development, while also providing resource design for e-commerce teams.',
-      'I use minimal, restrained, and warm design to make technology easier to perceive.'
+      'I graduated from Anhui Polytechnic University in 2023, majoring in Internet of Things Engineering while also taking courses in visual communication design. I was a member of the IoT Association in the School of Computer Science.',
+      'A startup attempt during college did not work out. After graduation I entered the tech industry and worked across automotive testing, IoT development, and full-stack software development, building both software and hardware capabilities while also providing creative resources for e-commerce teams.',
+      'I stay committed to product design, using minimal, restrained, and warm design to make technology easier to perceive.'
     ]
   : [
-      '2023年毕业于安徽工程大学（安徽芜湖），学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。',
-      '毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，并为电商公司提供资源设计。',
-      '用极简、克制、温暖的设计让科技得以被感知。'
+      '2023年毕业于安徽工程大学，学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。',
+      '大学期间创业未果，毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，软硬兼修。并为电商公司提供资源设计。',
+      '执着于产品设计，用极简、克制、温暖的设计让科技得以被感知。'
     ])
 
 watch(aboutIntroParagraphs, () => initCharData(), { immediate: true })
@@ -462,6 +462,10 @@ const techGroups = computed(() => [{
 }, {
   title: locale.value === 'en' ? 'IoT' : '物联网',
   items: [{
+    label: 'Arduino',
+    icon: 'simple-icons:arduino',
+    color: '#00979D'
+  }, {
     label: 'esp32',
     icon: 'simple-icons:espressif',
     color: '#E7352C'
@@ -469,6 +473,10 @@ const techGroups = computed(() => [{
     label: locale.value === 'en' ? 'Raspberry Pi' : '树莓派',
     icon: 'simple-icons:raspberrypi',
     color: '#A22846'
+  }, {
+    label: 'STM32',
+    icon: 'simple-icons:stmicroelectronics',
+    color: '#03234B'
   }, {
     label: 'MQTT',
     icon: 'simple-icons:mqtt',
@@ -530,46 +538,37 @@ const workExperiences = computed(() => locale.value === 'en' ? [{
   period: '2022.3-Present',
   company: 'Wuhu Xiangyi Software Co., Ltd.',
   role: 'Full-stack Engineer',
-  tasks: ['Joined a roommate-led startup and took part in daily product development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.']
+  tasks: ['Joined a roommate-led startup and took part in daily product development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
 }, {
   period: '2023.2-2024.11',
-  company: 'BHTC Automotive Electronics (Wuhu) Co., Ltd.',
-  companyNote: 'Formerly Bosch Automotive Electronics (Wuhu) Co., Ltd.',
+  company: 'Bitech Automotive Electronics (Wuhu) Co., Ltd.',
+  companyNote: 'Formerly Bosch Automotive Electronics (Wuhu) Co., Ltd. After Bosch divested, Bitech took over operations. The company mainly serves automakers including Chery, Changan, GAC, and Tesla, producing instrument clusters, screens, domain controllers, and related components.',
   role: 'Test Engineer',
-  tasks: ['Worked with CAN networks and performed bench and vehicle tests for instrument clusters.', 'Designed test cases and test scripts.', 'Stationed at Chery and Changan vehicle ports for pre-export inspection and flashing.']
+  tasks: ['Worked with CAN networks and performed bench and vehicle tests for instrument clusters.', 'Designed test cases and test scripts.', 'Stationed at Chery and Changan vehicle ports for pre-export inspection and flashing.', 'Built a practical understanding of automotive consumer electronics.']
 }, {
   period: '2025.1-2026.6',
   company: 'Shanghai Yongxing Trading Co., Ltd.',
-  role: 'Visual Designer, AI Architect',
+  role: 'Visual Designer, Operations, Full-stack AI Systems Developer',
   tasks: ['Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
 }] : [{
   period: '2022.3-至今',
   company: '芜湖享易软件有限公司',
   role: '全栈工程师',
-  tasks: ['室友的创业公司，我被拉进去参与日常开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。']
+  tasks: ['室友的创业公司，我被拉进去参与日常开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
 }, {
   period: '2023.2-2024.11',
-  company: '伯泰克汽车电子（芜湖）有限公司',
-  companyNote: '前博世汽车电子（芜湖）有限公司',
+  company: '伯泰克（Bitech）汽车电子（芜湖）有限公司',
+  companyNote: '前博世（Bosch）汽车电子（芜湖）有限公司，博世撤资后由伯泰克接手运营，公司主要对接奇瑞、长安、广汽、特斯拉等车企，生产仪表、屏幕、域控制器等部件',
   role: '测试工程师',
-  tasks: ['了解 CAN 网络，进行汽车仪表的台架测试、实车测试。', '设计测试用例与测试脚本。', '奇瑞/长安汽车港口驻场，负责出口前检测与刷机。']
+  tasks: ['了解 CAN 网络，进行汽车仪表的台架测试、实车测试。', '设计测试用例与测试脚本。', '奇瑞/长安汽车港口驻场，负责出口前检测与刷机。', '对汽车消费电子有一定理解']
 }, {
   period: '2025.1-2026.6',
   company: '上海邕兴贸易有限公司',
-  role: '美工、AI 架构师',
+  role: '美工、运营、AI系统全栈开发',
   tasks: ['使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
 }])
 
 const projects = computed(() => locale.value === 'en' ? [{
-  title: 'NeoDesign',
-  subtitle: 'AI creation platform',
-  logo: '/tech-logos/neodesign.png',
-  description: 'An infinite-canvas workspace for producing AI images, videos, and creative assets.',
-  note: 'Built for my own e-commerce workflow after finding tools like Lovart and Tapnow too expensive for daily use.',
-  tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
-  image: '/projects/infinite-canvas.jpg',
-  previewDisabledTip: 'Not open-sourced or released yet.'
-}, {
   title: 'Infinite-Canvas',
   subtitle: 'Open-source infinite canvas project',
   description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
@@ -579,10 +578,10 @@ const projects = computed(() => locale.value === 'en' ? [{
   previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
 }, {
   title: 'EasyIoT',
-  subtitle: 'IoT platform for intelligent teaching applications',
+  subtitle: 'Intelligent IoT cloud platform',
   logo: '/projects/easyiot-logo.png',
-  description: 'An IoT application platform for teaching scenarios, supporting no-code and MCU low-code development.',
-  note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and learning resources for fast IoT prototyping.',
+  description: 'A lightweight IoT application cloud platform that supports no-code and MCU low-code development, as well as self-built IoT systems.',
+  note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and supporting facilities to help users quickly build and learn IoT applications. It covers Web, H5-mobile, and App clients, with rich teaching resources and project cases.',
   tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
   image: '/projects/easyiot-preview.png',
   previewUrl: 'https://www.easyiothings.com/'
@@ -596,23 +595,23 @@ const projects = computed(() => locale.value === 'en' ? [{
   image: '/projects/warmzen-preview.png',
   previewUrl: 'https://warmzen.vercel.app/'
 }, {
-  title: 'HelloAgents',
+  title: 'Uni Agents',
   subtitle: 'Automated deep-research agent',
-  description: 'A multi-agent research system based on HelloAgents that breaks down topics, searches sources, and generates structured reports.',
+  description: 'A multi-agent research system based on Uni Agents that breaks down topics, searches sources, and generates structured reports.',
   note: 'Enter a research topic and the agents plan subtasks, query multiple search engines, show progress in real time, and output a structured Markdown report.',
   tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
   image: '/projects/agent.png',
-  previewDisabledTip: 'This project is not online yet.'
-}] : [{
+  previewDisabledTip: 'Runs locally and is not online yet.'
+}, {
   title: 'NeoDesign',
-  subtitle: 'AI 创作平台',
+  subtitle: 'AI creation platform',
   logo: '/tech-logos/neodesign.png',
-  description: '面向 AI 图片、视频与创意资产生产的无限画布工作台。',
-  note: '因不满Lovart、Tapnow的昂贵收费，开发一款更好用、更便宜的自己用，以完成日常电商工作。',
+  description: 'A workspace for producing AI images, videos, and creative assets, built to provide a seamless one-stop AI creation experience.',
+  note: 'Built for my own e-commerce workflow after finding tools like Lovart and Tapnow too expensive for daily use.',
   tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
   image: '/projects/infinite-canvas.jpg',
-  previewDisabledTip: '暂不开源/发布，不可预览，请理解。'
-}, {
+  previewDisabledTip: 'In development. Not open-sourced or released yet.'
+}] : [{
   title: 'Infinite-Canvas',
   subtitle: '开源无限画布项目',
   description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
@@ -622,10 +621,10 @@ const projects = computed(() => locale.value === 'en' ? [{
   previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
 }, {
   title: '易联智能',
-  subtitle: '智能化教学应用物联网平台',
+  subtitle: '智能化物联网云平台',
   logo: '/projects/easyiot-logo.png',
-  description: '面向教学场景的物联网应用平台，支持零代码与 MCU 低代码开发。',
-  note: '由安徽工程大学物联网开放创新实验室开发，配套开发板等设施，帮助用户快速搭建和学习物联网应用。',
+  description: '轻量级物联网应用云平台，支持零代码与 MCU 低代码开发。支持自建物联网系统',
+  note: '由安徽工程大学物联网开放创新实验室开发，配套开发板等设施，帮助用户快速搭建和学习物联网应用。覆盖Web、H5-mobile、App等多端，提供丰富的教学资源和项目案例。',
   tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
   image: '/projects/easyiot-preview.png',
   previewUrl: 'https://www.easyiothings.com/'
@@ -639,13 +638,22 @@ const projects = computed(() => locale.value === 'en' ? [{
   image: '/projects/warmzen-preview.png',
   previewUrl: 'https://warmzen.vercel.app/'
 }, {
-  title: 'HelloAgents',
+  title: 'Uni Agents',
   subtitle: '自动化深度研究智能体',
-  description: '基于 HelloAgents 框架的多 Agent 协作深度研究系统，自动拆解课题、搜索资料并生成结构化报告。',
+  description: '基于 Uni Agents 框架的多 Agent 协作深度研究系统，自动拆解课题、搜索资料并生成结构化报告。',
   note: '输入一个研究课题，智能体自动规划子任务、调用多个搜索引擎收集资料，实时展示进度，最终输出一份结构化的 Markdown 研究报告。',
   tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
   image: '/projects/agent.png',
-  previewDisabledTip: '项目暂不上线，请理解'
+  previewDisabledTip: '本地运行，暂不上线，请理解'
+}, {
+  title: 'NeoDesign',
+  subtitle: 'AI 创作平台',
+  logo: '/tech-logos/neodesign.png',
+  description: '面向 AI 图片、视频与创意资产生产的工作空间，为用户打造无缝丝滑一站式AI创作体验。',
+  note: '因不满Lovart、Tapnow的昂贵收费，开发一款更好用、更便宜的自己用，以完成日常电商工作。',
+  tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+  image: '/projects/infinite-canvas.jpg',
+  previewDisabledTip: '开发中，暂不开源/发布，请理解。'
 }])
 
 function workImageList(folder: string, files: string[]) {
@@ -1273,7 +1281,7 @@ onBeforeUnmount(() => {
           >
             <div class="mb-10 pt-10">
               <h2 :class="sectionTitleClass">
-                {{ locale === 'en' ? 'Projects' : '个人项目' }}
+                {{ locale === 'en' ? 'Projects' : '项目经验' }}
               </h2>
             </div>
 
