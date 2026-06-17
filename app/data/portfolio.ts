@@ -174,6 +174,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'Docker',
       icon: 'simple-icons:docker',
       color: '#2496ED'
+    }, {
+      label: 'Nginx',
+      icon: 'simple-icons:nginx',
+      color: '#009639'
     }]
   }, {
     title: isEnglish ? 'IoT' : '物联网',
@@ -254,10 +258,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
 export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
   return isEnglish
     ? [{
-        period: '2022.3-Present',
+        period: '2025.1-2026.6',
         company: 'Wuhu Xiangyi Software Co., Ltd.',
         role: 'Full-stack Engineer',
-        tasks: ['Joined a roommate-led startup and took part in daily product development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
+        tasks: ['Joined a roommate-led startup and took part in daily full-stack development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
       }, {
         period: '2023.2-2024.11',
         company: 'Bitech Automotive Electronics (Wuhu) Co., Ltd.',
@@ -265,16 +269,16 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         role: 'Test Engineer',
         tasks: ['Worked with CAN networks and performed bench and vehicle tests for instrument clusters.', 'Designed test cases and test scripts.', 'Stationed at Chery and Changan vehicle ports for pre-export inspection and flashing.', 'Built a practical understanding of automotive consumer electronics.']
       }, {
-        period: '2025.1-2026.6',
+        period: '2024.12-2026.6',
         company: 'Shanghai Yongxing Trading Co., Ltd.',
-        role: 'Visual Designer, Operations, Full-stack AI Systems Developer',
-        tasks: ['Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
+        role: 'Visual Designer, Operations, AI Systems Developer',
+        tasks: ['A relative-owned e-commerce company where I worked part-time as a non-formal employee.', 'Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
       }]
     : [{
-        period: '2022.3-至今',
+        period: '2025.1-2026.6',
         company: '芜湖享易软件有限公司',
         role: '全栈工程师',
-        tasks: ['室友的创业公司，我被拉进去参与日常开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
+        tasks: ['室友的创业公司，我被拉进去参与日常全栈开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
       }, {
         period: '2023.2-2024.11',
         company: '伯泰克（Bitech）汽车电子（芜湖）有限公司',
@@ -282,10 +286,10 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         role: '测试工程师',
         tasks: ['了解 CAN 网络，进行汽车仪表的台架测试、实车测试。', '设计测试用例与测试脚本。', '奇瑞/长安汽车港口驻场，负责出口前检测与刷机。', '对汽车消费电子有一定理解']
       }, {
-        period: '2025.1-2026.6',
+        period: '2024.12-2026.6',
         company: '上海邕兴贸易有限公司',
-        role: '美工、运营、AI系统全栈开发',
-        tasks: ['使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
+        role: '美工、运营、AI系统开发',
+        tasks: ['亲戚家的电商公司，非正式员工，兼职', '使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
       }]
 }
 
