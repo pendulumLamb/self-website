@@ -21,6 +21,7 @@ const viewportWidth = computed(() => {
 
 const hoveredProjectIndex = ref<number | null>(null)
 const projectPreviewPosition = ref({ x: 0, y: 0 })
+const activeQrProject = ref<Project | null>(null)
 
 const hoveredProject = computed(() => {
   return hoveredProjectIndex.value === null ? null : props.projects[hoveredProjectIndex.value] || null
@@ -84,16 +85,41 @@ function closeProjectPreviewOnMobileScroll() {
   }
 }
 
+function openProjectQr(project: Project) {
+  if (project.previewQr) {
+    activeQrProject.value = project
+  }
+}
+
+function closeProjectQr() {
+  activeQrProject.value = null
+}
+
+function handleProjectKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && activeQrProject.value) {
+    closeProjectQr()
+  }
+}
+
+watch(activeQrProject, (project) => {
+  if (import.meta.client) {
+    document.body.style.overflow = project ? 'hidden' : ''
+  }
+})
+
 onMounted(() => {
   window.addEventListener('scroll', closeProjectPreviewOnMobileScroll, { passive: true })
   window.addEventListener('wheel', closeProjectPreviewOnMobileScroll, { passive: true })
   window.addEventListener('touchmove', closeProjectPreviewOnMobileScroll, { passive: true })
+  window.addEventListener('keydown', handleProjectKeydown)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', closeProjectPreviewOnMobileScroll)
   window.removeEventListener('wheel', closeProjectPreviewOnMobileScroll)
   window.removeEventListener('touchmove', closeProjectPreviewOnMobileScroll)
+  window.removeEventListener('keydown', handleProjectKeydown)
+  document.body.style.overflow = ''
 })
 </script>
 
@@ -165,8 +191,32 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="preview-entry-shell mt-7 flex justify-end">
+              <button
+                v-if="project.previewQr"
+                type="button"
+                class="preview-entry relative inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold text-neutral-500 select-none sm:text-base"
+                @click.stop="openProjectQr(project)"
+              >
+                <svg
+                  class="preview-entry-stroke"
+                  viewBox="0 0 100 40"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <rect
+                    x="1"
+                    y="1"
+                    width="98"
+                    height="38"
+                    rx="19"
+                    ry="19"
+                  />
+                </svg>
+                <span class="preview-entry-label relative z-10">{{ previewEntryLabel }}</span>
+              </button>
+
               <a
-                v-if="project.previewUrl"
+                v-else-if="project.previewUrl"
                 :href="project.previewUrl"
                 target="_blank"
                 rel="noreferrer"
@@ -225,13 +275,59 @@ onBeforeUnmount(() => {
       class="pointer-events-none fixed left-0 top-0 z-[130] w-[34rem] max-w-[calc(100vw-2rem)] origin-top-left overflow-hidden rounded-sm border border-white/30 bg-neutral-950/20 shadow-2xl shadow-black/20 transition-opacity duration-150 ease-out"
       :style="projectPreviewStyle"
     >
+      <div
+        v-if="hoveredProject?.previewImages?.length"
+        class="grid aspect-video gap-2 bg-neutral-100 p-2"
+        :class="hoveredProject.previewImages.length >= 3 ? 'grid-cols-3' : 'grid-cols-2'"
+      >
+        <img
+          v-for="image in hoveredProject.previewImages"
+          :key="image"
+          :src="image"
+          :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
+          class="h-full min-h-0 w-full object-contain opacity-90"
+        >
+      </div>
       <img
-        v-if="hoveredProject"
+        v-else-if="hoveredProject"
         :src="hoveredProject.image"
         :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
         class="block w-full object-cover opacity-85"
       >
     </div>
+
+    <Teleport to="body">
+      <div
+        v-if="activeQrProject?.previewQr"
+        class="fixed inset-0 z-[240] flex items-center justify-center bg-black/72 p-6 backdrop-blur-xl"
+        @click.self="closeProjectQr"
+      >
+        <button
+          type="button"
+          class="fixed right-6 top-6 z-10 flex size-12 items-center justify-center rounded-full border border-white/25 bg-black/20 text-white shadow-xl backdrop-blur-xl transition hover:border-white/50 sm:right-8 sm:top-8"
+          :aria-label="locale === 'en' ? 'Close mini program code' : '关闭小程序码'"
+          @click="closeProjectQr"
+        >
+          <UIcon
+            name="i-lucide-x"
+            class="size-6"
+          />
+        </button>
+
+        <div class="flex flex-col items-center gap-6 text-center">
+          <div class="flex size-[min(82vw,30rem)] items-center justify-center rounded-full bg-white p-[11%] shadow-2xl shadow-black/25">
+            <img
+              :src="activeQrProject.previewQr"
+              :alt="locale === 'en' ? `${activeQrProject.title} mini program code` : `${activeQrProject.title}小程序码`"
+              class="h-full w-full object-contain"
+            >
+          </div>
+          <p class="text-xl font-bold tracking-tight text-white sm:text-2xl">
+            {{ activeQrProject.title }}
+          </p>
+        </div>
+      </div>
+    </Teleport>
   </section>
 </template>
 

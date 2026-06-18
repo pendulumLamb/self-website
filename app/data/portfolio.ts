@@ -26,6 +26,8 @@ export interface Project {
   note: string
   tags: string[]
   image: string
+  previewImages?: string[]
+  previewQr?: string
   previewUrl?: string
   previewDisabledTip?: string
 }
@@ -300,16 +302,25 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: 'Open-source infinite canvas project',
         description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
         note: 'The repository has 1.3k stars and explores canvas editing, asset orchestration, and workflow-style creative tooling.',
-        tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow'],
+        tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow', 'Full-stack'],
         image: '/projects/infinite-canvas-open-source.png',
         previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
+      }, {
+        title: 'Chen Xuyuan Hair Loss Detection',
+        subtitle: 'Hair loss self-screening mini program',
+        description: 'An AI agent mini program built with uni-app and FastAPI. Users upload head photos from multiple angles, and the agent evaluates them against a medical knowledge base.',
+        note: 'Designed according to Apple Human Interface Guidelines, with a polished interface, novel features, and straightforward interactions. Both frontend and backend performance have been optimized to deliver an exceptional mini program experience.',
+        tags: ['Uni-app', 'WeChat Mini Program', 'Python', 'FastAPI', 'Agent', 'Database', 'Full-stack'],
+        image: '/projects/hair-loss-login.jpg',
+        previewImages: ['/projects/hair-loss-login.jpg', '/projects/hair-loss-upload.jpg', '/projects/hair-loss-profile.jpg'],
+        previewQr: '/projects/hair-loss-qr.jpg'
       }, {
         title: 'EasyIoT',
         subtitle: 'Intelligent IoT cloud platform',
         logo: '/projects/easyiot-logo.png',
         description: 'A lightweight IoT application cloud platform that supports no-code and MCU low-code development, as well as self-built IoT systems.',
         note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and supporting facilities to help users quickly build and learn IoT applications. It covers Web, H5-mobile, and App clients, with rich teaching resources and project cases.',
-        tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
+        tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT', 'Full-stack'],
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
@@ -318,7 +329,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         logo: '/projects/warmzen-logo.png',
         description: 'A cross-border commerce site built on the open-source Payload CMS commerce stack, including storefront and admin system.',
         note: 'The storefront focuses on brand presentation, product collections, and an immersive hero experience, while the admin side supports content management, payment flows, and multilingual display.',
-        tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
+        tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS', 'Full-stack'],
         image: '/projects/warmzen-preview.png',
         previewUrl: 'https://warmzen.vercel.app/'
       }, {
@@ -326,7 +337,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: 'Automated deep-research agent',
         description: 'A multi-agent research system based on Uni Agents that breaks down topics, searches sources, and generates structured reports.',
         note: 'Enter a research topic and the agents plan subtasks, query multiple search engines, show progress in real time, and output a structured Markdown report.',
-        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
+        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', 'Full-stack'],
         image: '/projects/agent.png',
         previewDisabledTip: 'Runs locally and is not online yet.'
       }, {
@@ -335,7 +346,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         logo: '/tech-logos/neodesign.png',
         description: 'A workspace for producing AI images, videos, and creative assets, built to provide a seamless one-stop AI creation experience.',
         note: 'Built for my own e-commerce workflow after finding tools like Lovart and Tapnow too expensive for daily use.',
-        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Full-stack'],
         image: '/projects/infinite-canvas.jpg',
         previewDisabledTip: 'In development. Not open-sourced or released yet.'
       }]
@@ -344,16 +355,25 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: '开源无限画布项目',
         description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
         note: '项目 GitHub 仓库已获得 1.3k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。',
-        tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.3k stars'],
+        tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.3k stars', '全栈'],
         image: '/projects/infinite-canvas-open-source.png',
         previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
+      }, {
+        title: '陈叙源脱发检测',
+        subtitle: '脱发自检小程序',
+        description: '基于 uni-app 和 FastAPI 开发的 AI Agent 小程序，用户可以上传各个角度的头部照片，Agent 检测后基于医学知识库给出评测结果。',
+        note: '基于Apple-HIG规范设计，页面美观、功能新颖、操作简单。前后端性能均已优化，为用户打造极致的小程序使用体验',
+        tags: ['Uni-app', '微信小程序', 'Python', 'Fastapi', 'Agent', '数据库', '全栈'],
+        image: '/projects/hair-loss-login.jpg',
+        previewImages: ['/projects/hair-loss-login.jpg', '/projects/hair-loss-upload.jpg', '/projects/hair-loss-profile.jpg'],
+        previewQr: '/projects/hair-loss-qr.jpg'
       }, {
         title: '易联智能',
         subtitle: '智能化物联网云平台',
         logo: '/projects/easyiot-logo.png',
         description: '轻量级物联网应用云平台，支持零代码与 MCU 低代码开发。支持自建物联网系统',
         note: '由安徽工程大学物联网开放创新实验室开发，配套开发板等设施，帮助用户快速搭建和学习物联网应用。覆盖Web、H5-mobile、App等多端，提供丰富的教学资源和项目案例。',
-        tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT'],
+        tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT', '全栈'],
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
@@ -362,7 +382,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         logo: '/projects/warmzen-logo.png',
         description: '基于 Payload CMS 开源商城系统开发的跨境独立站，包含前台商城与后台管理系统。',
         note: '前台聚焦品牌展示、商品集合和沉浸式首屏体验，后台支持商品内容管理、支付链路和多语言展示等能力。',
-        tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
+        tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS', '全栈'],
         image: '/projects/warmzen-preview.png',
         previewUrl: 'https://warmzen.vercel.app/'
       }, {
@@ -370,7 +390,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: '自动化深度研究智能体',
         description: '基于 Uni Agents 框架的多 Agent 协作深度研究系统，自动拆解课题、搜索资料并生成结构化报告。',
         note: '输入一个研究课题，智能体自动规划子任务、调用多个搜索引擎收集资料，实时展示进度，最终输出一份结构化的 Markdown 研究报告。',
-        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI'],
+        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
         image: '/projects/agent.png',
         previewDisabledTip: '本地运行，暂不上线，请理解'
       }, {
@@ -379,7 +399,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         logo: '/tech-logos/neodesign.png',
         description: '面向 AI 图片、视频与创意资产生产的工作空间，为用户打造无缝丝滑一站式AI创作体验。',
         note: '因不满Lovart、Tapnow的昂贵收费，开发一款更好用、更便宜的自己用，以完成日常电商工作。',
-        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', '全栈'],
         image: '/projects/infinite-canvas.jpg',
         previewDisabledTip: '开发中，暂不开源/发布，请理解。'
       }]
