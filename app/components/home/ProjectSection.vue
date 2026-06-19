@@ -21,15 +21,42 @@ const viewportWidth = computed(() => {
 
 const hoveredProjectIndex = ref<number | null>(null)
 const projectPreviewPosition = ref({ x: 0, y: 0 })
-const activeQrProject = ref<Project | null>(null)
+const hoveringPreviewEntry = ref(false)
 
 const hoveredProject = computed(() => {
   return hoveredProjectIndex.value === null ? null : props.projects[hoveredProjectIndex.value] || null
 })
 
+const showQrPreview = computed(() => {
+  return hoveringPreviewEntry.value && !!hoveredProject.value?.previewQr
+})
+
 const projectPreviewStyle = computed(() => {
-  const isMobilePreview = viewportWidth.value < 768
   const margin = 16
+  const cornerGap = 4
+
+  if (showQrPreview.value) {
+    const size = Math.min(
+      320,
+      Math.max(220, Math.min(viewportWidth.value, viewportHeight.value) * 0.42)
+    )
+    const rightX = projectPreviewPosition.value.x + cornerGap
+    const leftX = projectPreviewPosition.value.x - size - cornerGap
+    const x = rightX + size + margin > viewportWidth.value
+      ? Math.max(leftX, margin)
+      : Math.max(rightX, margin)
+    const maxY = Math.max(viewportHeight.value - size - margin, margin)
+    const y = Math.min(Math.max(projectPreviewPosition.value.y - size - cornerGap, margin), maxY)
+
+    return {
+      opacity: hoveredProjectIndex.value === null ? 0 : 1,
+      width: `${size}px`,
+      height: `${size}px`,
+      transform: `translate3d(${x}px, ${y}px, 0) scale(${hoveredProjectIndex.value === null ? 0.96 : 1})`
+    }
+  }
+
+  const isMobilePreview = viewportWidth.value < 768
 
   if (isMobilePreview) {
     const previewWidth = Math.max(Math.min(viewportWidth.value - margin * 2, 544), 180)
@@ -45,16 +72,16 @@ const projectPreviewStyle = computed(() => {
     }
   }
 
-  const cornerGap = 2
+  const desktopGap = 2
   const previewWidth = Math.max(Math.min(544, viewportWidth.value - margin * 2), 260)
   const previewHeight = previewWidth * 0.5625
   const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
-  const rightX = projectPreviewPosition.value.x + cornerGap
-  const leftX = projectPreviewPosition.value.x - previewWidth - cornerGap
+  const rightX = projectPreviewPosition.value.x + desktopGap
+  const leftX = projectPreviewPosition.value.x - previewWidth - desktopGap
   const x = rightX + previewWidth + margin > viewportWidth.value
     ? Math.max(leftX, margin)
     : Math.max(rightX, margin)
-  const y = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight - cornerGap, margin), maxY)
+  const y = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight - desktopGap, margin), maxY)
 
   return {
     opacity: hoveredProjectIndex.value === null ? 0 : 1,
@@ -85,41 +112,24 @@ function closeProjectPreviewOnMobileScroll() {
   }
 }
 
-function openProjectQr(project: Project) {
-  if (project.previewQr) {
-    activeQrProject.value = project
-  }
+function handlePreviewEntryEnter() {
+  hoveringPreviewEntry.value = true
 }
 
-function closeProjectQr() {
-  activeQrProject.value = null
+function handlePreviewEntryLeave() {
+  hoveringPreviewEntry.value = false
 }
-
-function handleProjectKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && activeQrProject.value) {
-    closeProjectQr()
-  }
-}
-
-watch(activeQrProject, (project) => {
-  if (import.meta.client) {
-    document.body.style.overflow = project ? 'hidden' : ''
-  }
-})
 
 onMounted(() => {
   window.addEventListener('scroll', closeProjectPreviewOnMobileScroll, { passive: true })
   window.addEventListener('wheel', closeProjectPreviewOnMobileScroll, { passive: true })
   window.addEventListener('touchmove', closeProjectPreviewOnMobileScroll, { passive: true })
-  window.addEventListener('keydown', handleProjectKeydown)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', closeProjectPreviewOnMobileScroll)
   window.removeEventListener('wheel', closeProjectPreviewOnMobileScroll)
   window.removeEventListener('touchmove', closeProjectPreviewOnMobileScroll)
-  window.removeEventListener('keydown', handleProjectKeydown)
-  document.body.style.overflow = ''
 })
 </script>
 
@@ -195,7 +205,10 @@ onBeforeUnmount(() => {
                 v-if="project.previewQr"
                 type="button"
                 class="preview-entry relative inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold text-neutral-500 select-none sm:text-base"
-                @click.stop="openProjectQr(project)"
+                @mouseenter="handlePreviewEntryEnter"
+                @mouseleave="handlePreviewEntryLeave"
+                @focus="handlePreviewEntryEnter"
+                @blur="handlePreviewEntryLeave"
               >
                 <svg
                   class="preview-entry-stroke"
@@ -272,12 +285,23 @@ onBeforeUnmount(() => {
     </div>
 
     <div
-      class="pointer-events-none fixed left-0 top-0 z-[130] w-[34rem] max-w-[calc(100vw-2rem)] origin-top-left overflow-hidden rounded-sm border border-white/30 bg-neutral-950/20 shadow-2xl shadow-black/20 transition-opacity duration-150 ease-out"
+      class="project-preview pointer-events-none fixed left-0 top-0 z-[130] origin-top-left overflow-hidden border border-white/30 bg-white/20 shadow-2xl shadow-black/20 transition-opacity duration-150 ease-out"
+      :class="showQrPreview ? 'rounded-full !bg-white' : 'rounded-sm w-[34rem] max-w-[calc(100vw-2rem)]'"
       :style="projectPreviewStyle"
     >
       <div
-        v-if="hoveredProject?.previewImages?.length"
-        class="grid aspect-video gap-2 bg-neutral-100 p-2"
+        v-if="showQrPreview && hoveredProject?.previewQr"
+        class="flex h-full w-full items-center justify-center rounded-full bg-white p-[11%]"
+      >
+        <img
+          :src="hoveredProject.previewQr"
+          :alt="locale === 'en' ? `${hoveredProject.title} mini program code` : `${hoveredProject.title}小程序码`"
+          class="h-full w-full object-contain"
+        >
+      </div>
+      <div
+        v-else-if="hoveredProject?.previewImages?.length"
+        class="grid aspect-video gap-2 p-2"
         :class="hoveredProject.previewImages.length >= 3 ? 'grid-cols-3' : 'grid-cols-2'"
       >
         <img
@@ -285,49 +309,16 @@ onBeforeUnmount(() => {
           :key="image"
           :src="image"
           :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
-          class="h-full min-h-0 w-full object-contain opacity-90"
+          class="h-full min-h-0 w-full object-contain opacity-85"
         >
       </div>
       <img
         v-else-if="hoveredProject"
         :src="hoveredProject.image"
         :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
-        class="block w-full object-cover opacity-85"
+        class="block aspect-video w-full object-cover opacity-85"
       >
     </div>
-
-    <Teleport to="body">
-      <div
-        v-if="activeQrProject?.previewQr"
-        class="fixed inset-0 z-[240] flex items-center justify-center bg-black/72 p-6 backdrop-blur-xl"
-        @click.self="closeProjectQr"
-      >
-        <button
-          type="button"
-          class="fixed right-6 top-6 z-10 flex size-12 items-center justify-center rounded-full border border-white/25 bg-black/20 text-white shadow-xl backdrop-blur-xl transition hover:border-white/50 sm:right-8 sm:top-8"
-          :aria-label="locale === 'en' ? 'Close mini program code' : '关闭小程序码'"
-          @click="closeProjectQr"
-        >
-          <UIcon
-            name="i-lucide-x"
-            class="size-6"
-          />
-        </button>
-
-        <div class="flex flex-col items-center gap-6 text-center">
-          <div class="flex size-[min(82vw,30rem)] items-center justify-center rounded-full bg-white p-[11%] shadow-2xl shadow-black/25">
-            <img
-              :src="activeQrProject.previewQr"
-              :alt="locale === 'en' ? `${activeQrProject.title} mini program code` : `${activeQrProject.title}小程序码`"
-              class="h-full w-full object-contain"
-            >
-          </div>
-          <p class="text-xl font-bold tracking-tight text-white sm:text-2xl">
-            {{ activeQrProject.title }}
-          </p>
-        </div>
-      </div>
-    </Teleport>
   </section>
 </template>
 

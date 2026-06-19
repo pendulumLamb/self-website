@@ -310,7 +310,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: 'Hair loss self-screening mini program',
         description: 'An AI agent mini program built with uni-app and FastAPI. Users upload head photos from multiple angles, and the agent evaluates them against a medical knowledge base.',
         note: 'Designed according to Apple Human Interface Guidelines, with a polished interface, novel features, and straightforward interactions. Both frontend and backend performance have been optimized to deliver an exceptional mini program experience.',
-        tags: ['Uni-app', 'WeChat Mini Program', 'Python', 'FastAPI', 'Agent', 'Database', 'Full-stack'],
+        tags: ['Uni-app', 'WeChat Mini Program', 'Python', 'FastAPI', 'Agent', 'Knowledge Base', 'Database', 'Full-stack'],
         image: '/projects/hair-loss-login.jpg',
         previewImages: ['/projects/hair-loss-login.jpg', '/projects/hair-loss-upload.jpg', '/projects/hair-loss-profile.jpg'],
         previewQr: '/projects/hair-loss-qr.jpg'
@@ -363,7 +363,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: '脱发自检小程序',
         description: '基于 uni-app 和 FastAPI 开发的 AI Agent 小程序，用户可以上传各个角度的头部照片，Agent 检测后基于医学知识库给出评测结果。',
         note: '基于Apple-HIG规范设计，页面美观、功能新颖、操作简单。前后端性能均已优化，为用户打造极致的小程序使用体验',
-        tags: ['Uni-app', '微信小程序', 'Python', 'Fastapi', 'Agent', '数据库', '全栈'],
+        tags: ['Uni-app', '微信小程序', 'Python', 'Fastapi', 'Agent', '知识库', '数据库', '全栈'],
         image: '/projects/hair-loss-login.jpg',
         previewImages: ['/projects/hair-loss-login.jpg', '/projects/hair-loss-upload.jpg', '/projects/hair-loss-profile.jpg'],
         previewQr: '/projects/hair-loss-qr.jpg'
