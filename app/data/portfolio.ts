@@ -274,7 +274,7 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         period: '2024.12-2026.6',
         company: 'Shanghai Yongxing Trading Co., Ltd.',
         role: 'Visual Designer, Operations, AI Systems Developer',
-        tasks: ['A relative-owned e-commerce company where I worked part-time as a non-formal employee.', 'Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
+        tasks: ['Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
       }]
     : [{
         period: '2025.1-2026.6',
@@ -291,7 +291,7 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         period: '2024.12-2026.6',
         company: '上海邕兴贸易有限公司',
         role: '美工、运营、AI系统开发',
-        tasks: ['亲戚家的电商公司，非正式员工，兼职', '使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
+        tasks: ['使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
       }]
 }
 
