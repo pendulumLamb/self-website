@@ -341,6 +341,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/agent.png',
         previewDisabledTip: 'Runs locally and is not online yet.'
       }, {
+        title: 'Evidence Tracking Agent',
+        subtitle: 'Agent for building evidence chains',
+        description: 'An agent that forms a complete evidence chain from real-world materials such as screenshots, documents, and videos, helping users make rational judgments.',
+        note: 'Users upload files, and the built-in agent analyzes them to output an evidence timeline and a node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
+        tags: ['React', 'Go', 'Echo', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
+        image: '/projects/evidence-agent-preview.png',
+        previewDisabledTip: 'Concept demo. Not online yet.'
+      }, {
         title: 'NeoDesign',
         subtitle: 'AI creation platform',
         logo: '/tech-logos/neodesign.png',
@@ -393,6 +401,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
         image: '/projects/agent.png',
         previewDisabledTip: '本地运行，暂不上线，请理解'
+      }, {
+        title: '证据追踪Agent',
+        subtitle: '完整证据链分析智能体',
+        description: '根据截图、文档、视频等现实资料形成完整证据链的Agent，帮助用户进行理性判断。',
+        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，以及节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
+        tags: ['React', 'Go', 'Echo', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
+        image: '/projects/evidence-agent-preview.png',
+        previewDisabledTip: '概念演示，暂不上线，请理解。'
       }, {
         title: 'NeoDesign',
         subtitle: 'AI 创作平台',
