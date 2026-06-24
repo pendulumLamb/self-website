@@ -263,7 +263,7 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         period: '2025.1-2026.6',
         company: 'Wuhu Xiangyi Software Co., Ltd.',
         role: 'Full-stack Engineer',
-        tasks: ['Joined a roommate-led startup and took part in daily full-stack development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
+        tasks: ['Handled day-to-day full-stack development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
       }, {
         period: '2023.2-2024.11',
         company: 'Bitech Automotive Electronics (Wuhu) Co., Ltd.',
@@ -280,7 +280,7 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         period: '2025.1-2026.6',
         company: '芜湖享易软件有限公司',
         role: '全栈工程师',
-        tasks: ['室友的创业公司，我被拉进去参与日常全栈开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
+        tasks: ['日常全栈开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
       }, {
         period: '2023.2-2024.11',
         company: '伯泰克（Bitech）汽车电子（芜湖）有限公司',
@@ -343,11 +343,11 @@ export function getProjects(isEnglish: boolean): Project[] {
       }, {
         title: 'Evidence Tracking Agent',
         subtitle: 'Agent for building evidence chains',
-        description: 'An agent that forms a complete evidence chain from real-world materials such as screenshots, documents, and videos, helping users make rational judgments.',
-        note: 'Users upload files, and the built-in agent analyzes them to output an evidence timeline and a node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
+        description: 'An agent that builds a complete evidence chain from real-world materials such as chat screenshots, contract documents, handwritten notes, and videos, helping users preserve memories.',
+        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
         tags: ['React', 'Go', 'Echo', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
         image: '/projects/evidence-agent-preview.png',
-        previewDisabledTip: 'Concept demo. Not online yet.'
+        previewDisabledTip: 'Local project. Not online yet.'
       }, {
         title: 'NeoDesign',
         subtitle: 'AI creation platform',
@@ -404,11 +404,11 @@ export function getProjects(isEnglish: boolean): Project[] {
       }, {
         title: '证据追踪Agent',
         subtitle: '完整证据链分析智能体',
-        description: '根据截图、文档、视频等现实资料形成完整证据链的Agent，帮助用户进行理性判断。',
-        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，以及节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
+        description: '根据聊天截图、合同文档、手写纸条、视频等现实资料形成完整证据链的Agent，帮助用户做记忆留存。',
+        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
         tags: ['React', 'Go', 'Echo', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
         image: '/projects/evidence-agent-preview.png',
-        previewDisabledTip: '概念演示，暂不上线，请理解。'
+        previewDisabledTip: '本地项目，暂不上线，请理解'
       }, {
         title: 'NeoDesign',
         subtitle: 'AI 创作平台',
