@@ -53,14 +53,14 @@ export function getWorkCountLabel(isEnglish: boolean, count: number) {
 export function getAboutIntroParagraphs(isEnglish: boolean) {
   return isEnglish
     ? [
-        'I graduated from Anhui Polytechnic University in 2023, majoring in Internet of Things Engineering while also taking courses in visual communication design. I was a member of the IoT Association in the School of Computer Science.',
-        'A startup attempt during college did not work out. After graduation I entered the tech industry and worked across automotive testing, IoT development, and full-stack software development, building both software and hardware capabilities while also providing creative resources for e-commerce teams.',
-        'I stay committed to product design, using minimal, restrained, and warm design to make technology easier to perceive.'
+        'I graduated from Anhui Polytechnic University in 2023, majoring in Internet of Things Engineering while also taking courses in visual communication design. I was a member of the IoT Association in the School of Computer Science. During my time at school I took part in various competitions with teachers and classmates, such as the Challenge Cup, Internet+, the Shuangbai Competition, and CCCC. Sadly, I never won a top prize.',
+        'During college I started taking on freelance work, and later a startup attempt did not work out. After graduation I entered the tech industry and worked across automotive testing, IoT development, and full-stack software development, building both software and hardware capabilities while also providing creative resources for e-commerce teams.',
+        'I stay committed to product design, using minimal, restrained, and warm design to make technology easier to perceive. I have broad interests and enjoy exploring new technologies, with an intense passion for development and an undying geek spirit.'
       ]
     : [
-        '2023年毕业于安徽工程大学，学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。',
-        '大学期间创业未果，毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，软硬兼修。并为电商公司提供资源设计。',
-        '执着于产品设计，用极简、克制、温暖的设计让科技得以被感知。'
+        '2023年毕业于安徽工程大学，学习物联网工程专业，另外辅修视觉传达设计课程。计算机学院物联网协会会员。在校期间和老师、同学参加过多种竞赛，诸如挑战杯、互联网+、双百大赛、CCCC等。可惜从未获得过顶级大奖。',
+        '大学期间开始做外包，后创业未果。毕业后进入计算机相关行业，先后从事过车载测试、物联网开发、软件全栈开发工作，软硬兼修。并为电商公司提供资源设计。',
+        '执着于产品设计，用极简、克制、温暖的设计让科技得以被感知。涉猎广泛，乐于探索新技术，拥有极致的开发热情和不灭的极客精神'
       ]
 }
 
