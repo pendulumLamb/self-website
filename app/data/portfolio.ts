@@ -345,9 +345,18 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: 'Agent for building evidence chains',
         description: 'An agent that builds a complete evidence chain from real-world materials such as chat screenshots, contract documents, handwritten notes, and videos, helping users preserve memories.',
         note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
-        tags: ['React', 'Go', 'Echo', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
+        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
         image: '/projects/evidence-agent-preview.png',
         previewDisabledTip: 'Local project. Not online yet.'
+      }, {
+        title: 'Go Commerce Project',
+        subtitle: 'Full-stack commerce system for a client',
+        description: 'A complete commerce project built for a client, covering Web, mini program, and admin management. Features included login, the full shopping flow, flash sales, coupons, and WeChat Pay. The project eventually stalled because of poor client-side operations.',
+        note: 'Built with Gin, Vue, Gorm, Element Plus, and Uni-app, with a focus on high concurrency, fast response, and simplified workflows.',
+        tags: ['Gin', 'Gorm', 'Vue', 'Element Plus', 'Uni-app', 'MySQL', 'Redis', 'Alibaba Cloud OSS', 'Full-stack'],
+        image: '/projects/go-mall-web.png',
+        previewImages: ['/projects/go-mall-web.png', '/projects/go-mall-mini.jpg'],
+        previewDisabledTip: 'Client project. Not online anymore.'
       }, {
         title: 'NeoDesign',
         subtitle: 'AI creation platform',
@@ -406,9 +415,18 @@ export function getProjects(isEnglish: boolean): Project[] {
         subtitle: '完整证据链分析智能体',
         description: '根据聊天截图、合同文档、手写纸条、视频等现实资料形成完整证据链的Agent，帮助用户做记忆留存。',
         note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
-        tags: ['React', 'Go', 'Echo', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
+        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
         image: '/projects/evidence-agent-preview.png',
         previewDisabledTip: '本地项目，暂不上线，请理解'
+      }, {
+        title: 'go商城项目',
+        subtitle: '为甲方打造的全套商城项目',
+        description: '为甲方打造的一款全套商城项目，包括web端、小程序端、后台管理端。功能包括：登录、购物全流程、秒杀、优惠券、支付（只做了微信支付）等商城基础功能。甲方运营不当最终烂尾。',
+        note: '项目基于Gin、Vue、Gorm、Element-plus、Uni-app等技术开发，具有高并发、快响应、极简化等特点。',
+        tags: ['Gin', 'Gorm', 'Vue', 'Element-plus', 'Uni-app', 'Mysql', 'Redis', '阿里云OSS', '全栈'],
+        image: '/projects/go-mall-web.png',
+        previewImages: ['/projects/go-mall-web.png', '/projects/go-mall-mini.jpg'],
+        previewDisabledTip: '甲方项目，当前已停止运营。'
       }, {
         title: 'NeoDesign',
         subtitle: 'AI 创作平台',
