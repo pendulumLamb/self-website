@@ -324,6 +324,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
+        title: 'Unishop Agents',
+        subtitle: 'Automated commerce data analysis agent',
+        description: 'A multi-agent deep research system built for an e-commerce company. It can analyze real-world data such as product pricing, sales volume, store reports, and employee performance, then search supporting information, generate structured reports, and provide actionable optimization suggestions.',
+        note: 'The project uses a ReAct architecture with a think-and-act, dynamic decision-making workflow, allowing long-term store monitoring and feedback.',
+        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', 'Full-stack'],
+        image: '/projects/agent.png',
+        previewDisabledTip: 'Runs locally and is not online yet.'
+      }, {
         title: 'Blockchain IoT Tea Traceability System',
         subtitle: 'Tea traceability system based on blockchain and IoT',
         description: 'A university entrepreneurship project that combines smart contracts on blockchain with IoT data, making the data tamper-resistant, stable, and secure while keeping the full tea production-to-sales chain transparent.',
@@ -332,14 +340,6 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
         previewDisabledTip: 'University entrepreneurship project. Not online anymore.'
-      }, {
-        title: 'Unishop Agents',
-        subtitle: 'Automated commerce data analysis agent',
-        description: 'A multi-agent deep research system built for an e-commerce company. It can analyze real-world data such as product pricing, sales volume, store reports, and employee performance, then search supporting information, generate structured reports, and provide actionable optimization suggestions.',
-        note: 'The project uses a ReAct architecture with a think-and-act, dynamic decision-making workflow, allowing long-term store monitoring and feedback.',
-        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', 'Full-stack'],
-        image: '/projects/agent.png',
-        previewDisabledTip: 'Runs locally and is not online yet.'
       }, {
         title: 'Evidence Tracking Agent',
         subtitle: 'Agent for building evidence chains',
@@ -394,6 +394,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
+        title: 'Unishop Agents',
+        subtitle: '自动化数据分析智能体',
+        description: '为电商公司打造的多Agent协作深度研究系统，自动可以根据商品定价、销售量、店铺报表、员工绩效等一切现实数据，搜索资料并生成结构化报告,并给出可执行的优化建议。',
+        note: '项目采用ReAct架构实现，具有“边想边做，动态决策”的特点，可对店铺进行长期监测反馈',
+        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
+        image: '/projects/agent.png',
+        previewDisabledTip: '本地运行，暂不上线，请理解'
+      }, {
         title: '基于区块链和物联网系统的茶叶溯源系统',
         subtitle: '区块链 + 物联网茶叶溯源系统',
         description: '大学创业项目，将智能合约（区块链）和物联网数据结合，实现数据不可篡改、稳定安全，保障茶叶在生产到销售全链路数据透明。',
@@ -402,14 +410,6 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
         previewDisabledTip: '大学创业项目，当前已停止运营。'
-      }, {
-        title: 'Unishop Agents',
-        subtitle: '自动化数据分析智能体',
-        description: '为电商公司打造的多Agent协作深度研究系统，自动可以根据商品定价、销售量、店铺报表、员工绩效等一切现实数据，搜索资料并生成结构化报告,并给出可执行的优化建议。',
-        note: '项目采用ReAct架构实现，具有“边想边做，动态决策”的特点，可对店铺进行长期监测反馈',
-        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
-        image: '/projects/agent.png',
-        previewDisabledTip: '本地运行，暂不上线，请理解'
       }, {
         title: '证据追踪Agent',
         subtitle: '完整证据链分析智能体',
