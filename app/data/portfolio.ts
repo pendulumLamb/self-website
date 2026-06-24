@@ -327,10 +327,10 @@ export function getProjects(isEnglish: boolean): Project[] {
         title: 'Evidence Tracking Agent',
         subtitle: 'Agent for building evidence chains',
         description: 'An agent that builds a complete evidence chain from real-world materials such as chat screenshots, contract documents, handwritten notes, and videos, helping users preserve memories.',
-        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
+        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Gin, and agent orchestration is handled by Eino for high-performance processing.',
         tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
         image: '/projects/evidence-agent-preview-v2.png',
-        previewDisabledTip: 'Local project. Not online yet.'
+        previewDisabledTip: 'Coming soon.'
       }, {
         title: 'Unishop Agents',
         subtitle: 'Automated commerce data analysis agent',
@@ -397,10 +397,10 @@ export function getProjects(isEnglish: boolean): Project[] {
         title: '证据追踪Agent',
         subtitle: '完整证据链分析智能体',
         description: '根据聊天截图、合同文档、手写纸条、视频等现实资料形成完整证据链的Agent，帮助用户做记忆留存。',
-        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
+        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Gin，智能体编排使用Eino，确保高性能处理。',
         tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
         image: '/projects/evidence-agent-preview-v2.png',
-        previewDisabledTip: '本地项目，暂不上线，请理解'
+        previewDisabledTip: '即将上线。'
       }, {
         title: 'Unishop Agents',
         subtitle: '自动化数据分析智能体',
