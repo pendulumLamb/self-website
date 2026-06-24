@@ -324,19 +324,19 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
-        title: 'Warmzen',
-        subtitle: 'Cross-border independent store',
-        logo: '/projects/warmzen-logo.png',
-        description: 'A cross-border commerce site built on the open-source Payload CMS commerce stack, including storefront and admin system.',
-        note: 'The storefront focuses on brand presentation, product collections, and an immersive hero experience, while the admin side supports content management, payment flows, and multilingual display.',
-        tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS', 'Full-stack'],
-        image: '/projects/warmzen-preview.png',
-        previewUrl: 'https://warmzen.vercel.app/'
+        title: 'Blockchain IoT Tea Traceability System',
+        subtitle: 'Tea traceability system based on blockchain and IoT',
+        description: 'A university entrepreneurship project that combines smart contracts on blockchain with IoT data, making the data tamper-resistant, stable, and secure while keeping the full tea production-to-sales chain transparent.',
+        note: 'IoT sensing devices upload data to the cloud and form blocks. Each node then generates data through sensing and recording, and those node records form a blockchain. Users scan the product label code in the app to view the full-chain data. This decentralized approach protects the natural integrity of the data. The blockchain uses Ethereum, the app is built with uni-app, and the service is built on Spring Boot.',
+        tags: ['Ethereum', 'Go', 'IoT', 'Blockchain', 'Geth', 'Uni-app', 'Java'],
+        image: '/projects/tea-traceability.jpg',
+        previewUrl: 'https://b23.tv/yor2Hbh',
+        previewDisabledTip: 'University entrepreneurship project. Not online anymore.'
       }, {
-        title: 'Uni Agents',
-        subtitle: 'Automated deep-research agent',
-        description: 'A multi-agent research system based on Uni Agents that breaks down topics, searches sources, and generates structured reports.',
-        note: 'Enter a research topic and the agents plan subtasks, query multiple search engines, show progress in real time, and output a structured Markdown report.',
+        title: 'Unishop Agents',
+        subtitle: 'Automated commerce data analysis agent',
+        description: 'A multi-agent deep research system built for an e-commerce company. It can analyze real-world data such as product pricing, sales volume, store reports, and employee performance, then search supporting information, generate structured reports, and provide actionable optimization suggestions.',
+        note: 'The project uses a ReAct architecture with a think-and-act, dynamic decision-making workflow, allowing long-term store monitoring and feedback.',
         tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', 'Full-stack'],
         image: '/projects/agent.png',
         previewDisabledTip: 'Runs locally and is not online yet.'
@@ -394,19 +394,19 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
-        title: 'Warmzen',
-        subtitle: '跨境独立站',
-        logo: '/projects/warmzen-logo.png',
-        description: '基于 Payload CMS 开源商城系统开发的跨境独立站，包含前台商城与后台管理系统。',
-        note: '前台聚焦品牌展示、商品集合和沉浸式首屏体验，后台支持商品内容管理、支付链路和多语言展示等能力。',
-        tags: ['Next.js', 'React', 'Payload CMS', 'PostgreSQL', 'Stripe', 'Tailwind CSS', '全栈'],
-        image: '/projects/warmzen-preview.png',
-        previewUrl: 'https://warmzen.vercel.app/'
+        title: '基于区块链和物联网系统的茶叶溯源系统',
+        subtitle: '区块链 + 物联网茶叶溯源系统',
+        description: '大学创业项目，将智能合约（区块链）和物联网数据结合，实现数据不可篡改、稳定安全，保障茶叶在生产到销售全链路数据透明。',
+        note: '物联网感知端将数据上云形成区块，之后每个节点通过感知、记录等方式产生数据，各节点数据形成区块链。用户通过App扫描产品上标签码查看全链路数据。这种去中心化方式保障了数据的纯天然。区块链使用以太坊，App使用uni-app开发，服务基于SpringBoot搭建。',
+        tags: ['以太坊', 'Go', 'IoT', '区块链', 'Geth', 'Uni-app', 'Java'],
+        image: '/projects/tea-traceability.jpg',
+        previewUrl: 'https://b23.tv/yor2Hbh',
+        previewDisabledTip: '大学创业项目，当前已停止运营。'
       }, {
-        title: 'Uni Agents',
-        subtitle: '自动化深度研究智能体',
-        description: '基于 Uni Agents 框架的多 Agent 协作深度研究系统，自动拆解课题、搜索资料并生成结构化报告。',
-        note: '输入一个研究课题，智能体自动规划子任务、调用多个搜索引擎收集资料，实时展示进度，最终输出一份结构化的 Markdown 研究报告。',
+        title: 'Unishop Agents',
+        subtitle: '自动化数据分析智能体',
+        description: '为电商公司打造的多Agent协作深度研究系统，自动可以根据商品定价、销售量、店铺报表、员工绩效等一切现实数据，搜索资料并生成结构化报告,并给出可执行的优化建议。',
+        note: '项目采用ReAct架构实现，具有“边想边做，动态决策”的特点，可对店铺进行长期监测反馈',
         tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
         image: '/projects/agent.png',
         previewDisabledTip: '本地运行，暂不上线，请理解'
