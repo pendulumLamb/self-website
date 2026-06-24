@@ -324,6 +324,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
+        title: 'Evidence Tracking Agent',
+        subtitle: 'Agent for building evidence chains',
+        description: 'An agent that builds a complete evidence chain from real-world materials such as chat screenshots, contract documents, handwritten notes, and videos, helping users preserve memories.',
+        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
+        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
+        image: '/projects/evidence-agent-preview-v2.png',
+        previewDisabledTip: 'Local project. Not online yet.'
+      }, {
         title: 'Unishop Agents',
         subtitle: 'Automated commerce data analysis agent',
         description: 'A multi-agent deep research system built for an e-commerce company. It can analyze real-world data such as product pricing, sales volume, store reports, and employee performance, then search supporting information, generate structured reports, and provide actionable optimization suggestions.',
@@ -340,14 +348,6 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
         previewDisabledTip: 'University entrepreneurship project. Not online anymore.'
-      }, {
-        title: 'Evidence Tracking Agent',
-        subtitle: 'Agent for building evidence chains',
-        description: 'An agent that builds a complete evidence chain from real-world materials such as chat screenshots, contract documents, handwritten notes, and videos, helping users preserve memories.',
-        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Echo, and agent orchestration is handled by Eino for high-performance processing.',
-        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
-        image: '/projects/evidence-agent-preview.png',
-        previewDisabledTip: 'Local project. Not online yet.'
       }, {
         title: 'Go Commerce Project',
         subtitle: 'Full-stack commerce system for a client',
@@ -394,6 +394,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
+        title: '证据追踪Agent',
+        subtitle: '完整证据链分析智能体',
+        description: '根据聊天截图、合同文档、手写纸条、视频等现实资料形成完整证据链的Agent，帮助用户做记忆留存。',
+        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
+        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
+        image: '/projects/evidence-agent-preview-v2.png',
+        previewDisabledTip: '本地项目，暂不上线，请理解'
+      }, {
         title: 'Unishop Agents',
         subtitle: '自动化数据分析智能体',
         description: '为电商公司打造的多Agent协作深度研究系统，自动可以根据商品定价、销售量、店铺报表、员工绩效等一切现实数据，搜索资料并生成结构化报告,并给出可执行的优化建议。',
@@ -410,14 +418,6 @@ export function getProjects(isEnglish: boolean): Project[] {
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
         previewDisabledTip: '大学创业项目，当前已停止运营。'
-      }, {
-        title: '证据追踪Agent',
-        subtitle: '完整证据链分析智能体',
-        description: '根据聊天截图、合同文档、手写纸条、视频等现实资料形成完整证据链的Agent，帮助用户做记忆留存。',
-        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Echo，智能体编排使用Eino，确保高性能处理。',
-        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
-        image: '/projects/evidence-agent-preview.png',
-        previewDisabledTip: '本地项目，暂不上线，请理解'
       }, {
         title: 'go商城项目',
         subtitle: '为甲方打造的全套商城项目',
