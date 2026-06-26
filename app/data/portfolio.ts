@@ -177,6 +177,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       icon: 'simple-icons:docker',
       color: '#2496ED'
     }, {
+      label: 'K8s',
+      icon: 'simple-icons:kubernetes',
+      color: '#326CE5'
+    }, {
       label: 'Nginx',
       icon: 'simple-icons:nginx',
       color: '#009639'
@@ -263,13 +267,13 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         period: '2025.1-2026.6',
         company: 'Wuhu Xiangyi Software Co., Ltd.',
         role: 'Full-stack Engineer',
-        tasks: ['Handled day-to-day full-stack development.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
+        tasks: ['Day-to-day full-stack development, including frontend design and engineering, backend development, distributed systems, microservice architecture, frontend-backend debugging, and online deployment and maintenance.', 'Handled UI/UX design and implementation for websites, mini programs, apps, and related software.', 'Occasionally contributed to hardware development.', 'Built many full-stack projects here and accumulated substantial hands-on delivery experience.']
       }, {
         period: '2023.2-2024.11',
         company: 'Bitech Automotive Electronics (Wuhu) Co., Ltd.',
         companyNote: 'Formerly Bosch Automotive Electronics (Wuhu) Co., Ltd. After Bosch divested, Bitech took over operations. The company mainly serves automakers including Chery, Changan, GAC, and Tesla, producing instrument clusters, screens, domain controllers, and related components.',
         role: 'Test Engineer',
-        tasks: ['Worked with CAN networks and performed bench and vehicle tests for instrument clusters.', 'Designed test cases and test scripts.', 'Stationed at Chery and Changan vehicle ports for pre-export inspection and flashing.', 'Built a practical understanding of automotive consumer electronics.']
+        tasks: ['Worked with CAN networks and used CANoe and CANalyzer for bench and vehicle tests of instrument clusters.', 'Designed solutions using the CAPL language.', 'On-site at the service party\'s port for pre-export inspection and flashing.', 'Built a practical understanding of automotive consumer electronics.']
       }, {
         period: '2024.12-2026.6',
         company: 'Shanghai Yongxing Trading Co., Ltd.',
@@ -280,13 +284,13 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         period: '2025.1-2026.6',
         company: '芜湖享易软件有限公司',
         role: '全栈工程师',
-        tasks: ['日常全栈开发。', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
+        tasks: ['日常全栈开发，包括前端设计和工程化、后端开发、分布式系统、微服务架构、前后端调试、线上部署和维护', '负责网站、小程序、App 等软件的 UI/UX 设计与实际开发。', '偶尔参与硬件开发。', '在这里开发了很多全栈项目，积累了丰富的实战经验。']
       }, {
         period: '2023.2-2024.11',
         company: '伯泰克（Bitech）汽车电子（芜湖）有限公司',
         companyNote: '前博世（Bosch）汽车电子（芜湖）有限公司，博世撤资后由伯泰克接手运营，公司主要对接奇瑞、长安、广汽、特斯拉等车企，生产仪表、屏幕、域控制器等部件',
         role: '测试工程师',
-        tasks: ['了解 CAN 网络，进行汽车仪表的台架测试、实车测试。', '设计测试用例与测试脚本。', '奇瑞/长安汽车港口驻场，负责出口前检测与刷机。', '对汽车消费电子有一定理解']
+        tasks: ['了解 CAN 网络，利用CANoe和CANalyzer进行汽车仪表的台架测试、实车测试。', '使用CAPL语言设计方案。', '服务方港口驻场，负责出口前检测与刷机。', '对汽车消费电子有一定理解']
       }, {
         period: '2024.12-2026.6',
         company: '上海邕兴贸易有限公司',
@@ -301,7 +305,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         title: 'Infinite-Canvas',
         subtitle: 'Open-source infinite canvas project',
         description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
-        note: 'The repository has 1.3k stars and explores canvas editing, asset orchestration, and workflow-style creative tooling.',
+        note: 'The repository has 1.6k stars and explores canvas editing, asset orchestration, and workflow-style creative tooling.',
         tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow', 'Full-stack'],
         image: '/projects/infinite-canvas-open-source.png',
         previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
@@ -330,7 +334,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Gin, and agent orchestration is handled by Eino for high-performance processing.',
         tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
         image: '/projects/evidence-agent-preview-v2.png',
-        previewDisabledTip: 'Coming soon.'
+        previewDisabledTip: 'Internally deployed.'
       }, {
         title: 'Unishop Agents',
         subtitle: 'Automated commerce data analysis agent',
@@ -338,7 +342,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         note: 'The project uses a ReAct architecture with a think-and-act, dynamic decision-making workflow, allowing long-term store monitoring and feedback.',
         tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', 'Full-stack'],
         image: '/projects/agent.png',
-        previewDisabledTip: 'Runs locally and is not online yet.'
+        previewDisabledTip: 'Internally deployed.'
       }, {
         title: 'Blockchain IoT Tea Traceability System',
         subtitle: 'Tea traceability system based on blockchain and IoT',
@@ -347,7 +351,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         tags: ['Ethereum', 'Go', 'IoT', 'Blockchain', 'Geth', 'Uni-app', 'Java'],
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
-        previewDisabledTip: 'University entrepreneurship project. Not online anymore.'
+        previewDisabledTip: 'Watch the intro video.'
       }, {
         title: 'Go Commerce Project',
         subtitle: 'Full-stack commerce system for a client',
@@ -371,8 +375,8 @@ export function getProjects(isEnglish: boolean): Project[] {
         title: 'Infinite-Canvas',
         subtitle: '开源无限画布项目',
         description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
-        note: '项目 GitHub 仓库已获得 1.3k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。',
-        tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.3k stars', '全栈'],
+        note: '项目 GitHub 仓库已获得 1.6k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。',
+        tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.6k stars', '全栈'],
         image: '/projects/infinite-canvas-open-source.png',
         previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
       }, {
@@ -400,7 +404,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Gin，智能体编排使用Eino，确保高性能处理。',
         tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
         image: '/projects/evidence-agent-preview-v2.png',
-        previewDisabledTip: '即将上线。'
+        previewDisabledTip: '内部部署。'
       }, {
         title: 'Unishop Agents',
         subtitle: '自动化数据分析智能体',
@@ -408,7 +412,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         note: '项目采用ReAct架构实现，具有“边想边做，动态决策”的特点，可对店铺进行长期监测反馈',
         tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
         image: '/projects/agent.png',
-        previewDisabledTip: '本地运行，暂不上线，请理解'
+        previewDisabledTip: '内部部署'
       }, {
         title: '基于区块链和物联网系统的茶叶溯源系统',
         subtitle: '区块链 + 物联网茶叶溯源系统',
@@ -417,7 +421,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         tags: ['以太坊', 'Go', 'IoT', '区块链', 'Geth', 'Uni-app', 'Java'],
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
-        previewDisabledTip: '大学创业项目，当前已停止运营。'
+        previewDisabledTip: '查看介绍视频'
       }, {
         title: 'go商城项目',
         subtitle: '为甲方打造的全套商城项目',
