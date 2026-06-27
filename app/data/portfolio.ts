@@ -87,6 +87,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'Ts',
       icon: 'simple-icons:typescript',
       color: '#3178C6'
+    }, {
+      label: 'Java',
+      icon: 'simple-icons:openjdk',
+      color: '#007396'
     }]
   }, {
     title: isEnglish ? 'Frontend' : '前端',
@@ -116,6 +120,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'Flutter',
       icon: 'simple-icons:flutter',
       color: '#02569B'
+    }, {
+      label: 'Wails',
+      icon: 'simple-icons:wails',
+      color: '#000000'
     }]
   }, {
     title: isEnglish ? 'Backend' : '后端',
@@ -133,6 +141,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
     }, {
       label: isEnglish ? 'Nitro by Nuxt.js' : 'Nitro（Nuxt.Js提供）',
       logo: '/tech-logos/nitro.svg'
+    }, {
+      label: 'Spring Boot',
+      icon: 'simple-icons:springboot',
+      color: '#6DB33F'
     }]
   }, {
     title: isEnglish ? 'Infrastructure' : '基础设施',
