@@ -254,9 +254,6 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
     }, {
       label: 'Tapnow',
       logo: '/tech-logos/tapnow.png'
-    }, {
-      label: isEnglish ? 'NeoDesign platform' : 'NeoDesign（自研平台）',
-      logo: '/tech-logos/neodesign.png'
     }]
   }]
 }
@@ -362,14 +359,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         previewImages: ['/projects/go-mall-web.png', '/projects/go-mall-mini.jpg'],
         previewDisabledTip: 'Client project. Not online anymore.'
       }, {
-        title: 'NeoDesign',
-        subtitle: 'AI creation platform',
-        logo: '/tech-logos/neodesign.png',
-        description: 'A workspace for producing AI images, videos, and creative assets, built to provide a seamless one-stop AI creation experience.',
-        note: 'Built for my own e-commerce workflow after finding tools like Lovart and Tapnow too expensive for daily use.',
-        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Full-stack'],
-        image: '/projects/infinite-canvas.jpg',
-        previewDisabledTip: 'In development. Not open-sourced or released yet.'
+        title: 'Neptune',
+        subtitle: 'Agent black-box security monitoring platform',
+        logo: '/tech-logos/Neptune.png',
+        description: 'A locally-run agent monitoring tool that brings together agent aggregation, status monitoring, operation tracking, API traffic monitoring, token consumption and cost calculation, cache monitoring, security protection, risk alerts, and git commit gatekeeping, and can monitor multiple agents and tasks in parallel. It does only three things: trace, guard, and manage — not surface-level viewing and management, but deep, system- and gateway-level monitoring and protection.',
+        note: 'It adopts a multi-level decoupled architecture that is extensible and integrable, and ships with a desktop app, CLI, and local gateway. The desktop client is built with Wails, React powers the UI, and the Go backend handles local config reading, process scanning, session activity detection, and system integration. It supports Windows and macOS, and can monitor agents such as Codex, Claude Code, OpenClaw, and OpenCode.',
+        tags: ['Go', 'React', 'Wails', 'Agent', 'Windows', 'macOS', 'Open-source', 'CLI'],
+        image: '/projects/Neptune-console.png',
+        previewDisabledTip: 'Open-source release coming soon.'
       }]
     : [{
         title: 'Infinite-Canvas',
@@ -432,14 +429,14 @@ export function getProjects(isEnglish: boolean): Project[] {
         previewImages: ['/projects/go-mall-web.png', '/projects/go-mall-mini.jpg'],
         previewDisabledTip: '甲方项目，当前已停止运营。'
       }, {
-        title: 'NeoDesign',
-        subtitle: 'AI 创作平台',
-        logo: '/tech-logos/neodesign.png',
-        description: '面向 AI 图片、视频与创意资产生产的工作空间，为用户打造无缝丝滑一站式AI创作体验。',
-        note: '因不满Lovart、Tapnow的昂贵收费，开发一款更好用、更便宜的自己用，以完成日常电商工作。',
-        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', '全栈'],
-        image: '/projects/infinite-canvas.jpg',
-        previewDisabledTip: '开发中，暂不开源/发布，请理解。'
+        title: 'Neptune',
+        subtitle: 'Agent黑盒安全监控平台',
+        logo: '/tech-logos/Neptune.png',
+        description: '本地运行的Agent监控工具，集Agent汇总、状态监控、操作追踪、api流量监控、token消耗和成本计算、缓存监控、安全防护、风险提醒、git提交把关等功能于一体，可以多agent多任务同步监控。只做三件事：trace、guard、manage，不是纸面上的查看和管理，而是深入系统和网关级的监控和防护。',
+        note: '采用多级解耦架构，可扩展可集成，配备桌面应用、cli、本地网关。桌面端通过 Wails 搭建，React 负责界面，Go 后端负责本地配置读取、进程扫描、会话活动判断和系统集成。支持Windows和macOS，可监控诸如codex、claudecode、openclaw、opencode等agent的情况。',
+        tags: ['Go', 'React', 'Wails', 'Agent', 'windows', 'macos', '开源', 'cli'],
+        image: '/projects/Neptune-console.png',
+        previewDisabledTip: '即将开源'
       }]
 }
 
