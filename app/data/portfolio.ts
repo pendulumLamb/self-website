@@ -305,7 +305,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         title: 'Infinite-Canvas',
         subtitle: 'Open-source infinite canvas project',
         description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
-        note: 'The repository has 1.6k stars and explores canvas editing, asset orchestration, and workflow-style creative tooling.',
+        note: 'The repository has 1.6k stars and uses an infinite canvas to host AI generation workflows and asset management for images, videos, and more. It integrates AI knowledge-base Q&A and preset ComfyUI workflows while also letting you plug in your own ComfyUI workflows, exploring directions like canvas editing, asset orchestration, workflow-style creative tooling, and AI Agents.',
         tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow', 'Full-stack'],
         image: '/projects/infinite-canvas-open-source.png',
         previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
@@ -375,7 +375,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         title: 'Infinite-Canvas',
         subtitle: '开源无限画布项目',
         description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
-        note: '项目 GitHub 仓库已获得 1.6k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。',
+        note: '项目 GitHub 仓库已获得 1.6k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。集成AI知识库问答、预设comfyUI工作流，也可自行接入comfyUI工作流。探索画布编辑、素材编排、工作流式创作工具、AI Agent等方向。',
         tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 1.6k stars', '全栈'],
         image: '/projects/infinite-canvas-open-source.png',
         previewUrl: 'https://github.com/hero8152/Infinite-Canvas'
