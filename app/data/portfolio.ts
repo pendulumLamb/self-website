@@ -124,6 +124,10 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'Wails',
       icon: 'simple-icons:wails',
       color: '#000000'
+    }, {
+      label: 'Electron',
+      icon: 'simple-icons:electron',
+      color: '#47848F'
     }]
   }, {
     title: isEnglish ? 'Backend' : '后端',
