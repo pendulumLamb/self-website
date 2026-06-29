@@ -10,6 +10,7 @@ const props = defineProps<{
 }>()
 
 const { width: windowWidth, height: windowHeight } = useWindowSize()
+const PROJECT_PREVIEW_RATIO = 16 / 9
 
 const viewportHeight = computed(() => {
   return Number.isFinite(windowHeight.value) && windowHeight.value > 0 ? windowHeight.value : 900
@@ -60,7 +61,7 @@ const projectPreviewStyle = computed(() => {
 
   if (isMobilePreview) {
     const previewWidth = Math.max(Math.min(viewportWidth.value - margin * 2, 544), 180)
-    const previewHeight = previewWidth * 0.5625
+    const previewHeight = previewWidth / PROJECT_PREVIEW_RATIO
     const centeredX = (viewportWidth.value - previewWidth) / 2
     const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
     const aboveClickY = Math.min(Math.max(projectPreviewPosition.value.y - previewHeight - 6, margin), maxY)
@@ -68,13 +69,14 @@ const projectPreviewStyle = computed(() => {
     return {
       opacity: hoveredProjectIndex.value === null ? 0 : 1,
       width: `${previewWidth}px`,
+      height: `${previewHeight}px`,
       transform: `translate3d(${centeredX}px, ${aboveClickY}px, 0) scale(${hoveredProjectIndex.value === null ? 0.96 : 1})`
     }
   }
 
   const desktopGap = 2
   const previewWidth = Math.max(Math.min(544, viewportWidth.value - margin * 2), 260)
-  const previewHeight = previewWidth * 0.5625
+  const previewHeight = previewWidth / PROJECT_PREVIEW_RATIO
   const maxY = Math.max(viewportHeight.value - previewHeight - margin, margin)
   const rightX = projectPreviewPosition.value.x + desktopGap
   const leftX = projectPreviewPosition.value.x - previewWidth - desktopGap
@@ -86,6 +88,7 @@ const projectPreviewStyle = computed(() => {
   return {
     opacity: hoveredProjectIndex.value === null ? 0 : 1,
     width: `${previewWidth}px`,
+    height: `${previewHeight}px`,
     transform: `translate3d(${x}px, ${y}px, 0) scale(${hoveredProjectIndex.value === null ? 0.96 : 1})`
   }
 })
@@ -301,7 +304,7 @@ onBeforeUnmount(() => {
       </div>
       <div
         v-else-if="hoveredProject?.previewImages?.length"
-        class="grid aspect-video gap-2 p-2"
+        class="grid h-full w-full gap-2 p-2"
         :class="hoveredProject.previewImages.length >= 3 ? 'grid-cols-3' : 'grid-cols-2'"
       >
         <img
@@ -309,14 +312,14 @@ onBeforeUnmount(() => {
           :key="image"
           :src="image"
           :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
-          class="h-full min-h-0 w-full object-contain opacity-85"
+          class="h-full min-h-0 w-full bg-white/70 object-contain opacity-90"
         >
       </div>
       <img
         v-else-if="hoveredProject"
         :src="hoveredProject.image"
         :alt="locale === 'en' ? `${hoveredProject.title} project screenshot` : `${hoveredProject.title} 项目截图`"
-        class="block aspect-video w-full object-cover opacity-85"
+        class="block h-full w-full bg-white/70 object-contain opacity-90"
       >
     </div>
   </section>
