@@ -7,16 +7,17 @@ defineProps<{
 
 const { locale, toggleLocale } = useSiteI18n()
 const hidden = ref(false)
+const mobileMenu = ref<HTMLDetailsElement | null>(null)
 const isHome = computed(() => {
   if (!import.meta.client) return false
   return window.location.pathname === '/' || window.location.pathname === ''
 })
-let lastY = 0
 let committedY = 0
 
 function handleLocaleToggle() {
   toggleLocale()
   hidden.value = false
+  mobileMenu.value?.removeAttribute('open')
   committedY = import.meta.client ? window.scrollY : 0
 }
 
@@ -32,12 +33,12 @@ function onScroll() {
     hidden.value = false
     committedY = y
   }
-  lastY = y
 }
 
 function handleNavClick(link: NavigationMenuItem, event: MouseEvent) {
+  mobileMenu.value?.removeAttribute('open')
   // Hash links on home page: scroll to anchor directly
-  if (link.to && link.to.startsWith('/#')) {
+  if (typeof link.to === 'string' && link.to.startsWith('/#')) {
     const hash = link.to.slice(2) // Remove '/#'
     if (isHome.value) {
       event.preventDefault()
@@ -54,7 +55,6 @@ function handleNavClick(link: NavigationMenuItem, event: MouseEvent) {
 }
 
 onMounted(() => {
-  lastY = window.scrollY
   window.addEventListener('scroll', onScroll, { passive: true })
 })
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
@@ -76,7 +76,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
       </NuxtLink>
 
       <nav
-        class="flex items-center gap-3 sm:gap-5"
+        class="hidden items-center gap-3 lg:flex"
         :class="locale === 'en' ? 'lg:gap-5' : 'lg:gap-8'"
         :aria-label="locale === 'en' ? 'Primary navigation' : '主导航'"
       >
@@ -109,6 +109,59 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           >EN</span>
         </button>
       </nav>
+
+      <div class="flex items-center gap-4 lg:hidden">
+        <button
+          type="button"
+          class="language-toggle cursor-clickable inline-flex items-center gap-1 text-xs font-bold tracking-[0.12em] text-white/55 transition hover:text-white"
+          :aria-label="locale === 'en' ? 'Switch to Chinese' : '切换到英文'"
+          @click="handleLocaleToggle"
+        >
+          <span
+            class="language-toggle-item"
+            :class="{ 'language-toggle-item--active': locale === 'zh' }"
+          >中</span>
+          <span class="language-toggle-separator">/</span>
+          <span
+            class="language-toggle-item"
+            :class="{ 'language-toggle-item--active': locale === 'en' }"
+          >EN</span>
+        </button>
+        <details
+          ref="mobileMenu"
+          class="mobile-menu lg:hidden"
+        >
+          <summary
+            class="cursor-clickable flex size-9 list-none items-center justify-center rounded-full border border-white/20 bg-white/8 text-white transition hover:bg-white/14"
+            :aria-label="locale === 'en' ? 'Toggle navigation' : '打开或关闭导航'"
+          >
+            <UIcon
+              name="i-lucide-menu"
+              class="mobile-menu-open-icon size-5"
+            />
+            <UIcon
+              name="i-lucide-x"
+              class="mobile-menu-close-icon hidden size-5"
+            />
+          </summary>
+
+          <nav
+            class="absolute left-4 right-4 top-[calc(100%+0.5rem)] grid grid-cols-2 gap-2 rounded-2xl border border-white/15 bg-neutral-950/94 p-3 shadow-2xl shadow-black/30 backdrop-blur-xl"
+            :aria-label="locale === 'en' ? 'Mobile navigation' : '移动端导航'"
+          >
+            <NuxtLink
+              v-for="link in links"
+              :key="`mobile-${link.label}`"
+              :to="link.to"
+              class="rounded-xl px-4 py-3 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white"
+              active-class="bg-white/10 text-white"
+              @click="handleNavClick(link, $event)"
+            >
+              {{ link.label }}
+            </NuxtLink>
+          </nav>
+        </details>
+      </div>
     </div>
   </header>
 </template>
@@ -141,5 +194,17 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
 .language-toggle-separator {
   color: rgb(255 255 255 / 0.32);
+}
+
+.mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-menu[open] .mobile-menu-open-icon {
+  display: none;
+}
+
+.mobile-menu[open] .mobile-menu-close-icon {
+  display: block;
 }
 </style>

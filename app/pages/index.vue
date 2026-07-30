@@ -21,7 +21,7 @@ if (!page.value) {
 }
 
 const { scrollY, easedScrollY } = useScrollY()
-const { width: windowWidth, height: windowHeight } = useWindowSize()
+const { height: windowHeight } = useWindowSize()
 const { locale, isEnglish } = useSiteI18n()
 
 const seoTitle = computed(() => locale.value === 'en'
@@ -41,10 +41,6 @@ useSeoMeta({
 
 const viewportHeight = computed(() => {
   return Number.isFinite(windowHeight.value) && windowHeight.value > 0 ? windowHeight.value : 900
-})
-
-const viewportWidth = computed(() => {
-  return Number.isFinite(windowWidth.value) && windowWidth.value > 0 ? windowWidth.value : 1440
 })
 
 const coverProgress = computed(() => {
@@ -86,124 +82,6 @@ const pageScrollProgress = computed(() => {
 
   return Math.min(Math.max(raw / maxScroll, 0), 1)
 })
-
-const scrollProgressStyle = computed(() => {
-  const progress = dragScrollProgress.value ?? pageScrollProgress.value
-
-  return {
-    height: `${progress * 100}%`
-  }
-})
-
-const scrollSlider = ref<HTMLElement | null>(null)
-const isScrollDragging = ref(false)
-const dragScrollProgress = ref<number | null>(null)
-
-let scrollDragFrame = 0
-let pendingScrollProgress = 0
-let previousScrollBehavior = ''
-let previousUserSelect = ''
-
-const scrollProgressPercent = computed(() => Math.round(pageScrollProgress.value * 100))
-
-function getMaxPageScroll() {
-  if (!import.meta.client) return 0
-  return Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
-}
-
-function applyScrollProgress(progress: number) {
-  if (!import.meta.client) return
-  const clamped = Math.min(Math.max(progress, 0), 1)
-  const top = clamped * getMaxPageScroll()
-
-  window.scrollTo(0, top)
-  document.documentElement.scrollTop = top
-  document.body.scrollTop = top
-}
-
-function scrollToProgress(progress: number) {
-  pendingScrollProgress = Math.min(Math.max(progress, 0), 1)
-  dragScrollProgress.value = pendingScrollProgress
-
-  if (scrollDragFrame) return
-
-  scrollDragFrame = window.requestAnimationFrame(() => {
-    scrollDragFrame = 0
-    applyScrollProgress(pendingScrollProgress)
-  })
-}
-
-function updateScrollFromPointer(event: PointerEvent) {
-  if (!scrollSlider.value) return
-  const rect = scrollSlider.value.getBoundingClientRect()
-  const progress = (event.clientY - rect.top) / rect.height
-  scrollToProgress(progress)
-}
-
-function onScrollSliderPointerDown(event: PointerEvent) {
-  if (event.button !== 0) return
-  event.preventDefault()
-  isScrollDragging.value = true
-  scrollSlider.value?.setPointerCapture(event.pointerId)
-  previousScrollBehavior = document.documentElement.style.scrollBehavior
-  previousUserSelect = document.body.style.userSelect
-  document.documentElement.style.scrollBehavior = 'auto'
-  document.body.style.userSelect = 'none'
-  document.documentElement.classList.add('is-scroll-dragging')
-  updateScrollFromPointer(event)
-}
-
-function onScrollSliderPointerMove(event: PointerEvent) {
-  if (!isScrollDragging.value) return
-  event.preventDefault()
-  updateScrollFromPointer(event)
-}
-
-function stopScrollSliderDrag(event?: PointerEvent) {
-  if (!isScrollDragging.value) return
-  if (event && scrollSlider.value?.hasPointerCapture(event.pointerId)) {
-    scrollSlider.value.releasePointerCapture(event.pointerId)
-  }
-  if (scrollDragFrame) {
-    window.cancelAnimationFrame(scrollDragFrame)
-    scrollDragFrame = 0
-    applyScrollProgress(pendingScrollProgress)
-  }
-  isScrollDragging.value = false
-  dragScrollProgress.value = null
-  document.documentElement.style.scrollBehavior = previousScrollBehavior
-  document.body.style.userSelect = previousUserSelect
-  document.documentElement.classList.remove('is-scroll-dragging')
-}
-
-function onScrollSliderKeydown(event: KeyboardEvent) {
-  const maxScroll = getMaxPageScroll()
-  if (maxScroll <= 0) return
-
-  const current = pageScrollProgress.value
-  const smallStep = 48 / maxScroll
-  const largeStep = viewportHeight.value / maxScroll
-
-  if (event.key === 'ArrowDown') {
-    event.preventDefault()
-    scrollToProgress(current + smallStep)
-  } else if (event.key === 'ArrowUp') {
-    event.preventDefault()
-    scrollToProgress(current - smallStep)
-  } else if (event.key === 'PageDown') {
-    event.preventDefault()
-    scrollToProgress(current + largeStep)
-  } else if (event.key === 'PageUp') {
-    event.preventDefault()
-    scrollToProgress(current - largeStep)
-  } else if (event.key === 'Home') {
-    event.preventDefault()
-    scrollToProgress(0)
-  } else if (event.key === 'End') {
-    event.preventDefault()
-    scrollToProgress(1)
-  }
-}
 
 const sectionTitleClass = computed(() => isEnglish.value
   ? 'text-4xl leading-none font-black tracking-tight text-neutral-950 sm:text-6xl lg:text-7xl'
@@ -337,10 +215,6 @@ function getCombinedCharStyle(index: number): Record<string, string | number> {
 const workTrack = ref<HTMLElement | null>(null)
 const workTrackTop = ref(0)
 const hasWorkTrackMetrics = ref(false)
-const activeWorkCollectionSlug = ref<string | null>(null)
-const activeGalleryImage = ref<string | null>(null)
-const showMobileNotice = ref(false)
-const hasDismissedMobileNotice = ref(false)
 
 const aboutIntroParagraphs = computed(() => getAboutIntroParagraphs(isEnglish.value))
 
@@ -350,6 +224,14 @@ const techGroups = computed(() => getTechGroups(isEnglish.value))
 const workExperiences = computed(() => getWorkExperiences(isEnglish.value))
 const projects = computed(() => getProjects(isEnglish.value))
 const artCollections = computed(() => getArtCollections(isEnglish.value))
+const {
+  activeCollection: activeWorkCollection,
+  activeImage: activeGalleryImage,
+  openCollection: openWorkCollection,
+  closeCollection: closeWorkCollection,
+  openImage: openGalleryImage,
+  closeImage: closeGalleryImage
+} = useArtGallery(artCollections)
 
 // Init art card reveal state after artCollections is defined
 watch(artCollections, collections => {
@@ -389,10 +271,6 @@ const indexedAboutIntroParagraphs = computed(() => {
       index: index++
     }))
   }))
-})
-
-const aboutIntroCharsCount = computed(() => {
-  return aboutIntroParagraphs.value.reduce((total, paragraph) => total + Array.from(paragraph).length, 0)
 })
 
 const aboutIntroScrollProgress = computed(() => {
@@ -523,65 +401,6 @@ function handleArtCardLeave(event: PointerEvent) {
   el.style.setProperty('--chroma-on', '0')
 }
 
-const activeWorkCollection = computed(() => {
-  return artCollections.value.find(collection => collection.slug === activeWorkCollectionSlug.value) || null
-})
-
-function openWorkCollection(slug: string) {
-  const collection = artCollections.value.find(item => item.slug === slug)
-
-  if (collection?.href) {
-    window.open(collection.href, '_blank', 'noopener,noreferrer')
-    return
-  }
-
-  activeWorkCollectionSlug.value = slug
-}
-
-function closeWorkCollection() {
-  activeWorkCollectionSlug.value = null
-  activeGalleryImage.value = null
-}
-
-function handleWorkCollectionKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    if (activeGalleryImage.value) {
-      closeGalleryImage()
-    } else {
-      closeWorkCollection()
-    }
-  }
-}
-
-function openGalleryImage(image: string) {
-  activeGalleryImage.value = image
-}
-
-function closeGalleryImage() {
-  activeGalleryImage.value = null
-}
-
-function closeMobileNotice() {
-  hasDismissedMobileNotice.value = true
-  showMobileNotice.value = false
-}
-
-watch(activeWorkCollectionSlug, (slug) => {
-  if (!import.meta.client) {
-    return
-  }
-
-  document.body.style.overflow = slug ? 'hidden' : ''
-})
-
-watch(viewportWidth, (width) => {
-  if (!import.meta.client || hasDismissedMobileNotice.value) {
-    return
-  }
-
-  showMobileNotice.value = width < 768
-}, { immediate: true })
-
 function updateScrollSectionMetrics() {
   if (aboutIntro.value) {
     aboutIntroTop.value = aboutIntro.value.getBoundingClientRect().top + window.scrollY
@@ -602,9 +421,7 @@ function updateScrollSectionMetrics() {
 
 onMounted(() => {
   updateScrollSectionMetrics()
-  showMobileNotice.value = !hasDismissedMobileNotice.value && window.innerWidth < 768
   window.addEventListener('resize', updateScrollSectionMetrics)
-  window.addEventListener('keydown', handleWorkCollectionKeydown)
   requestAnimationFrame(updateScrollSectionMetrics)
 
   // Art collection per-card scroll reveal
@@ -613,38 +430,16 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScrollSectionMetrics)
-  window.removeEventListener('keydown', handleWorkCollectionKeydown)
-  document.body.style.overflow = ''
 })
 </script>
 
 <template>
   <div v-if="page">
-    <div
-      ref="scrollSlider"
-      class="scroll-progress-control cursor-grab-custom fixed right-3 top-1/2 z-[120] h-40 w-8 -translate-y-1/2 touch-none select-none sm:right-5 sm:h-44"
-      :class="{ 'is-dragging': isScrollDragging }"
-      role="slider"
-      tabindex="0"
-      aria-orientation="vertical"
-      :aria-label="locale === 'en' ? 'Page scroll progress' : '页面滚动进度'"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      :aria-valuenow="scrollProgressPercent"
-      @pointerdown="onScrollSliderPointerDown"
-      @pointermove="onScrollSliderPointerMove"
-      @pointerup="stopScrollSliderDrag"
-      @pointercancel="stopScrollSliderDrag"
-      @lostpointercapture="stopScrollSliderDrag"
-      @keydown="onScrollSliderKeydown"
-    >
-      <div class="scroll-progress-rail">
-        <div
-          class="scroll-progress-fill"
-          :style="scrollProgressStyle"
-        />
-      </div>
-    </div>
+    <PageScrollProgress
+      :progress="pageScrollProgress"
+      :viewport-height="viewportHeight"
+      :label="locale === 'en' ? 'Page scroll progress' : '页面滚动进度'"
+    />
 
     <div class="relative w-full overflow-x-clip">
       <div class="relative h-[300vh] bg-[#1A1A1A]">
@@ -903,147 +698,20 @@ onBeforeUnmount(() => {
         </div>
       </section>
 
-      <Teleport to="body">
-        <div
-          v-if="activeWorkCollection"
-          class="art-gallery-overlay fixed inset-0 z-[200] bg-white/96 backdrop-blur-xl"
-        >
-          <button
-            type="button"
-            class="art-gallery-close fixed right-6 top-6 z-30 flex size-13 items-center justify-center rounded-full border border-neutral-300/70 bg-transparent text-xl shadow-xl shadow-black/10 backdrop-blur-xl transition sm:right-8 sm:top-8"
-            :aria-label="locale === 'en' ? 'Close collection' : '关闭作品集'"
-            @click="closeWorkCollection"
-          >
-            <UIcon
-              name="i-lucide-x"
-              class="art-gallery-close-icon size-6"
-            />
-          </button>
-
-          <div
-            class="h-full overflow-y-auto px-6 py-20 sm:px-10"
-            @click.self="closeWorkCollection"
-          >
-            <div class="mx-auto max-w-7xl">
-              <div class="art-gallery-grid">
-                <button
-                  v-for="(image, index) in activeWorkCollection.images"
-                  :key="image"
-                  type="button"
-                  class="art-gallery-item"
-                  @click="openGalleryImage(image)"
-                >
-                  <img
-                    :src="image"
-                    :alt="locale === 'en' ? `${activeWorkCollection.title} work ${index + 1}` : `${activeWorkCollection.title}作品 ${index + 1}`"
-                    loading="lazy"
-                  >
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Teleport>
-
-      <Teleport to="body">
-        <div
-          v-if="activeGalleryImage"
-          class="art-image-lightbox fixed inset-0 z-[230] flex items-center justify-center bg-black/78 p-5 backdrop-blur-xl"
-          @click.self="closeGalleryImage"
-        >
-          <button
-            type="button"
-            class="art-gallery-close fixed right-6 top-6 z-20 flex size-13 items-center justify-center rounded-full border border-neutral-300/70 bg-transparent text-xl shadow-xl shadow-black/20 backdrop-blur-xl transition sm:right-8 sm:top-8"
-            :aria-label="locale === 'en' ? 'Close image preview' : '关闭图片预览'"
-            @click="closeGalleryImage"
-          >
-            <UIcon
-              name="i-lucide-x"
-              class="art-gallery-close-icon size-6"
-            />
-          </button>
-          <img
-            :src="activeGalleryImage"
-            :alt="locale === 'en' ? 'Large work preview' : '作品大图预览'"
-            class="max-h-[90vh] max-w-[92vw] object-contain shadow-2xl shadow-black/30"
-          >
-        </div>
-      </Teleport>
-
-      <Teleport to="body">
-        <div
-          v-if="showMobileNotice"
-          class="mobile-notice fixed inset-0 z-[260] flex items-center justify-center bg-black/78 px-6 text-white backdrop-blur-sm sm:hidden"
-          @click.self="closeMobileNotice"
-        >
-          <div class="mobile-notice-panel w-full max-w-xs rounded-2xl bg-black/90 p-6 text-center shadow-2xl shadow-black/40">
-            <p class="text-lg leading-8 font-semibold">
-              {{ locale === 'en' ? 'Desktop viewing is recommended for the best experience.' : '推荐电脑端浏览，以体验最佳网页展示效果。' }}
-            </p>
-            <button
-              type="button"
-              class="mt-5 rounded-full border border-white/25 px-5 py-2 text-sm font-semibold text-white/85 transition hover:border-white/50 hover:text-white"
-              @click="closeMobileNotice"
-            >
-              {{ locale === 'en' ? 'Got it' : '我知道了' }}
-            </button>
-          </div>
-        </div>
-      </Teleport>
+      <ArtGalleryOverlay
+        :collection="activeWorkCollection"
+        :active-image="activeGalleryImage"
+        :is-english="isEnglish"
+        @close-collection="closeWorkCollection"
+        @open-image="openGalleryImage"
+        @close-image="closeGalleryImage"
+      />
+      <MobileExperienceNotice :is-english="isEnglish" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.scroll-progress-control {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-}
-
-.scroll-progress-rail {
-  position: relative;
-  width: 4px;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgb(163 163 163 / 0.24);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
-  backdrop-filter: blur(8px);
-  transition:
-    width 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    height 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.scroll-progress-control:hover .scroll-progress-rail,
-.scroll-progress-control:focus-visible .scroll-progress-rail,
-.scroll-progress-control.is-dragging .scroll-progress-rail {
-  width: 14px;
-  height: calc(100% + 2.5rem);
-  background: rgb(163 163 163 / 0.34);
-  box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / 0.58),
-    0 14px 34px rgb(15 23 42 / 0.16);
-}
-
-.scroll-progress-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  border-radius: 999px;
-  background: #10b981;
-  box-shadow: 0 0 16px rgb(16 185 129 / 0.65);
-  transition: height 120ms ease-out;
-}
-
-.scroll-progress-control.is-dragging .scroll-progress-fill {
-  transition: none;
-}
-
 .soft-section-band {
   background: #ffffff;
   box-shadow: 0 0 0 100vmax #ffffff;
@@ -1178,116 +846,6 @@ onBeforeUnmount(() => {
   filter: saturate(1.12) contrast(1.04);
 }
 
-.art-gallery-overlay {
-  animation: art-gallery-fade 240ms ease both;
-}
-
-.art-gallery-close {
-  color: rgb(38 38 38);
-}
-
-.art-gallery-close:hover {
-  background: transparent;
-}
-
-.art-gallery-close-icon {
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.art-gallery-close:hover .art-gallery-close-icon {
-  transform: rotate(90deg);
-}
-
-.art-gallery-grid {
-  columns: 3 18rem;
-  column-gap: 1.25rem;
-}
-
-.art-gallery-item {
-  display: block;
-  width: 100%;
-  break-inside: avoid;
-  margin-bottom: 1.25rem;
-  padding: 0;
-  border: 0;
-  background: #f5f5f4;
-  overflow: hidden;
-}
-
-.art-gallery-item img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition:
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.art-gallery-item:hover img {
-  transform: scale(1.035);
-  filter: saturate(1.05) contrast(1.03);
-}
-
-.art-image-lightbox {
-  animation: art-gallery-fade 180ms ease both;
-}
-
-.art-image-lightbox img {
-  animation: art-image-zoom 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes art-gallery-fade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes art-image-zoom {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.mobile-notice {
-  animation: mobile-notice-fade 180ms ease both;
-}
-
-.mobile-notice-panel {
-  animation: mobile-notice-pop 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes mobile-notice-fade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes mobile-notice-pop {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 12px, 0) scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
 @media (max-width: 768px) {
   .art-collection-grid {
     max-width: 100%;
@@ -1302,10 +860,6 @@ onBeforeUnmount(() => {
 
   .art-collection-card:nth-child(n) .art-collection-image-wrap {
     aspect-ratio: 1 / 1;
-  }
-
-  .art-gallery-grid {
-    columns: 1;
   }
 }
 </style>
