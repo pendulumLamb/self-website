@@ -139,12 +139,9 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'Gin',
       logo: '/tech-logos/gin.svg'
     }, {
-      label: 'Node.Js',
-      icon: 'simple-icons:nodedotjs',
-      color: '#5FA04E'
-    }, {
-      label: isEnglish ? 'Nitro by Nuxt.js' : 'Nitro（Nuxt.Js提供）',
-      logo: '/tech-logos/nitro.svg'
+      label: 'Nest.Js',
+      icon: 'simple-icons:nestjs',
+      color: '#E0234E'
     }, {
       label: 'Spring Boot',
       icon: 'simple-icons:springboot',
