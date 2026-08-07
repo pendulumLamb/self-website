@@ -76,10 +76,6 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       icon: 'simple-icons:python',
       color: '#3776AB'
     }, {
-      label: 'Go',
-      icon: 'simple-icons:go',
-      color: '#00ADD8'
-    }, {
       label: 'Js',
       icon: 'simple-icons:javascript',
       color: '#F7DF1E'
@@ -117,14 +113,6 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'uni-app',
       logo: '/tech-logos/uni-app.png'
     }, {
-      label: 'Flutter',
-      icon: 'simple-icons:flutter',
-      color: '#02569B'
-    }, {
-      label: 'Wails',
-      icon: 'simple-icons:wails',
-      color: '#000000'
-    }, {
       label: 'Electron',
       icon: 'simple-icons:electron',
       color: '#47848F'
@@ -135,9 +123,6 @@ export function getTechGroups(isEnglish: boolean): TechGroup[] {
       label: 'Fastapi',
       icon: 'simple-icons:fastapi',
       color: '#009688'
-    }, {
-      label: 'Gin',
-      logo: '/tech-logos/gin.svg'
     }, {
       label: 'Nest.Js',
       icon: 'simple-icons:nestjs',
@@ -314,7 +299,7 @@ export function getProjects(isEnglish: boolean): Project[] {
     ? [{
         title: 'Infinite-Canvas',
         subtitle: 'Open-source infinite canvas project',
-        description: 'Contributed to Bilibili creator wuli大雄\'s open-source infinite canvas project, a node-based AI creation workspace on GitHub.',
+        description: 'Contribute to and maintain Bilibili creator wuli大雄\'s open-source infinite canvas project, collaborating on node-based AI creation, canvas editing, and the workflow experience.',
         note: 'The repository has 2.6k stars and uses an infinite canvas to host AI generation workflows and asset management for images, videos, and more. It integrates AI knowledge-base Q&A and preset ComfyUI workflows while also letting you plug in your own ComfyUI workflows, exploring directions like canvas editing, asset orchestration, workflow-style creative tooling, and AI Agents.',
         tags: ['Open Source', 'React', 'TypeScript', 'Python', 'HTML', 'AI Workflow', 'Full-stack'],
         image: '/projects/infinite-canvas-open-source.png',
@@ -329,36 +314,36 @@ export function getProjects(isEnglish: boolean): Project[] {
         previewImages: ['/projects/hair-loss-login.jpg', '/projects/hair-loss-upload.jpg', '/projects/hair-loss-profile.jpg'],
         previewQr: '/projects/hair-loss-qr.jpg'
       }, {
+        title: 'Errands For You',
+        subtitle: 'Community errand service mini program',
+        description: 'A WeChat mini program that helps apartment and community residents with everyday errands such as taking out the trash, picking up packages and takeout, and dog walking, with other services quoted on request.',
+        note: 'Residents log in with one tap via WeChat, locate their community, schedule a service time, and add notes. After payment they can track progress in real time, and unaccepted orders are automatically refunded. The frontend is built with uni-app, the backend with Nest.Js, and the database is MySQL.',
+        tags: ['Uni-app', 'WeChat Mini Program', 'Nest.Js', 'MySQL', 'Full-stack'],
+        image: '/projects/errand-home.jpg',
+        previewImages: ['/projects/errand-home.jpg', '/projects/errand-order.jpg', '/projects/errand-profile.jpg']
+      }, {
         title: 'EasyIoT',
         subtitle: 'Intelligent IoT cloud platform',
         logo: '/projects/easyiot-logo.png',
         description: 'A lightweight IoT application cloud platform that supports no-code and MCU low-code development, as well as self-built IoT systems.',
-        note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and supporting facilities to help users quickly build and learn IoT applications. It covers Web, H5-mobile, and App clients, with rich teaching resources and project cases.',
-        tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT', 'Full-stack'],
+        note: 'Developed by the IoT Open Innovation Lab of Anhui Polytechnic University, with development boards and supporting facilities to help users quickly build and learn IoT applications. It covers Web, H5-mobile, and App clients, with rich teaching resources, project cases, and customized services.',
+        tags: ['Vue', 'Java', 'MQTT', 'IoT', 'MCU'],
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
         title: 'Evidence Tracking Agent',
         subtitle: 'Agent for building evidence chains',
         description: 'An agent that builds a complete evidence chain from real-world materials such as chat screenshots, contract documents, handwritten notes, and videos, helping users preserve memories.',
-        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js, the backend uses Go with Gin, and agent orchestration is handled by Eino for high-performance processing.',
-        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
+        note: 'Users upload the relevant files, and the built-in agent analyzes them to output an evidence timeline and an editable node-based evidence graph. The frontend is built with React.js and React Flow, agent orchestration uses the mature LangGraph framework, and the backend service is FastAPI.',
+        tags: ['React', 'LangGraph', 'PostgreSQL', 'pgvector', 'Agent', 'Alibaba Cloud OSS', 'Full-stack'],
         image: '/projects/evidence-agent-preview-v2.png',
-        previewDisabledTip: 'Internally deployed.'
-      }, {
-        title: 'Unishop Agents',
-        subtitle: 'Automated commerce data analysis agent',
-        description: 'A multi-agent deep research system built for an e-commerce company. It can analyze real-world data such as product pricing, sales volume, store reports, and employee performance, then search supporting information, generate structured reports, and provide actionable optimization suggestions.',
-        note: 'The project uses a ReAct architecture with a think-and-act, dynamic decision-making workflow, allowing long-term store monitoring and feedback.',
-        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', 'Full-stack'],
-        image: '/projects/agent.png',
         previewDisabledTip: 'Internally deployed.'
       }, {
         title: 'Blockchain IoT Tea Traceability System',
         subtitle: 'Tea traceability system based on blockchain and IoT',
         description: 'A university entrepreneurship project that combines smart contracts on blockchain with IoT data, making the data tamper-resistant, stable, and secure while keeping the full tea production-to-sales chain transparent.',
         note: 'IoT sensing devices upload data to the cloud and form blocks. Each node then generates data through sensing and recording, and those node records form a blockchain. Users scan the product label code in the app to view the full-chain data. This decentralized approach protects the natural integrity of the data. The blockchain uses Ethereum, the app is built with uni-app, and the service is built on Spring Boot.',
-        tags: ['Ethereum', 'Go', 'IoT', 'Blockchain', 'Geth', 'Uni-app', 'Java'],
+        tags: ['IoT', 'Blockchain', 'Uni-app', 'Vue', 'Java'],
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
         previewDisabledTip: 'Watch the intro video.'
@@ -384,7 +369,7 @@ export function getProjects(isEnglish: boolean): Project[] {
     : [{
         title: 'Infinite-Canvas',
         subtitle: '开源无限画布项目',
-        description: '参与 Bilibili UP 主 wuli大雄 发起的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
+        description: '参与并维护 Bilibili UP 主 wuli大雄 的开源无限画布项目，围绕节点式 AI 创作、画布编辑与工作流体验进行协作。',
         note: '项目 GitHub 仓库已获得 2.6k stars，用无限画布承载图片、视频等 AI 生成流程和素材管理。集成AI知识库问答、预设comfyUI工作流，也可自行接入comfyUI工作流。探索画布编辑、素材编排、工作流式创作工具、AI Agent等方向。',
         tags: ['开源项目', 'AI 创作', '工作流', 'Python', 'HTML', 'GitHub 2.6k stars', '全栈'],
         image: '/projects/infinite-canvas-open-source.png',
@@ -399,36 +384,36 @@ export function getProjects(isEnglish: boolean): Project[] {
         previewImages: ['/projects/hair-loss-login.jpg', '/projects/hair-loss-upload.jpg', '/projects/hair-loss-profile.jpg'],
         previewQr: '/projects/hair-loss-qr.jpg'
       }, {
+        title: '代你跑腿',
+        subtitle: '小区跑腿服务小程序',
+        description: '为小区/公寓住户提供跑腿帮忙服务的微信小程序，覆盖代扔垃圾、代取快递、代拿外卖、代遛狗等日常小事，其他服务先确认后报价。',
+        note: '住户微信一键登录即可下单，支持定位选择小区、预约服务时间、填写补充说明，付款后可实时查看进度，未接单原路退款。前端基于 uni-app，后端使用 Nest.Js，数据库为 MySQL。',
+        tags: ['Uni-app', '微信小程序', 'Nest.Js', 'MySQL', '全栈'],
+        image: '/projects/errand-home.jpg',
+        previewImages: ['/projects/errand-home.jpg', '/projects/errand-order.jpg', '/projects/errand-profile.jpg']
+      }, {
         title: '易联智能',
         subtitle: '智能化物联网云平台',
         logo: '/projects/easyiot-logo.png',
         description: '轻量级物联网应用云平台，支持零代码与 MCU 低代码开发。支持自建物联网系统',
-        note: '由安徽工程大学物联网开放创新实验室开发，配套开发板等设施，帮助用户快速搭建和学习物联网应用。覆盖Web、H5-mobile、App等多端，提供丰富的教学资源和项目案例。',
-        tags: ['C++', 'Vue', 'Node.js', 'Express', 'MQTT', '全栈'],
+        note: '由安徽工程大学物联网开放创新实验室开发，配套开发板等设施，帮助用户快速搭建和学习物联网应用。覆盖Web、H5-mobile、App等多端，提供丰富的教学资源和项目案例以及定制化服务',
+        tags: ['Vue', 'Java', 'MQTT', 'IoT', '单片机'],
         image: '/projects/easyiot-preview.png',
         previewUrl: 'https://www.easyiothings.com/'
       }, {
         title: '证据追踪Agent',
         subtitle: '完整证据链分析智能体',
         description: '根据聊天截图、合同文档、手写纸条、视频等现实资料形成完整证据链的Agent，帮助用户做记忆留存。',
-        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js，后端使用Go，服务基于Gin，智能体编排使用Eino，确保高性能处理。',
-        tags: ['React', 'Go', 'Gin', 'Eino', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
+        note: '用户上传相应文件，经过内置Agent的分析后，为用户输出证据时间线列表，和可编辑节点式证据图。项目前端基于React.Js和React-flow，agent编排采用较为成熟的langgraph框架，后段服务为Fastapi',
+        tags: ['React', 'LangGraph', 'PostgreSQL', 'pgvector', 'Agent', '阿里云OSS', '全栈'],
         image: '/projects/evidence-agent-preview-v2.png',
         previewDisabledTip: '内部部署。'
-      }, {
-        title: 'Unishop Agents',
-        subtitle: '自动化数据分析智能体',
-        description: '为电商公司打造的多Agent协作深度研究系统，自动可以根据商品定价、销售量、店铺报表、员工绩效等一切现实数据，搜索资料并生成结构化报告,并给出可执行的优化建议。',
-        note: '项目采用ReAct架构实现，具有“边想边做，动态决策”的特点，可对店铺进行长期监测反馈',
-        tags: ['Vue 3', 'TypeScript', 'FastAPI', 'Python', 'LangGraph', 'OpenAI', '全栈'],
-        image: '/projects/agent.png',
-        previewDisabledTip: '内部部署'
       }, {
         title: '基于区块链和物联网系统的茶叶溯源系统',
         subtitle: '区块链 + 物联网茶叶溯源系统',
         description: '大学创业项目，将智能合约（区块链）和物联网数据结合，实现数据不可篡改、稳定安全，保障茶叶在生产到销售全链路数据透明。',
         note: '物联网感知端将数据上云形成区块，之后每个节点通过感知、记录等方式产生数据，各节点数据形成区块链。用户通过App扫描产品上标签码查看全链路数据。这种去中心化方式保障了数据的纯天然。区块链使用以太坊，App使用uni-app开发，服务基于SpringBoot搭建。',
-        tags: ['以太坊', 'Go', 'IoT', '区块链', 'Geth', 'Uni-app', 'Java'],
+        tags: ['IoT', '区块链', 'Uni-app', 'Vue', 'Java'],
         image: '/projects/tea-traceability.jpg',
         previewUrl: 'https://b23.tv/yor2Hbh',
         previewDisabledTip: '查看介绍视频'
