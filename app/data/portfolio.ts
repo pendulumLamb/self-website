@@ -270,7 +270,7 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         role: 'Test Engineer',
         tasks: ['Worked with CAN networks and used CANoe and CANalyzer for bench and vehicle tests of instrument clusters.', 'Designed solutions using the CAPL language.', 'On-site at the service party\'s port for pre-export inspection and flashing.', 'Built a practical understanding of automotive consumer electronics.']
       }, {
-        period: '2024.12-2026.6',
+        period: '2025.9-2026.6',
         company: 'Shanghai Yongxing Trading Co., Ltd.',
         role: 'Visual Designer, Operations, AI Systems Developer',
         tasks: ['Main job duties', 'Produced e-commerce images, videos, and other assets with AI creation tools.', 'Led internal AI system development, including department workflows, company AI agents, RAG knowledge bases, and supporting tools to improve operations.']
@@ -287,7 +287,7 @@ export function getWorkExperiences(isEnglish: boolean): WorkExperience[] {
         role: '测试工程师',
         tasks: ['了解 CAN 网络，利用CANoe和CANalyzer进行汽车仪表的台架测试、实车测试。', '使用CAPL语言设计方案。', '服务方港口驻场，负责出口前检测与刷机。', '对汽车消费电子有一定理解']
       }, {
-        period: '2024.12-2026.6',
+        period: '2025.9-2026.6',
         company: '上海邕兴贸易有限公司',
         role: '美工、运营、AI系统开发',
         tasks: ['主职之外的兼职', '使用AI创作工具为公司产出图片、视频等电商资源。', '主导公司AI系统开发，各部门AI使用，设计公司专用的AI Agent、Rag知识库、必要软件等，提高运转效率。']
