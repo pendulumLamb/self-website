@@ -320,7 +320,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         note: 'Residents log in with one tap via WeChat, locate their community, schedule a service time, and add notes. After payment they can track progress in real time, and unaccepted orders are automatically refunded. The frontend is built with uni-app, the backend with Nest.Js, and the database is MySQL.',
         tags: ['Uni-app', 'WeChat Mini Program', 'Nest.Js', 'MySQL', 'Full-stack'],
         image: '/projects/errand-home.jpg',
-        previewImages: ['/projects/errand-home.jpg', '/projects/errand-order.jpg', '/projects/errand-profile.jpg']
+        previewImages: ['/projects/errand-home.jpg', '/projects/errand-order.jpg', '/projects/errand-orders.jpg']
       }, {
         title: 'EasyIoT',
         subtitle: 'Intelligent IoT cloud platform',
@@ -390,7 +390,7 @@ export function getProjects(isEnglish: boolean): Project[] {
         note: '住户微信一键登录即可下单，支持定位选择小区、预约服务时间、填写补充说明，付款后可实时查看进度，未接单原路退款。前端基于 uni-app，后端使用 Nest.Js，数据库为 MySQL。',
         tags: ['Uni-app', '微信小程序', 'Nest.Js', 'MySQL', '全栈'],
         image: '/projects/errand-home.jpg',
-        previewImages: ['/projects/errand-home.jpg', '/projects/errand-order.jpg', '/projects/errand-profile.jpg']
+        previewImages: ['/projects/errand-home.jpg', '/projects/errand-order.jpg', '/projects/errand-orders.jpg']
       }, {
         title: '易联智能',
         subtitle: '智能化物联网云平台',
